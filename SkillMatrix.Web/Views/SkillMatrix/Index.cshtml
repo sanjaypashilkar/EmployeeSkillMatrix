@@ -1,0 +1,28 @@
+﻿@model IEnumerable<SkillMatrix.Model.EmployeeSkillMatrix>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
+
+        <span>Select File:</span>
+        <input type="file" name="file"/>
+        <input type="submit" value="Upload" />
+        <br />
+        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+    </form>
+</body>
+</html>
