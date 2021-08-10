@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SkillMatrix.Model
 {
-    public class TenureAndCompetency
+    public class TenureLevel
     {
         public int Id { get; set; }
         public int LowerScore { get; set; }
@@ -13,7 +13,7 @@ namespace SkillMatrix.Model
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
-        public TenureAndCompetency()
+        public TenureLevel()
         {
             Id = 0;
             LowerScore = 0;

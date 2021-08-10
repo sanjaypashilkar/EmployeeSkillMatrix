@@ -99,7 +99,7 @@ namespace SkillMatrix.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TenureAndCompetency",
+                name: "TenureLevel",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -112,7 +112,7 @@ namespace SkillMatrix.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenureAndCompetency", x => x.Id);
+                    table.PrimaryKey("PK_TenureLevel", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
@@ -120,11 +120,11 @@ namespace SkillMatrix.Repository.Migrations
                 columns: new[] { "Id", "CreatedDate", "LowerScore", "Score", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 0, 1.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 84 },
-                    { 2, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 85, 2.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 91 },
-                    { 3, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 92, 3.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 93 },
-                    { 4, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 94, 4.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 98 },
-                    { 5, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 99, 5.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 10000 }
+                    { 1, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 0, 1.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 85 },
+                    { 2, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 85, 2.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 92 },
+                    { 3, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 92, 3.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 94 },
+                    { 4, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 94, 4.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 99 },
+                    { 5, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 99, 5.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 10000 }
                 });
 
             migrationBuilder.InsertData(
@@ -132,22 +132,22 @@ namespace SkillMatrix.Repository.Migrations
                 columns: new[] { "Id", "CreatedDate", "Level", "LowerScore", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 0.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 2.4900000000000002 },
-                    { 2, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 2.5, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 3.4900000000000002 },
-                    { 3, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 3.5, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 3.9900000000000002 },
-                    { 4, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 4.0, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 4.4900000000000002 },
-                    { 5, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 4.5, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 5.0 }
+                    { 1, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 0.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 2.4900000000000002 },
+                    { 2, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 2.5, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 3.4900000000000002 },
+                    { 3, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 3.5, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 3.9900000000000002 },
+                    { 4, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 4.0, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 4.4900000000000002 },
+                    { 5, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 4.5, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 5.0 }
                 });
 
             migrationBuilder.InsertData(
-                table: "TenureAndCompetency",
+                table: "TenureLevel",
                 columns: new[] { "Id", "CreatedDate", "Level", "LowerScore", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Beginner", 6, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 9 },
-                    { 2, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 10, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 12 },
-                    { 3, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "Advanced", 13, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
-                    { 4, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), "SME", 13, new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local), 1000 }
+                    { 1, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Beginner", 6, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 9 },
+                    { 2, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 10, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 12 },
+                    { 3, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "Advanced", 13, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
+                    { 4, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), "SME", 13, new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local), 1000 }
                 });
         }
 
@@ -166,7 +166,7 @@ namespace SkillMatrix.Repository.Migrations
                 name: "EmployeeSkillMatrix");
 
             migrationBuilder.DropTable(
-                name: "TenureAndCompetency");
+                name: "TenureLevel");
         }
     }
 }

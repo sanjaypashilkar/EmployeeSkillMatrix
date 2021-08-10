@@ -12,7 +12,7 @@ namespace SkillMatrix.Repository
         public DbSet<EmployeeSkillMatrix> EmployeeSkillMatrix { get; set; }
         public DbSet<CategoryScoring> CategoryScoring { get; set; }
         public DbSet<CompetencyLevelScoring> CompetencyLevelScoring { get; set; }
-        public DbSet<TenureAndCompetency> TenureAndCompetency { get; set; }
+        public DbSet<TenureLevel> TenureLevel { get; set; }
         public SkillMatrixDb()
         { }
 
@@ -43,7 +43,7 @@ namespace SkillMatrix.Repository
                 {
                     Id=1,
                     LowerScore = 0,
-                    UpperScore = 84,
+                    UpperScore = 85,
                     Score = 1.00,
                     CreatedDate = DateTime.Today, 
                     UpdatedDate = DateTime.Today
@@ -52,7 +52,7 @@ namespace SkillMatrix.Repository
                 {
                     Id = 2,
                     LowerScore = 85,
-                    UpperScore = 91,
+                    UpperScore = 92,
                     Score = 2.00,
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
@@ -61,7 +61,7 @@ namespace SkillMatrix.Repository
                 {
                     Id = 3,
                     LowerScore = 92,
-                    UpperScore = 93,
+                    UpperScore = 94,
                     Score = 3.00,
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
@@ -70,7 +70,7 @@ namespace SkillMatrix.Repository
                 {
                     Id = 4,
                     LowerScore = 94,
-                    UpperScore = 98,
+                    UpperScore = 99,
                     Score = 4.00,
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
@@ -134,8 +134,8 @@ namespace SkillMatrix.Repository
                 }
             );
 
-            modelBuilder.Entity<TenureAndCompetency>().HasData(
-                new TenureAndCompetency
+            modelBuilder.Entity<TenureLevel>().HasData(
+                new TenureLevel
                 {
                     Id = 1,
                     LowerScore = 6,
@@ -144,7 +144,7 @@ namespace SkillMatrix.Repository
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
-                new TenureAndCompetency
+                new TenureLevel
                 {
                     Id = 2,
                     LowerScore = 10,
@@ -153,7 +153,7 @@ namespace SkillMatrix.Repository
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
-                new TenureAndCompetency
+                new TenureLevel
                 {
                     Id = 3,
                     LowerScore = 13,
@@ -162,7 +162,7 @@ namespace SkillMatrix.Repository
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
-                new TenureAndCompetency
+                new TenureLevel
                 {
                     Id = 4,
                     LowerScore = 13,

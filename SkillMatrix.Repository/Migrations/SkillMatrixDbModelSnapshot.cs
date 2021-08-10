@@ -46,46 +46,46 @@ namespace SkillMatrix.Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 0,
                             Score = 1.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            UpperScore = 84
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpperScore = 85
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 85,
                             Score = 2.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            UpperScore = 91
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpperScore = 92
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 92,
                             Score = 3.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            UpperScore = 93
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpperScore = 94
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 94,
                             Score = 4.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            UpperScore = 98
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpperScore = 99
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 99,
                             Score = 5.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 10000
                         });
                 });
@@ -119,46 +119,46 @@ namespace SkillMatrix.Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Novice",
                             LowerScore = 0.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 2.4900000000000002
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Advanced Beginner",
                             LowerScore = 2.5,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 3.4900000000000002
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Competent",
                             LowerScore = 3.5,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 3.9900000000000002
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Proficient",
                             LowerScore = 4.0,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 4.4900000000000002
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Expert",
                             LowerScore = 4.5,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 5.0
                         });
                 });
@@ -287,7 +287,7 @@ namespace SkillMatrix.Repository.Migrations
                     b.ToTable("EmployeeSkillMatrix");
                 });
 
-            modelBuilder.Entity("SkillMatrix.Model.TenureAndCompetency", b =>
+            modelBuilder.Entity("SkillMatrix.Model.TenureLevel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,43 +310,43 @@ namespace SkillMatrix.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TenureAndCompetency");
+                    b.ToTable("TenureLevel");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Beginner",
                             LowerScore = 6,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 9
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Novice",
                             LowerScore = 10,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 12
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Advanced",
                             LowerScore = 13,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1000
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "SME",
                             LowerScore = 13,
-                            UpdatedDate = new DateTime(2021, 8, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 8, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1000
                         });
                 });

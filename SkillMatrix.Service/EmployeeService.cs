@@ -11,16 +11,16 @@ namespace SkillMatrix.Service
 {
     public class EmployeeService : IEmployeeService
     {
-        public ISkillMatrixRepository _skillMatrixrepository { get; set; }
+        public ISkillMatrixRepository _skillMatrixRepository { get; set; }
 
         public EmployeeService(ISkillMatrixRepository skillMatrixRepository)
         {
-            _skillMatrixrepository = skillMatrixRepository;
+            _skillMatrixRepository = skillMatrixRepository;
         }
 
         public List<vwEmployee> GetEmployees()
         {
-            var entEmployees = _skillMatrixrepository.GetEmployees().ToList();
+            var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
             List<vwEmployee> employees = new List<vwEmployee>();
             foreach (var employee in entEmployees)
             {
@@ -76,8 +76,8 @@ namespace SkillMatrix.Service
                     {
                         if (reader.Depth != 0)
                         {
-                            string employeeName = reader.GetValue(0) != null ? reader.GetValue(0).ToString() : string.Empty;
-                            var dateHired = reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty;
+                            string employeeName = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                            var dateHired = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
                             var createdDate = DateTime.Now.Date;
                             employees.Add(new Employee
                             {
@@ -92,11 +92,11 @@ namespace SkillMatrix.Service
             }
             if(employees.Count>0)
             {
-                var entEmployees = _skillMatrixrepository.GetEmployees().ToList();
+                var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
                 var newEmployees = employees.Where(x => !entEmployees.Any(e => e.Name.ToLower() == x.Name.ToLower()));
                 if(newEmployees.Count()>0)
                 {
-                    _skillMatrixrepository.SaveEmployees(newEmployees);
+                    _skillMatrixRepository.SaveEmployees(newEmployees);
                 }
             }
         }

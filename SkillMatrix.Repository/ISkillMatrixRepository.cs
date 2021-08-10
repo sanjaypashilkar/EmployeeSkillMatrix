@@ -12,9 +12,10 @@ namespace SkillMatrix.Repository
         IQueryable<EmployeeSkillMatrix> GetSkillMatrix();
         IQueryable<CategoryScoring> GetCategoryScoring();
         IQueryable<CompetencyLevelScoring> GetCompetencyLevelScoring();
-        IQueryable<TenureAndCompetency> GetTenureAndCompetency();
+        IQueryable<TenureLevel> GetTenureLevel();
         IQueryable<Employee> GetEmployees();
         int SaveEmployees(IEnumerable<Employee> employees);
+        int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;
         int UpdateEntry<TEntity>(TEntity entry) where TEntity : class;
         int DeleteEntry<TEntity>(TEntity entry) where TEntity : class;

@@ -38,9 +38,9 @@ namespace SkillMatrix.Repository
             return _context.CompetencyLevelScoring;
         }
 
-        public IQueryable<TenureAndCompetency> GetTenureAndCompetency()
+        public IQueryable<TenureLevel> GetTenureLevel()
         {
-            return _context.TenureAndCompetency;
+            return _context.TenureLevel;
         }
 
         public IQueryable<Employee> GetEmployees()
@@ -84,6 +84,12 @@ namespace SkillMatrix.Repository
             employees.ToList().ForEach(emp => _context.Employee.Add(emp));            
             return _context.SaveChanges();
         }
+        public int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix)
+        {
+            employeeSkillMatrix.ToList().ForEach(e => _context.EmployeeSkillMatrix.Add(e));
+            return _context.SaveChanges();
+        }
+
 
         public async Task<int> AddEntryAsync<TEntity>(TEntity entry) where TEntity : class
         {
