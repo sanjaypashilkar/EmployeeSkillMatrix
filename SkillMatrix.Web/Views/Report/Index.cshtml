@@ -10,8 +10,11 @@
     </style>
 }
 <form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Index">
-    @Html.DropDownList("Year", Enumerable.Range(DateTime.Now.AddYears(-10).Year, 11).Select(x => new SelectListItem { Text = x.ToString() }), "Year")
-    @Html.DropDownList("Quarter", Enumerable.Range(1, 4).Select(x => new SelectListItem { Text = x.ToString() }), "Quarter")
+    @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears), "Year: ", new { @class = "myselect" })
+    @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters), "Quarter: ", new { @class = "myselect" })
+    @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams), "Team: ", new { @class = "myselect" })
+    @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel), "Competency Level: ", new { @class = "myselect" })
+    @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel), "Tenure Level: ", new { @class = "myselect" })
     <br />
     <input type="submit" class="btn btn-primary" value="Filter" />
     <span style="color:green">@Html.Raw(ViewBag.Message)</span>

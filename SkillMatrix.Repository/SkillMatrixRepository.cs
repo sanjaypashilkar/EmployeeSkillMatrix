@@ -28,6 +28,11 @@ namespace SkillMatrix.Repository
             return _context.EmployeeSkillMatrix;
         }
 
+        public IQueryable<EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter)
+        {
+            return _context.EmployeeSkillMatrix.Where(e=>e.Year == year && e.Quarter == quarter).AsNoTracking();
+        }
+
         public IQueryable<CategoryScoring> GetCategoryScoring()
         {
             return _context.CategoryScoring;

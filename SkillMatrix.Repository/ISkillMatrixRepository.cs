@@ -10,6 +10,7 @@ namespace SkillMatrix.Repository
     public interface ISkillMatrixRepository
     {
         IQueryable<EmployeeSkillMatrix> GetSkillMatrix();
+        IQueryable<EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter);
         IQueryable<CategoryScoring> GetCategoryScoring();
         IQueryable<CompetencyLevelScoring> GetCompetencyLevelScoring();
         IQueryable<TenureLevel> GetTenureLevel();
