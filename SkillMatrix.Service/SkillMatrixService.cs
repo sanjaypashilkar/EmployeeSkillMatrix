@@ -85,8 +85,11 @@ namespace SkillMatrix.Service
                 employeeSkillMatrix.Team = employeeSkill.Team;
                 employeeSkillMatrix.Name = employeeSkill.Name;
                 employeeSkillMatrix.DateHired = Convert.ToDateTime(employeeSkill.DateHired);
-                var tenure = Math.Round(((DateTime.Today - Convert.ToDateTime(employeeSkill.DateHired)).TotalDays/365),2);
-                employeeSkillMatrix.Tenure = tenure;
+                int tenureDays = Convert.ToInt32((DateTime.Today - Convert.ToDateTime(employeeSkill.DateHired)).TotalDays);
+                int tenureYears = tenureDays / 365;
+                int tenuremonths = (tenureDays % 365)/30;
+                employeeSkillMatrix.TenureYears = tenureYears;
+                employeeSkillMatrix.TenureMonths = tenuremonths;
                 employeeSkillMatrix.DateCompleted = Convert.ToDateTime(employeeSkill.DateCompleted);
                 employeeSkillMatrix.ProcessSpecific_PR = Convert.ToDouble(employeeSkill.ProcessSpecific_PR);
                 employeeSkillMatrix.StarAndOSvC_PR = Convert.ToDouble(employeeSkill.StarAndOSvC_PR);
@@ -129,7 +132,9 @@ namespace SkillMatrix.Service
                 var overallScore = Math.Round((employeeSkillMatrix.ScoreSum/ employeeSkillMatrix.ScoreCount),2);
                 employeeSkillMatrix.OverallScore = overallScore;
                 employeeSkillMatrix.CompetencyLevel = competencyLevelScoring.Where(cl => overallScore >= cl.LowerScore && overallScore <= cl.UpperScore).FirstOrDefault().Level;
-                employeeSkillMatrix.TenurePlusCompetency = tenureScoringLevel.Where(t=>(tenure*12)>= t.LowerScore && (tenure*12)<=t.UpperScore).FirstOrDefault().Level;
+                var tenure = ((tenureYears * 12) + tenuremonths);
+                employeeSkillMatrix.TenureLevel = tenureScoringLevel.Where(t=> tenure >= t.LowerScore && tenure<= t.UpperScore).FirstOrDefault().Level;
+                employeeSkillMatrix.TenurePlusCompetency = (employeeSkillMatrix.CompetencyLevel.ToLower() == employeeSkillMatrix.TenureLevel.ToLower()) ? "Matched" : "For evaluation";
                 employeeSkillMatrix.CreatedDate = DateTime.Today;
                 employeeSkillMatrices.Add(employeeSkillMatrix);
             }

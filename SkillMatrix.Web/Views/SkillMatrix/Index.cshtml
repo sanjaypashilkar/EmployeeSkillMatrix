@@ -1,28 +1,113 @@
-﻿@model IEnumerable<SkillMatrix.Model.EmployeeSkillMatrix>
+﻿@model List<SkillMatrix.Model.vwImportAndSave>
 @{
-    Layout = null;
+    Layout = "_Layout";
+    var counter = 1;
 }
-<!DOCTYPE html>
+<form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    <style type="text/css">
-        body {
-            font-family: Arial;
-            font-size: 10pt;
-        }
-    </style>
-</head>
-<body>
-    <form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
+    @Html.DropDownList("Year", Enumerable.Range(DateTime.Now.AddYears(-10).Year, 11).Select(x => new SelectListItem { Text = x.ToString() }), "Year")
+    @Html.DropDownList("Quarter", Enumerable.Range(1, 4).Select(x => new SelectListItem { Text = x.ToString() }), "Quarter")
+    <span>Select File:</span>
+    <input type="file" name="file" />
+    <input type="submit" class="btn btn-primary" value="Import" />
+    <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />
+    <br />
+    <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+</form>
+@if (Model.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th rowspan="2">Sr.No</th>
+                <th rowspan="2">Team</th>
+                <th rowspan="2">Name</th>
+                <th rowspan="2">Date Hired</th>
+                <th rowspan="2">Date Completed</th>
+                <th colspan="2">Proficiency Report</th>
+                <th colspan="2">Time Spent</th>
+                <th colspan="2">Questions Statistics Report</th>
+                <th rowspan="2">CSAT Score</th>
+                <th rowspan="2">QC Score</th>
+            </tr>
+            <tr>
+                <th>Process Specific</th>
+                <th>STAR & OSvC</th>
+                <th>Process Specific</th>
+                <th>STAR & OSvC</th>
+                <th>Process Specific</th>
+                <th>STAR & OSvC</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Team</td>
+                    <td> @item.Name</td>
+                    <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
+                    <td> @Convert.ToDateTime(item.DateCompleted).Date.ToShortDateString()</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ProcessSpecific_PR))
+                        {@string.Format("{0}%", item.ProcessSpecific_PR)}
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.StarAndOSvC_PR))
+                        {@string.Format("{0}%", item.StarAndOSvC_PR)}
+                    </td>
+                    <td> @item.ProcessSpecific_TS</td>
+                    <td> @item.StarAndOSvC_TS</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ProcessSpecific_QSR))
+                        {@string.Format("{0}%", item.ProcessSpecific_QSR)}
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.StarAndOSvC_QSR))
+                        {@string.Format("{0}%", item.StarAndOSvC_QSR)}
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.CSATScore))
+                        {@string.Format("{0}%", item.CSATScore)}
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.QCScore))
+                        {@string.Format("{0}%", item.QCScore)}
+                    </td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}
 
-        <span>Select File:</span>
-        <input type="file" name="file"/>
-        <input type="submit" value="Upload" />
-        <br />
-        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
-    </form>
-</body>
-</html>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                debugger;
+                var year = $('#Year').val()
+                var quarter = $('#Quarter').val()
+                var fileName = $('#fileName').val()
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '/SkillMatrix/SaveSkillMatrix',
+                    data: { fileName: $('#fileName').val(), year: $('#Year').val(), quarter: $('#Quarter').val()},
+                    success: function (response) {
+                        debugger;
+                        alert("Success: " + response);
+                    },
+                    error: function (response) {
+                        debugger;
+                        alert("Error: " + response);
+                    }
+                });
+            });
+        });
+    </script>
+}

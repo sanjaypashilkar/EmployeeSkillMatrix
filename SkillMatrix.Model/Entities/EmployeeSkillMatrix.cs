@@ -11,7 +11,8 @@ namespace SkillMatrix.Model
         public string Team { get; set; }
         public string Name { get; set; }
         public DateTime DateHired { get; set; }
-        public double Tenure { get; set; }
+        public int TenureYears { get; set; }
+        public int TenureMonths { get; set; }
         public DateTime DateCompleted { get; set; }
         [Column("ProficiencyReportProcessSpecific")]
         public double ProcessSpecific_PR { get; set; }
@@ -37,6 +38,7 @@ namespace SkillMatrix.Model
         public int ScoreCount { get; set; }
         public double OverallScore { get; set; }
         public string CompetencyLevel { get; set; }
+        public string TenureLevel { get; set; }
         public string TenurePlusCompetency { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -49,7 +51,8 @@ namespace SkillMatrix.Model
             Team = string.Empty;
             Name = string.Empty;
             DateHired = new DateTime();
-            Tenure = 0;
+            TenureYears = 0;
+            TenureMonths = 0;
             DateCompleted = new DateTime();
             ProcessSpecific_PR = 0;
             StarAndOSvC_PR = 0;
@@ -69,6 +72,7 @@ namespace SkillMatrix.Model
             ScoreCount = 0;
             OverallScore = 0;
             CompetencyLevel = string.Empty;
+            TenureLevel = string.Empty;
             TenurePlusCompetency = string.Empty;
             CreatedDate = new DateTime();
             UpdatedDate = new DateTime();

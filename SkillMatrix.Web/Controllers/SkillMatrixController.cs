@@ -26,38 +26,12 @@ namespace SkillMatrix.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Index(IFormFile file)
-        {
-            string path = Path.Combine(this.Environment.WebRootPath, "Files");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            string fileName = Path.GetFileName(file.FileName);
-            string fullFilePath = Path.Combine(path, fileName);
-            using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-                stream.Flush();
-                ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
-            }
-            var employeeSkillMatrices = _skillMatrixService.GetUploadedSkillMatrix(fullFilePath);
-            return View(employeeSkillMatrices);
-        }
-
-        public IActionResult ImportAndSave()
-        {
             var emptySkillMatrices = new List<vwImportAndSave>();
             return View(emptySkillMatrices);
         }
 
         [HttpPost]
-        public IActionResult ImportAndSave(IFormFile file)
+        public IActionResult Index(IFormFile file)
         {
             string path = Path.Combine(this.Environment.WebRootPath, "Files");
             if (!Directory.Exists(path))

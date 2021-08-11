@@ -38,6 +38,7 @@ namespace SkillMatrix
             services.AddTransient<ISkillMatrixRepository, SkillMatrixRepository>();
             services.AddTransient<ISkillMatrixService, SkillMatrixService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IReportService, ReportService>();
             services.AddMvc();
             services.AddControllersWithViews();
             ConfigureSkillMatrxServices(services);
@@ -64,7 +65,7 @@ namespace SkillMatrix
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=SkillMatrix}/{action=ImportAndSave}/{id?}");
+                    pattern: "{controller=Report}/{action=Index}/{id?}");
             });
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
