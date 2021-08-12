@@ -52,12 +52,10 @@ namespace SkillMatrix.Service
             if (!string.IsNullOrEmpty(skillMatrixFilter.CompetencyLevel))
             {
                 skillMatrices = skillMatrices.Where(s => s.CompetencyLevel.ToLower() == skillMatrixFilter.CompetencyLevel.ToLower()).ToList();
-                report.lstCompetencyLevel.ToList().ForEach(c => { if (c.Text == skillMatrixFilter.CompetencyLevel) { c.Selected = true; } });
             }
             if (!string.IsNullOrEmpty(skillMatrixFilter.TenureLevel))
             {
                 skillMatrices = skillMatrices.Where(s => s.TenureLevel.ToLower() == skillMatrixFilter.TenureLevel.ToLower()).ToList();
-                report.lstTenureLevel.ToList().ForEach(c => { if (c.Text == skillMatrixFilter.TenureLevel) { c.Selected = true; } });
             }
             if (skillMatrices.Count > 0)
             {
@@ -66,69 +64,36 @@ namespace SkillMatrix.Service
             return report;
         }
 
-        public List<SelectListItem> mtdGetYears()
+        public Dictionary<string,string> mtdGetYears()
         {
-            var selectList = Enumerable.Range(DateTime.Now.Year, 10).Reverse().Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() });
-            //var selected = selectList.Where(x => x.Value == selectedYear.ToString()).First();
-            //selected.Selected = true;
-            return selectList.ToList();
+            var selectList = Enumerable.Range(DateTime.Now.AddYears(-10).Year, 11).Reverse().Select(i => new { key = i.ToString(), value = i.ToString()}).ToDictionary(x=> x.key, x=>x.value);
+            return selectList;
         }
 
-        public List<SelectListItem> mtdGetQuarters()
+        public Dictionary<string, string> mtdGetQuarters()
         {
-            var selectList = Enumerable.Range(1, 4).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() });
-            //var selected = selectList.Where(x => x.Value == selectedQuarter.ToString()).First();
-            //selected.Selected = true;
-            return selectList.ToList();
+            var selectList = Enumerable.Range(1, 4).Select(i => new { key = i.ToString(), value = i.ToString()}).ToDictionary(x => x.key, x => x.value);
+            return selectList;
         }
 
-        public List<SelectListItem> mtdGetTeams(int year, int quarter)
+        public Dictionary<string, string> mtdGetTeams(int year, int quarter)
         {
             var skillMatrix = _skillMatrixRepository.GetSkillMatrixByYearAndQuarter(year, quarter);
-            var teams = skillMatrix.Select(i => i.Team).ToList();
-            teams.Insert(0, "- Select Item -");
-            IEnumerable<SelectListItem> lstFilterEnum = teams.Select(x => new SelectListItem
-            {
-                Value = x,
-                Text = x
-            });
-            return lstFilterEnum.ToList();
+            var teams = skillMatrix.Select(i => i.Team).ToList().Distinct();
+            var selectList = teams.Select(i => new { key = i.ToString(), value = i.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
         }
 
-        public List<SelectListItem> mtdGetCompetencyLevel()
+        public Dictionary<string, string> mtdGetCompetencyLevel()
         {
-            List<CompetencyLevelScoring> lstCompetencyLevel = _skillMatrixRepository.GetCompetencyLevelScoring().Select(m => new CompetencyLevelScoring
-            {
-                Id = m.Id,
-                Level = m.Level
-            }).ToList();
-            lstCompetencyLevel.Insert(0, new CompetencyLevelScoring { Id = 0, Level = "- Select Item -" });
-
-            IEnumerable<SelectListItem> lstFilterEnum = lstCompetencyLevel.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Level
-            });
-
-            return lstFilterEnum.ToList();
+            var selectList = _skillMatrixRepository.GetCompetencyLevelScoring().Select(i => new { key = i.Level.ToString(), value = i.Level.ToString() }).ToDictionary(x => x.key, x => x.value);       
+            return selectList;
         }
 
-        public List<SelectListItem> mtdGetTenureLevel()
+        public Dictionary<string, string> mtdGetTenureLevel()
         {
-            List<TenureLevel> lstTenureLevel = _skillMatrixRepository.GetTenureLevel().Select(m => new TenureLevel
-            {
-                Id = m.Id,
-                Level = m.Level
-            }).ToList();
-            lstTenureLevel.Insert(0, new TenureLevel { Id = 0, Level = "- Select Item -" });
-
-            IEnumerable<SelectListItem> lstFilterEnum = lstTenureLevel.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Level
-            });
-
-            return lstFilterEnum.ToList();
+            var selectList = _skillMatrixRepository.GetTenureLevel().Select(i => new { key = i.Level.ToString(), value = i.Level.ToString() }).ToDictionary(x => x.key, x => x.value);           
+            return selectList;
         }
     }
 }

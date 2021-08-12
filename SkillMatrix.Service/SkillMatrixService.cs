@@ -13,15 +13,30 @@ namespace SkillMatrix.Service
     public class SkillMatrixService : ISkillMatrixService
     {
         public ISkillMatrixRepository _skillMatrixRepository { get; set; }
+        public IReportService _reportService { get; set; }
 
-        public SkillMatrixService(ISkillMatrixRepository skillMatrixRepository)
+        public SkillMatrixService(ISkillMatrixRepository skillMatrixRepository, IReportService reportService)
         {
-            _skillMatrixRepository = skillMatrixRepository;           
+            _skillMatrixRepository = skillMatrixRepository;
+            _reportService = reportService;
         }
 
-        public List<vwImportAndSave> GetUploadedSkillMatrix(string fileName)
+        public vwImportAndSave GetYearAndQuarter()
         {
-            List<vwImportAndSave> employeeSkillMatrices = new List<vwImportAndSave>();
+            vwImportAndSave importAndSave = new vwImportAndSave();
+            int currentQuarter = (DateTime.Today.Month - 1) / 3 + 1;
+            int selectedQuarter = currentQuarter != 1 ? currentQuarter - 1 : 4;
+            int currentYear = DateTime.Today.Year;
+            int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
+            importAndSave.SkillMatrixFilter.Year = selectedYear;
+            importAndSave.SkillMatrixFilter.Quarter = selectedQuarter;
+            importAndSave.lstYears = _reportService.mtdGetYears();
+            importAndSave.lstQuarters = _reportService.mtdGetQuarters();
+            return importAndSave;
+        }
+        public vwImportAndSave GetUploadedSkillMatrix(string fileName)
+        {
+            vwImportAndSave importAndSave = new vwImportAndSave();
             var employees = _skillMatrixRepository.GetEmployees();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
@@ -47,7 +62,7 @@ namespace SkillMatrix.Service
                             var csatScore = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
                             var qcScore = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
 
-                            employeeSkillMatrices.Add(new vwImportAndSave
+                            importAndSave.ImportSkills.Add(new vwImportSkill
                             {
                                 Team = team,
                                 Name = employeeName,
@@ -67,17 +82,17 @@ namespace SkillMatrix.Service
                     }
                 }
             }
-            return employeeSkillMatrices;
+            return importAndSave;
         }
 
         public void SaveSkillMatrix(string fileName, string year, string quarter)
         {
-            var employeeSkills = GetUploadedSkillMatrix(fileName);
+            var importAndSave = GetUploadedSkillMatrix(fileName);
             var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
             var competencyLevelScoring = _skillMatrixRepository.GetCompetencyLevelScoring().ToList();
             var tenureScoringLevel = _skillMatrixRepository.GetTenureLevel().ToList(); 
             List<EmployeeSkillMatrix> employeeSkillMatrices = new List<EmployeeSkillMatrix>();
-            foreach(var employeeSkill in employeeSkills)
+            foreach(var employeeSkill in importAndSave.ImportSkills)
             {
                 EmployeeSkillMatrix employeeSkillMatrix = new EmployeeSkillMatrix();
                 employeeSkillMatrix.Year = Convert.ToInt32(year);

@@ -7,7 +7,8 @@ namespace SkillMatrix.Service
 {
     public interface ISkillMatrixService
     {
-        List<vwImportAndSave> GetUploadedSkillMatrix(string fileName);
+        vwImportAndSave GetYearAndQuarter();
+        vwImportAndSave GetUploadedSkillMatrix(string fileName);
         void SaveSkillMatrix(string fileName, string year, string quarter);
     }
 }

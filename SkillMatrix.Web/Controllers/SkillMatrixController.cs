@@ -26,8 +26,8 @@ namespace SkillMatrix.Controllers
 
         public IActionResult Index()
         {
-            var emptySkillMatrices = new List<vwImportAndSave>();
-            return View(emptySkillMatrices);
+            var importSkills = _skillMatrixService.GetYearAndQuarter();
+            return View(importSkills);
         }
 
         [HttpPost]

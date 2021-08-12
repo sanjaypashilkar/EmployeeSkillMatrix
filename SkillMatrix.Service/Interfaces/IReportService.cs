@@ -10,7 +10,10 @@ namespace SkillMatrix.Service
     {
         vwSkillReport GetSkillMatrixReport();
         vwSkillReport GetSkillMatrixReport(SkillMatrixFilter skillMatrixFilter);
-        List<SelectListItem> mtdGetCompetencyLevel();
-        List<SelectListItem> mtdGetTenureLevel();
+        Dictionary<string,string> mtdGetCompetencyLevel();
+        Dictionary<string, string> mtdGetTenureLevel();
+        Dictionary<string, string> mtdGetYears();
+        Dictionary<string, string> mtdGetQuarters();
+        Dictionary<string, string> mtdGetTeams(int year, int quarter);
     }
 }

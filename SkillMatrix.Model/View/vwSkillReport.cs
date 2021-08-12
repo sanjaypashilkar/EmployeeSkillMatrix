@@ -10,21 +10,21 @@ namespace SkillMatrix.Model
     {
         public virtual List<EmployeeSkillMatrix> SkillMatrix { get; set; }
         public virtual SkillMatrixFilter SkillMatrixFilter { get; set; }
-        public virtual List<SelectListItem> lstYears { get; set; }
-        public virtual List<SelectListItem> lstQuarters { get; set; }
-        public virtual List<SelectListItem> lstTeams { get; set; }
-        public virtual List<SelectListItem> lstCompetencyLevel { get; set; }
-        public virtual List<SelectListItem> lstTenureLevel { get; set; }
+        public virtual Dictionary<string,string> lstYears { get; set; }
+        public virtual Dictionary<string, string> lstQuarters { get; set; }
+        public virtual Dictionary<string, string> lstTeams { get; set; }
+        public virtual Dictionary<string, string> lstCompetencyLevel { get; set; }
+        public virtual Dictionary<string, string> lstTenureLevel { get; set; }
 
         public vwSkillReport()
         {
             SkillMatrix = new List<EmployeeSkillMatrix>();
             SkillMatrixFilter = new SkillMatrixFilter();
-            lstYears = new List<SelectListItem>();
-            lstQuarters = new List<SelectListItem>();
-            lstTeams = new List<SelectListItem>();
-            lstCompetencyLevel = new List<SelectListItem>();
-            lstTenureLevel = new List<SelectListItem>();
+            lstYears = new Dictionary<string,string>();
+            lstQuarters = new Dictionary<string, string>();
+            lstTeams = new Dictionary<string, string>();
+            lstCompetencyLevel = new Dictionary<string, string>();
+            lstTenureLevel = new Dictionary<string, string>();
         }
     }
 }
