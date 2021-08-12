@@ -37,6 +37,14 @@ namespace SkillMatrix.Service
         public vwImportAndSave GetUploadedSkillMatrix(string fileName)
         {
             vwImportAndSave importAndSave = new vwImportAndSave();
+            int currentQuarter = (DateTime.Today.Month - 1) / 3 + 1;
+            int selectedQuarter = currentQuarter != 1 ? currentQuarter - 1 : 4;
+            int currentYear = DateTime.Today.Year;
+            int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
+            importAndSave.SkillMatrixFilter.Year = selectedYear;
+            importAndSave.SkillMatrixFilter.Quarter = selectedQuarter;
+            importAndSave.lstYears = _reportService.mtdGetYears();
+            importAndSave.lstQuarters = _reportService.mtdGetQuarters();
             var employees = _skillMatrixRepository.GetEmployees();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))

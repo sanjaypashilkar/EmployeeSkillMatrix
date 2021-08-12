@@ -5,19 +5,17 @@
     var counter = 1;
 }
 <form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
-
-
     <span>Select File:</span>
     <input type="file" name="file" />
     <input type="submit" class="btn btn-primary" value="Import" />
     <br />
     <label>
         Year:
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @class = "myselect" })
+        @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new {@id="Year", @class = "myselect" })
     </label>
     <label>
         Quarter:
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @class = "myselect" })
+        @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "myselect" })
     </label>
     <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />
     <span style="color:green">@Html.Raw(ViewBag.Message)</span>
@@ -32,7 +30,7 @@
                 <th rowspan="2">Sr.No</th>
                 <th rowspan="2">Team</th>
                 <th rowspan="2">Name</th>
-                <th rowspan="2">Date Hired</th>
+                @*<th rowspan="2">Date Hired</th>*@
                 <th rowspan="2">Date Completed</th>
                 <th colspan="2">Proficiency Report</th>
                 <th colspan="2">Time Spent</th>
@@ -56,7 +54,7 @@
                     <td> @counter</td>
                     <td> @item.Team</td>
                     <td> @item.Name</td>
-                    <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
+                    @*<td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>*@
                     <td> @Convert.ToDateTime(item.DateCompleted).Date.ToShortDateString()</td>
                     <td>
                         @if (!string.IsNullOrEmpty(item.ProcessSpecific_PR))
