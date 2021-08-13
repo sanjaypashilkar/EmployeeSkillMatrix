@@ -5,19 +5,36 @@
     var counter = 1;
 }
 <form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
-    <span>Select File:</span>
+    <div class="card text-center">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <span>Select File:</span>
+                <input type="file" name="file" />
+                <input type="submit" class="btn btn-primary" value="Import" />
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @class = "form-select" })</div>
+                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @class = "form-select" })</div>
+                <div><input type="button" class="btn btn-primary" value="Save" id="btnSubmit" /></div>
+            </div>            
+        </div>
+    </div>
+    @*<span>Select File:</span>
     <input type="file" name="file" />
     <input type="submit" class="btn btn-primary" value="Import" />
     <br />
     <label>
-        Year:
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new {@id="Year", @class = "myselect" })
+        Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "myselect" })
     </label>
     <label>
         Quarter:
         @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "myselect" })
     </label>
-    <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />
+    <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />*@
     <span style="color:green">@Html.Raw(ViewBag.Message)</span>
     <input type="hidden" id="fileName" value="@ViewBag.FileName" />
 </form>

@@ -10,23 +10,26 @@
     </style>
 }
 <form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Index">
-    <label>Year: 
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @class = "myselect" })
-    </label>
-    <label>Quarter: 
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @class = "myselect" })
-    </label>
-    <label>Team: 
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @class = "myselect" })
-    </label>
-    <label>Competency: 
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @class = "myselect" })
-    </label>
-    <label>Tenure: 
-        @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @class = "myselect" })
-    </label>
-    <br />
-    <input type="submit" class="btn btn-primary" value="Filter" />
+    <div class="card text-center">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @class = "form-select" })</div>
+                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @class = "form-select" })</div>
+                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Show</button></div>
+            </div>
+        </div>
+    </div>    
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3">Team: @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @class = "form-select" })</div>
+                <div class="ml-3">Competency: @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @class = "form-select" })</div>
+                <div class="ml-3">Tenure: @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @class = "form-select" })</div>
+                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Filter</button></div>
+                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Clear</button></div>
+            </div>            
+        </div>
+    </div>
     <span style="color:green">@Html.Raw(ViewBag.Message)</span>
 </form>
 
