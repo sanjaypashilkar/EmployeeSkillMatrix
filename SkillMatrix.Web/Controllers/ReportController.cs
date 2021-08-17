@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SkillMatrix.Model;
 using SkillMatrix.Service;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,22 @@ namespace SkillMatrix.Web.Controllers
         }
         public IActionResult Index()
         {
-            var report = _reportService.GetSkillMatrixReport();
+            var report = _reportService.GetSkillMatrixReport(null);
             return View(report);
+        }
+
+        [HttpPost]
+        public IActionResult Index(SkillMatrixFilter filter)
+        {
+            var report = _reportService.GetSkillMatrixReport(filter);
+            return PartialView("_FilterAndTable",report);
+        }
+
+        [HttpPost]
+        public IActionResult Filter(SkillMatrixFilter filter)
+        {
+            var report = _reportService.GetSkillMatrixReport(filter);
+            return PartialView("_Table", report);
         }
     }
 }

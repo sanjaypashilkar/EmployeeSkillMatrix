@@ -1,25 +1,12 @@
 ﻿@model SkillMatrix.Model.vwSkillReport
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <a data-toggle="collapse" data-target="#filter-body" href="#">Filter Options</a>
-        </h4>
-    </div>
-    <div class="panel-collapse collapse in" id="filter-body">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-6">@Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @class = "myselect" })</div>
-                <div class="col-md-3">@Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @class = "myselect" })</div>
-                <div class="col-md-3">@Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @class = "myselect" })</div>
-            </div>
-        </div>
-        <div class="panel-footer">
-            <button class="btn btn-primary fnc-do-filter" type="button">
-                Filter
-            </button>
-            <button class="btn btn-default fnc-do-clear-filter" type="button">
-                Clear Filter
-            </button>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <div class="ml-3">Team: @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @id = "Team", @class = "form-select" })</div>
+            <div class="ml-3">Competency: @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @id = "Competency", @class = "form-select" })</div>
+            <div class="ml-3">Tenure: @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @id = "Tenure", @class = "form-select" })</div>
+            <div class="ml-5"><button class="btn btn-primary btn-sm" type="button" onclick="Filter()">Filter</button></div>
+            <div class="ml-3"><button class="btn btn-primary btn-sm" type="button" onclick="ClearFilter()">Clear</button></div>
         </div>
     </div>
 </div>

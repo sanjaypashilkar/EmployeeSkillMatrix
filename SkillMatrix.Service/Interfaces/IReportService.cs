@@ -8,7 +8,6 @@ namespace SkillMatrix.Service
 {
     public interface IReportService
     {
-        vwSkillReport GetSkillMatrixReport();
         vwSkillReport GetSkillMatrixReport(SkillMatrixFilter skillMatrixFilter);
         Dictionary<string,string> mtdGetCompetencyLevel();
         Dictionary<string, string> mtdGetTenureLevel();

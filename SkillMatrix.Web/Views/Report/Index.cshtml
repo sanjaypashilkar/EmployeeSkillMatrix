@@ -13,124 +13,69 @@
     <div class="card text-center">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @class = "form-select" })</div>
-                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @class = "form-select" })</div>
-                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Show</button></div>
+                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "form-select" })</div>
+                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "form-select" })</div>
+                <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
             </div>
         </div>
-    </div>    
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="ml-3">Team: @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @class = "form-select" })</div>
-                <div class="ml-3">Competency: @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @class = "form-select" })</div>
-                <div class="ml-3">Tenure: @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @class = "form-select" })</div>
-                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Filter</button></div>
-                <div class="ml-5"><button class="btn btn-primary btn-sm" type="button">Clear</button></div>
-            </div>            
-        </div>
     </div>
-    <span style="color:green">@Html.Raw(ViewBag.Message)</span>
 </form>
-
-@if (skillMatrix.Count > 0)
-{
-    <hr />
-    <Center><b>@string.Format("Skill Matrix {0} Querter {1}", skillMatrix[2].Year, skillMatrix[2].Quarter)</b></Center>
-    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
-        <thead>
-            <tr>
-                <th rowspan="2">Sr.No</th>
-                <th rowspan="2">Team</th>
-                <th rowspan="2">Name</th>
-                <th rowspan="2">Date Hired</th>
-                <th rowspan="2">Tenure</th>
-                <th rowspan="2">Date Completed</th>
-                <th colspan="2">Proficiency Report</th>
-                <th colspan="3">Time Spent</th>
-                <th colspan="3">Questions Statistics Report</th>
-                <th colspan="2">Certification Score</th>
-                <th colspan="2">CSAT Score</th>
-                <th colspan="2">QC Score</th>
-                <th rowspan="2">Overall Score</th>
-                <th rowspan="2">Competency Level</th>
-                <th rowspan="2">Tenure Level</th>
-                <th rowspan="2">Tenure + Competency</th>
-            </tr>
-            <tr>
-                <th>Process Specific</th>
-                <th>STAR & OSvC</th>
-                <th>Process Specific</th>
-                <th>STAR & OSvC</th>
-                <th>Total Time Spent</th>
-                <th>Process Specific</th>
-                <th>STAR & OSvC</th>
-                <th>Overall Average</th>
-                <th>Certification Score</th>
-                <th>Certification Level</th>
-                <th>CSAT Score</th>
-                <th>CSAT Level</th>
-                <th>QC Score</th>
-                <th>QC Level</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in skillMatrix)
-            {
-                <tr>
-                    <td> @counter</td>
-                    <td> @item.Team</td>
-                    <td> @item.Name</td>
-                    <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
-                    <td> @string.Format("{0} years {1} months", item.TenureYears, item.TenureMonths)</td>
-                    <td> @Convert.ToDateTime(item.DateCompleted).Date.ToShortDateString()</td>
-                    <td> @string.Format("{0}%", item.ProcessSpecific_PR)</td>
-                    <td> @string.Format("{0}%", item.StarAndOSvC_PR)</td>
-                    <td> @item.ProcessSpecific_TS</td>
-                    <td> @item.StarAndOSvC_TS</td>
-                    <td> @item.TotalTimeSpent</td>
-                    <td> @string.Format("{0}%", item.ProcessSpecific_QSR)</td>
-                    <td> @string.Format("{0}%", item.StarAndOSvC_QSR)</td>
-                    <td> @string.Format("{0}%", item.AvgQuestionsStatisticsReport)</td>
-                    <td> @item.CertificationScore</td>
-                    <td> @item.CertificationLevel</td>
-                    <td> @string.Format("{0}%", item.CSATScore)</td>
-                    <td> @item.CSATLevel</td>
-                    <td> @string.Format("{0}%", item.QCScore)</td>
-                    <td> @item.QCLevel</td>
-                    <td> @item.OverallScore</td>
-                    <td> @item.CompetencyLevel</td>
-                    <td> @item.TenureLevel</td>
-                    <td> @item.TenurePlusCompetency</td>
-                </tr>
-                counter++;
-            }
-        </tbody>
-    </table>
-    <hr />
-}
+<div id="filterAndTable">
+    @{
+        await Html.RenderPartialAsync("_FilterAndTable", Model);
+    }
+</div>
 
 @section Scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnSubmit").click(function () {
-                var fileName = $('#fileName').val()
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'JSON',
-                    url: '/Employee/SaveEmployees',
-                    data: { fileName: $('#fileName').val() },
-                    success: function (response) {
-                        debugger;
-                        alert("Success: " + response);
-                    },
-                    error: function (response) {
-                        debugger;
-                        alert("Error: " + response);
-                    }
-                });
+        function Show() {
+            var filter = {
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val()
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/Index',
+                data: filter,
+                success: function (response) {
+                    $("#filterAndTable").html('');
+                    $("#filterAndTable").html(response);
+                },
+                error: function (response) {
+                    alert("Error: " + response);
+                }
             });
-        });
+        }
+
+        function Filter() {
+            var filter = {
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                Team: $("#Team").val(),
+                CompetencyLevel: $("#Competency").val(),
+                TenureLevel: $("#Tenure").val(),
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/Filter',
+                data: filter,
+                success: function (response) {
+                    debugger;
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    debugger;
+                    alert("Error: " + response);
+                }
+            });
+        }
+
+        function ClearFilter() {
+            Show();
+        }
     </script>
 }

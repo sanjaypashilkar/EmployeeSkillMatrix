@@ -17,45 +17,38 @@ namespace SkillMatrix.Service
             _skillMatrixRepository = skillMatrixRepository;
         }
 
-        public vwSkillReport GetSkillMatrixReport()
+        public vwSkillReport GetSkillMatrixReport(SkillMatrixFilter filter = null)
         {
+            if (filter == null)
+            {
+                filter = new SkillMatrixFilter();
+                int currentQuarter = (DateTime.Today.Month - 1) / 3 + 1;
+                int selectedQuarter = currentQuarter != 1 ? currentQuarter - 1 : 4;
+                int currentYear = DateTime.Today.Year;
+                int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
+                filter.Year = selectedYear;
+                filter.Quarter = selectedQuarter;
+            }
+
             vwSkillReport report = new vwSkillReport();
-            int currentQuarter = (DateTime.Today.Month - 1) / 3 + 1;
-            int selectedQuarter = currentQuarter != 1 ? currentQuarter - 1 : 4;
-            int currentYear = DateTime.Today.Year;
-            int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
-            report.SkillMatrixFilter.Year = selectedYear;
-            report.SkillMatrixFilter.Quarter = selectedQuarter;
+            report.SkillMatrixFilter = filter;
             report.lstYears = mtdGetYears();
             report.lstQuarters = mtdGetQuarters();
-            report.lstTeams = mtdGetTeams(selectedYear,selectedQuarter);
+            report.lstTeams = mtdGetTeams(filter.Year, filter.Quarter);
             report.lstCompetencyLevel = mtdGetCompetencyLevel();
             report.lstTenureLevel = mtdGetTenureLevel();
-            var skillMatrices = _skillMatrixRepository.GetSkillMatrixByYearAndQuarter(selectedYear,selectedQuarter).ToList();
-            if (skillMatrices.Count > 0)
+            var skillMatrices = _skillMatrixRepository.GetSkillMatrixByYearAndQuarter(filter.Year, filter.Quarter).ToList();            
+            if(!string.IsNullOrEmpty(filter.Team))
             {
-                report.SkillMatrix = skillMatrices;
+                skillMatrices = skillMatrices.Where(s => s.Team.ToLower() == filter.Team.ToLower()).ToList();
             }
-            return report;
-        }
-
-        public vwSkillReport GetSkillMatrixReport(SkillMatrixFilter skillMatrixFilter)
-        {
-            vwSkillReport report = new vwSkillReport();
-            report.lstCompetencyLevel = mtdGetCompetencyLevel();
-            report.lstTenureLevel = mtdGetTenureLevel();
-            var skillMatrices = _skillMatrixRepository.GetSkillMatrixByYearAndQuarter(skillMatrixFilter.Year, skillMatrixFilter.Quarter).ToList();            
-            if(!string.IsNullOrEmpty(skillMatrixFilter.Team))
+            if (!string.IsNullOrEmpty(filter.CompetencyLevel))
             {
-                skillMatrices = skillMatrices.Where(s => s.Team.ToLower() == skillMatrixFilter.Team.ToLower()).ToList();
+                skillMatrices = skillMatrices.Where(s => s.CompetencyLevel.ToLower() == filter.CompetencyLevel.ToLower()).ToList();
             }
-            if (!string.IsNullOrEmpty(skillMatrixFilter.CompetencyLevel))
+            if (!string.IsNullOrEmpty(filter.TenureLevel))
             {
-                skillMatrices = skillMatrices.Where(s => s.CompetencyLevel.ToLower() == skillMatrixFilter.CompetencyLevel.ToLower()).ToList();
-            }
-            if (!string.IsNullOrEmpty(skillMatrixFilter.TenureLevel))
-            {
-                skillMatrices = skillMatrices.Where(s => s.TenureLevel.ToLower() == skillMatrixFilter.TenureLevel.ToLower()).ToList();
+                skillMatrices = skillMatrices.Where(s => s.TenureLevel.ToLower() == filter.TenureLevel.ToLower()).ToList();
             }
             if (skillMatrices.Count > 0)
             {
