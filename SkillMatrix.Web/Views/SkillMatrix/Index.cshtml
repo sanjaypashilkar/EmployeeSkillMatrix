@@ -102,6 +102,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
+            toastrOption();
             $("#btnSave").click(function () {
                 debugger;
                 var year = $('#Year').val()
@@ -113,20 +114,38 @@
                     url: '/SkillMatrix/SaveSkillMatrix',
                     data: { fileName: $('#fileName').val(), year: $('#Year').val(), quarter: $('#Quarter').val()},
                     success: function (response) {
-                        alert("Success: " + response.status);
-                        //if(response.success == true) {
-                        //    toastr.success("Employees saved successfully", "Success", new { timeout: 300 });
-                        //}
-                        //else {
-                        //    toastr.warning("Employees saved successfully", "Information", new { timeout: 300 });
-                        //}
+                        if(response.success == true) {
+                            toastr.success("Employees saved successfully");
+                        }
+                        else {
+                            toastr.warning("Employees saved successfully");
+                        }
                     },
                     error: function (response) {
-                        alert("Error: " + response.status);
-                        //toastr.error("There is some problem to process your request", "Error", new { timeout: 300 });
+                        toastr.error("There is some problem to process your request");
                     }
                 });
             });
         });
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
     </script>
 }

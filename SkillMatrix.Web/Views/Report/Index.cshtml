@@ -44,7 +44,7 @@
                     $("#filterAndTable").html(response);
                 },
                 error: function (response) {
-                    alert("Error: " + response.status);
+                    toastr.error("There is some problem to process your request");
                 }
             });
         }
@@ -67,7 +67,7 @@
                     $("#reportTable").html(response);
                 },
                 error: function (response) {
-                    alert("Error: " + response.status);
+                    toastr.error("There is some problem to process your request");
                 }
             });
         }
@@ -75,5 +75,29 @@
         function ClearFilter() {
             Show();
         }
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        $(document).ready(function () {
+            toastrOption();
+        });
     </script>
 }
