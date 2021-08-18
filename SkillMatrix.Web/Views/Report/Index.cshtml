@@ -13,7 +13,7 @@
     <div class="card text-center">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "form-select" })</div>
+                <div class="ml-3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "form-select" })</div>
                 <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "form-select" })</div>
                 <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
             </div>
@@ -63,12 +63,10 @@
                 url: '/Report/Filter',
                 data: filter,
                 success: function (response) {
-                    debugger;
                     $("#reportTable").html('');
                     $("#reportTable").html(response);
                 },
                 error: function (response) {
-                    debugger;
                     alert("Error: " + response);
                 }
             });

@@ -4,13 +4,26 @@
     var counter = 1;
 }
 <form method="post" enctype="multipart/form-data" asp-controller="Employee" asp-action="Index">
-    <span>Select File:</span>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3"><span>Select File:</span></div>
+                <div class="ml-3"><input type="file" name="file" size="50"/></div>
+                <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Clear" id="btnClear" /></div>
+            </div>
+        </div>
+        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+        <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+    </div>
+    @*<span>Select File:</span>
     <input type="file" name="file" />
     <input type="submit" class="btn btn-primary" value="Import" />
     <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />
     <br />
     <span style="color:green">@Html.Raw(ViewBag.Message)</span>
-    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+    <input type="hidden" id="fileName" value="@ViewBag.FileName" />*@
 </form>
 @if (Model.Count > 0)
 {
@@ -44,7 +57,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#btnSubmit").click(function () {
+            $("#btnSave").click(function () {
                 var fileName = $('#fileName').val()
                 $.ajax({
                     type: 'POST',
@@ -52,12 +65,15 @@
                     url: '/Employee/SaveEmployees',
                     data: { fileName: $('#fileName').val()},
                     success: function (response) {
-                        //debugger;
-                        //alert("Success: " + response);
+                        if (response.success == true) {
+                            toastr.success("Employees saved successfully", "Success", new { timeout: 300 });
+                        }
+                        else {
+                            toastr.warning("Employees saved successfully", "Information", new { timeout: 300 });
+                        }
                     },
                     error: function (response) {
-                        //debugger;
-                        //alert("Error: " + response);
+                        toastr.error("There is some problem to process your request", "Error", new { timeout: 300 });
                     }
                 });
             });

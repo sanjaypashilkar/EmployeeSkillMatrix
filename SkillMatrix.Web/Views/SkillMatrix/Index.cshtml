@@ -5,21 +5,25 @@
     var counter = 1;
 }
 <form method="post" enctype="multipart/form-data" asp-controller="SkillMatrix" asp-action="Index">
-    <div class="card text-center">
+    <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <span>Select File:</span>
-                <input type="file" name="file" />
-                <input type="submit" class="btn btn-primary" value="Import" />
+                <div class="ml-3"><span>Select File:</span></div>
+                <div class="ml-3"><input type="file" name="file" size="50" /></div>
+                <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import" /></div>
             </div>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @Id = "Year", @class = "form-select" })</div>
-                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @Id="Quarter", @class = "form-select" })</div>
-                <div><input type="button" class="btn btn-primary" value="Save" id="btnSubmit" /></div>
+                <div class="ml-3">
+                    Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @Id = "Year", @class = "form-select" })
+                </div>
+                <div class="ml-3">
+                    Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @Id = "Quarter", @class = "form-select" })
+                </div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" /></div>
             </div>            
         </div>
     </div>
@@ -98,7 +102,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#btnSubmit").click(function () {
+            $("#btnSave").click(function () {
                 debugger;
                 var year = $('#Year').val()
                 var quarter = $('#Quarter').val()
@@ -109,12 +113,15 @@
                     url: '/SkillMatrix/SaveSkillMatrix',
                     data: { fileName: $('#fileName').val(), year: $('#Year').val(), quarter: $('#Quarter').val()},
                     success: function (response) {
-                        //debugger;
-                        //alert("Success: " + response);
+                        if(response.success == true) {
+                            toastr.success("Employees saved successfully", "Success", new { timeout: 300 });
+                        }
+                        else {
+                            toastr.warning("Employees saved successfully", "Information", new { timeout: 300 });
+                        }
                     },
                     error: function (response) {
-                        //debugger;
-                        //alert("Error: " + response);
+                        toastr.error("There is some problem to process your request", "Error", new { timeout: 300 });
                     }
                 });
             });
