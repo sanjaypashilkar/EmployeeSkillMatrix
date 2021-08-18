@@ -44,7 +44,7 @@
                     $("#filterAndTable").html(response);
                 },
                 error: function (response) {
-                    alert("Error: " + response);
+                    alert("Error: " + response.status);
                 }
             });
         }
@@ -67,7 +67,7 @@
                     $("#reportTable").html(response);
                 },
                 error: function (response) {
-                    alert("Error: " + response);
+                    alert("Error: " + response.status);
                 }
             });
         }

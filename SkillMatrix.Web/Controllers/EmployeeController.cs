@@ -1,5 +1,4 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkillMatrix.Model;
@@ -16,13 +15,11 @@ namespace SkillMatrix.Web.Controllers
     {
         private IHostingEnvironment Environment;
         public IEmployeeService _employeeService { get; set; }
-        private readonly INotyfService _notyf;
 
-        public EmployeeController(IHostingEnvironment _environment, IEmployeeService employeeService, INotyfService notyf)
+        public EmployeeController(IHostingEnvironment _environment, IEmployeeService employeeService)
         {
             Environment = _environment;
             _employeeService = employeeService;
-            _notyf = notyf;
         }
 
         public IActionResult Index()
@@ -68,7 +65,6 @@ namespace SkillMatrix.Web.Controllers
                 _employeeService.SaveEmployees(fullFilePath);
                 ViewBag.Message += string.Format("<b>{0}</b> saved.<br />", fileName);
                 employees = _employeeService.GetEmployees();
-                _notyf.Success("Employees saved successfully.", 3);
             }
             return View(employees);
         }

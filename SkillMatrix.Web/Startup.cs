@@ -1,5 +1,3 @@
-using AspNetCoreHero.ToastNotification;
-using AspNetCoreHero.ToastNotification.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -69,7 +67,7 @@ namespace SkillMatrix
                     name: "default",
                     pattern: "{controller=Report}/{action=Index}/{id?}");
             });
-            app.UseNotyf();
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<SkillMatrixDb>();
@@ -82,7 +80,6 @@ namespace SkillMatrix
             services.AddTransient<ISkillMatrixRepository, SkillMatrixRepository>();
             //services.AddDbContext<SkillMatrixDb>(options => _dbConnector.GetDbContextOptions(options), ServiceLifetime.Transient);
             services.AddDbContext<SkillMatrixDb>(options => options.UseMySQL(_connectionString));
-            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
         }
         private MySqlDbConnector GetDatabaseConnector()
         {

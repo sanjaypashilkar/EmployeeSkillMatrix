@@ -113,15 +113,17 @@
                     url: '/SkillMatrix/SaveSkillMatrix',
                     data: { fileName: $('#fileName').val(), year: $('#Year').val(), quarter: $('#Quarter').val()},
                     success: function (response) {
-                        if(response.success == true) {
-                            toastr.success("Employees saved successfully", "Success", new { timeout: 300 });
-                        }
-                        else {
-                            toastr.warning("Employees saved successfully", "Information", new { timeout: 300 });
-                        }
+                        alert("Success: " + response.status);
+                        //if(response.success == true) {
+                        //    toastr.success("Employees saved successfully", "Success", new { timeout: 300 });
+                        //}
+                        //else {
+                        //    toastr.warning("Employees saved successfully", "Information", new { timeout: 300 });
+                        //}
                     },
                     error: function (response) {
-                        toastr.error("There is some problem to process your request", "Error", new { timeout: 300 });
+                        alert("Error: " + response.status);
+                        //toastr.error("There is some problem to process your request", "Error", new { timeout: 300 });
                     }
                 });
             });

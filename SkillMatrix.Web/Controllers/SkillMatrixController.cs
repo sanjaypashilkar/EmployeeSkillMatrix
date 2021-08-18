@@ -1,5 +1,4 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using ExcelDataReader;
+﻿using ExcelDataReader;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +17,10 @@ namespace SkillMatrix.Controllers
     {
         private IHostingEnvironment Environment;
         public ISkillMatrixService _skillMatrixService { get; set; }
-        private readonly INotyfService _notyf;
-        public SkillMatrixController(IHostingEnvironment _environment, ISkillMatrixService skillMatrixService, INotyfService notyf)
+        public SkillMatrixController(IHostingEnvironment _environment, ISkillMatrixService skillMatrixService)
         {
             Environment = _environment;
             _skillMatrixService = skillMatrixService;
-            _notyf = notyf;
         }
 
         public IActionResult Index()
@@ -66,7 +63,6 @@ namespace SkillMatrix.Controllers
             string path = Path.Combine(this.Environment.WebRootPath, "Files");
             string fullFilePath = Path.Combine(path, fileName);
             _skillMatrixService.SaveSkillMatrix(fullFilePath, year, quarter);
-            _notyf.Success("Skill matrix saved successfully.", 3);
             ViewBag.Message += string.Format("<b>{0}</b> saved.<br />", fileName);
             }
         }
