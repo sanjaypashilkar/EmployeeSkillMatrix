@@ -1,8 +1,9 @@
-﻿using SkillMatrix.Model;
+﻿using ClosedXML.Excel;
+using SkillMatrix.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
-using System.Web.Mvc;
 
 namespace SkillMatrix.Service
 {
@@ -14,5 +15,6 @@ namespace SkillMatrix.Service
         Dictionary<string, string> mtdGetYears();
         Dictionary<string, string> mtdGetQuarters();
         Dictionary<string, string> mtdGetTeams(int year, int quarter);
+        //XLWorkbook GenerateExcel(SkillMatrixFilter filter);
     }
 }
