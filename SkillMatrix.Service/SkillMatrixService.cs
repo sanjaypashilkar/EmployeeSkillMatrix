@@ -70,6 +70,7 @@ namespace SkillMatrix.Service
                             var csatScore = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
                             var qcScore = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
 
+                            double csatScoreDbl, qcScoreDbl;
                             importAndSave.ImportSkills.Add(new vwImportSkill
                             {
                                 Team = team,
@@ -82,8 +83,8 @@ namespace SkillMatrix.Service
                                 StarAndOSvC_TS = starAndOSvC_TS,
                                 ProcessSpecific_QSR = (!string.IsNullOrEmpty(processSpecific_QSR)) ? (Convert.ToDouble(processSpecific_QSR) * 100).ToString("#.##") : string.Empty,
                                 StarAndOSvC_QSR = (!string.IsNullOrEmpty(starAndOSvC_QSR)) ? (Convert.ToDouble(starAndOSvC_QSR) * 100).ToString("#.##") : string.Empty,
-                                CSATScore = (!string.IsNullOrEmpty(csatScore)) ? (Convert.ToDouble(csatScore) * 100).ToString("#.##") : string.Empty,
-                                QCScore = (!string.IsNullOrEmpty(qcScore)) ? (Convert.ToDouble(qcScore) * 100).ToString("#.##") : string.Empty,                             
+                                CSATScore = (!string.IsNullOrEmpty(csatScore) && Double.TryParse(csatScore, out csatScoreDbl)) ? (Convert.ToDouble(csatScore) * 100).ToString("#.##") : string.Empty,
+                                QCScore = (!string.IsNullOrEmpty(qcScore) && Double.TryParse(qcScore, out qcScoreDbl)) ? (Convert.ToDouble(qcScore) * 100).ToString("#.##") : string.Empty,                             
                             });
 
                         }                        

@@ -51,7 +51,6 @@ namespace SkillMatrix.Controllers
                 {
                     file.CopyTo(stream);
                     stream.Flush();
-                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
                     ViewBag.FileName += fileName;
                 }
                 import = _skillMatrixService.GetUploadedSkillMatrix(fullFilePath);
