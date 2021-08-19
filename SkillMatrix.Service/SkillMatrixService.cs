@@ -118,8 +118,26 @@ namespace SkillMatrix.Service
                 employeeSkillMatrix.StarAndOSvC_PR = Convert.ToDouble(employeeSkill.StarAndOSvC_PR);
 
                 TimeSpan processSpecific_TS, starAndOSvC_TS;
-                TimeSpan.TryParseExact(employeeSkill.ProcessSpecific_TS, "g", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out processSpecific_TS);
-                TimeSpan.TryParseExact(employeeSkill.StarAndOSvC_TS, "g", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out starAndOSvC_TS);
+                bool isProcessSpecific_TS = TimeSpan.TryParseExact(employeeSkill.ProcessSpecific_TS, "g", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out processSpecific_TS);
+                if(!isProcessSpecific_TS)
+                {
+                    DateTime processSpecific_TS_DT;
+                    bool isProcessSpecific_TS_DT = DateTime.TryParse(employeeSkill.ProcessSpecific_TS, out processSpecific_TS_DT);
+                    if(isProcessSpecific_TS_DT)
+                    {
+                        processSpecific_TS = processSpecific_TS_DT.TimeOfDay;
+                    }
+                }
+                bool isStarAndOSvC_TS = TimeSpan.TryParseExact(employeeSkill.StarAndOSvC_TS, "g", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out starAndOSvC_TS);
+                if(!isStarAndOSvC_TS)
+                {
+                    DateTime starAndOSvC_TS_DT;
+                    bool isStarAndOSvC_TS_DT = DateTime.TryParse(employeeSkill.StarAndOSvC_TS, out starAndOSvC_TS_DT);
+                    if (isStarAndOSvC_TS_DT)
+                    {
+                        starAndOSvC_TS = starAndOSvC_TS_DT.TimeOfDay;
+                    }
+                }
                 employeeSkillMatrix.ProcessSpecific_TS = processSpecific_TS.ToString();
                 employeeSkillMatrix.StarAndOSvC_TS = starAndOSvC_TS.ToString();                
                 employeeSkillMatrix.TotalTimeSpent = (processSpecific_TS + starAndOSvC_TS).ToString();
