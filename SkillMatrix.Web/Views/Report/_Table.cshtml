@@ -6,7 +6,7 @@
 
 @if (skillMatrix.Count > 0)
 {
-    <Center><b>@string.Format("Skill Matrix {0} Querter {1}", skillMatrix[2].Year, skillMatrix[2].Quarter)</b></Center>
+    <Center><b>@string.Format("Skill Matrix {0} Querter {1}", Model.SkillMatrixFilter.Year, Model.SkillMatrixFilter.Quarter)</b></Center>
     <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
         <thead>
             <tr>
@@ -85,7 +85,6 @@
             }
         </tbody>
     </table>
-    <hr />
 }
 else
 {
