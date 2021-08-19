@@ -26,6 +26,7 @@ namespace SkillMatrix.Service
             {
                 employees.Add(new vwEmployee
                 {
+                    EmployeeId = employee.EmployeeId,
                     Name = employee.Name,
                     DateHired = employee.DateHired,
                     CreatedDate = employee.CreatedDate,
@@ -47,11 +48,13 @@ namespace SkillMatrix.Service
                     {
                         if (reader.Depth != 0)
                         {
-                            string employeeName = reader.GetValue(0) != null ? reader.GetValue(0).ToString() : string.Empty;                            
-                            var dateHired = reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty;
+                            string employeeId = reader.GetValue(0) != null ? reader.GetValue(0).ToString() : string.Empty;
+                            string employeeName = reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty;                            
+                            var dateHired = reader.GetValue(2) != null ? reader.GetValue(2).ToString() : string.Empty;
                             var createdDate = DateTime.Now.Date;
                             employees.Add(new vwEmployee
                             {
+                                EmployeeId= employeeId,
                                 Name = employeeName,
                                 DateHired = Convert.ToDateTime(dateHired),
                                 CreatedDate = createdDate,
@@ -76,11 +79,13 @@ namespace SkillMatrix.Service
                     {
                         if (reader.Depth != 0)
                         {
-                            string employeeName = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                            var dateHired = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                            string employeeId = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                            string employeeName = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                            var dateHired = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
                             var createdDate = DateTime.Now.Date;
                             employees.Add(new Employee
                             {
+                                EmployeeId = employeeId,
                                 Name = employeeName,
                                 DateHired = Convert.ToDateTime(dateHired),
                                 CreatedDate = createdDate,
@@ -93,7 +98,7 @@ namespace SkillMatrix.Service
             if(employees.Count>0)
             {
                 var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
-                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.Name.ToLower() == x.Name.ToLower()));
+                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.Name.ToLower() == x.Name.ToLower())).OrderBy(o=>o.EmployeeId);
                 if(newEmployees.Count()>0)
                 {
                     _skillMatrixRepository.SaveEmployees(newEmployees);

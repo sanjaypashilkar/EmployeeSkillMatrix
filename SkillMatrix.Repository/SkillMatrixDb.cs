@@ -41,8 +41,17 @@ namespace SkillMatrix.Repository
             modelBuilder.Entity<CategoryScoring>().HasData(
                 new CategoryScoring
                 {
-                    Id=1,
+                    Id = 1,
                     LowerScore = 0,
+                    UpperScore = 1,
+                    Score = 0.00,
+                    CreatedDate = DateTime.Today,
+                    UpdatedDate = DateTime.Today
+                },
+                new CategoryScoring
+                {
+                    Id = 2,
+                    LowerScore = 1,
                     UpperScore = 85,
                     Score = 1.00,
                     CreatedDate = DateTime.Today, 
@@ -50,7 +59,7 @@ namespace SkillMatrix.Repository
                 },
                 new CategoryScoring
                 {
-                    Id = 2,
+                    Id = 3,
                     LowerScore = 85,
                     UpperScore = 92,
                     Score = 2.00,
@@ -59,7 +68,7 @@ namespace SkillMatrix.Repository
                 },
                 new CategoryScoring
                 {
-                    Id = 3,
+                    Id = 4,
                     LowerScore = 92,
                     UpperScore = 94,
                     Score = 3.00,
@@ -68,7 +77,7 @@ namespace SkillMatrix.Repository
                 },
                 new CategoryScoring
                 {
-                    Id = 4,
+                    Id = 5,
                     LowerScore = 94,
                     UpperScore = 99,
                     Score = 4.00,
@@ -77,7 +86,7 @@ namespace SkillMatrix.Repository
                 },
                 new CategoryScoring
                 {
-                    Id = 5,
+                    Id = 6,
                     LowerScore = 99,
                     UpperScore = 10000,
                     Score = 5.0,

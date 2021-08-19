@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillMatrix.Service", "Skil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillMatrix.Repository", "SkillMatrix.Repository\SkillMatrix.Repository.csproj", "{7AB98905-792E-4FAA-BB0D-BE989E39C06F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillMatrix.Model", "SkillMatrix.Model\SkillMatrix.Model.csproj", "{4C9D8116-1E6E-4C58-829B-150171109419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillMatrix.Model", "SkillMatrix.Model\SkillMatrix.Model.csproj", "{4C9D8116-1E6E-4C58-829B-150171109419}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

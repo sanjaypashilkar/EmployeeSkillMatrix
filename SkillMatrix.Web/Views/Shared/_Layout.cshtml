@@ -6,12 +6,17 @@
     <title>SkillMatrix</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .dropdown:hover > .dropdown-menu {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Report" asp-action="Index">Skill Matrix</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,10 +24,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SkillMatrix" asp-action="Index">SkillMatrix</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
+                        </li>
+                        <li class="nav-item dropdown" style="cursor:pointer">
+                            <NavLink class="nav-link text-dark"
+                                     href="SkillMatrix" id="navbarDropdown"
+                                     role="button" data-toggle="dropdown" aria-haspopup="true"
+                                     aria-expanded="false">
+                                Import
+                            </NavLink>
+                            <div class="dropdown-menu dropright dropdown-menu-autoshow" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="SkillMatrix" asp-action="Index">SkillMatrix</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Employees">Employees</a>
                         </li>
                     </ul>
                 </div>

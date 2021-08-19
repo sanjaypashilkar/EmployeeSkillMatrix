@@ -43,6 +43,10 @@ namespace SkillMatrix.Controllers
 
                 string fileName = Path.GetFileName(file.FileName);
                 string fullFilePath = Path.Combine(path, fileName);
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
                 using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
@@ -56,15 +60,23 @@ namespace SkillMatrix.Controllers
         }
 
         [HttpPost]
-        public void SaveSkillMatrix(string fileName, string year, string quarter)
+        public IActionResult SaveSkillMatrix(string fileName, string year, string quarter)
         {
-            if(!string.IsNullOrEmpty(fileName))
+            Response response = new Response();
+            if (!string.IsNullOrEmpty(fileName))
             { 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files");
-            string fullFilePath = Path.Combine(path, fileName);
-            _skillMatrixService.SaveSkillMatrix(fullFilePath, year, quarter);
-            ViewBag.Message += string.Format("<b>{0}</b> saved.<br />", fileName);
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string fullFilePath = Path.Combine(path, fileName);
+                _skillMatrixService.SaveSkillMatrix(fullFilePath, year, quarter);
+                response.Success = true;
+                response.Message = $"Skill matrix saved successfully for year {year}, quarter {quarter}";
             }
+            else
+            {
+                response.Success = false;
+                response.Message = $"Please select file to import";
+            }
+            return Json(response);
         }
     }
 }

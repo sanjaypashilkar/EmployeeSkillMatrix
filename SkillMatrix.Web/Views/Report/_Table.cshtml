@@ -64,10 +64,18 @@
                     <td> @string.Format("{0}%", item.AvgQuestionsStatisticsReport)</td>
                     <td> @item.CertificationScore</td>
                     <td> @item.CertificationLevel</td>
-                    <td> @string.Format("{0}%", item.CSATScore)</td>
-                    <td> @item.CSATLevel</td>
-                    <td> @string.Format("{0}%", item.QCScore)</td>
-                    <td> @item.QCLevel</td>
+                    <td>@if (item.CSATScore != 0)
+                        {<span>@string.Format("{0}%", item.CSATScore)</span>}
+                    </td>
+                    <td>@if (item.CSATScore != 0)
+                        {<span>@item.CSATLevel</span>}
+                    </td>
+                    <td>@if (item.QCScore != 0)
+                        {<span>@string.Format("{0}%", item.QCScore)</span>}
+                    </td>
+                    <td>@if (item.QCScore != 0)
+                        {<span>@item.QCLevel</span>}
+                    </td>
                     <td> @item.OverallScore</td>
                     <td> @item.CompetencyLevel</td>
                     <td> @item.TenureLevel</td>

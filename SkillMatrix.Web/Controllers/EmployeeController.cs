@@ -22,9 +22,10 @@ namespace SkillMatrix.Web.Controllers
             _employeeService = employeeService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            var employees = _employeeService.GetEmployees();
+            var employees = new List<vwEmployee>();
             return View(employees);
         }
 
@@ -42,11 +43,14 @@ namespace SkillMatrix.Web.Controllers
 
                 string fileName = Path.GetFileName(file.FileName);
                 string fullFilePath = Path.Combine(path, fileName);
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
                 using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                     stream.Flush();
-                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
                     ViewBag.FileName += fileName;
                 }
                 employees = _employeeService.GetEmployees(fullFilePath);
@@ -57,15 +61,28 @@ namespace SkillMatrix.Web.Controllers
         [HttpPost]
         public IActionResult SaveEmployees(string fileName)
         {
+            Response response = new Response();
             List<vwEmployee> employees = new List<vwEmployee>();
             if (!string.IsNullOrEmpty(fileName))
             {
                 string path = Path.Combine(this.Environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _employeeService.SaveEmployees(fullFilePath);
-                ViewBag.Message += string.Format("<b>{0}</b> saved.<br />", fileName);
-                employees = _employeeService.GetEmployees();
+                response.Success = true;
+                response.Message = $"Employees saved successfully";
             }
+            else
+            {
+                response.Success = false;
+                response.Message = $"Please select file to import";
+            }
+            return Json(response);
+        }
+
+        [HttpGet]
+        public IActionResult Employees()
+        {
+            var employees = _employeeService.GetEmployees();
             return View(employees);
         }
     }

@@ -7,6 +7,7 @@ namespace SkillMatrix.Model
     public class Employee
     {
         public int Id { get; set; }
+        public string EmployeeId { get; set; }
         public string Name { get; set; }
         public DateTime DateHired { get; set; }
         public DateTime CreatedDate { get; set; }

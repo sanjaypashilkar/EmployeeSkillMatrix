@@ -23,7 +23,7 @@
                 <div class="ml-3">
                     Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @Id = "Quarter", @class = "form-select" })
                 </div>
-                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveSkillMatrix()"/></div>
             </div>            
         </div>
     </div>
@@ -39,7 +39,6 @@
                 <th rowspan="2">Sr.No</th>
                 <th rowspan="2">Team</th>
                 <th rowspan="2">Name</th>
-                @*<th rowspan="2">Date Hired</th>*@
                 <th rowspan="2">Date Completed</th>
                 <th colspan="2">Proficiency Report</th>
                 <th colspan="2">Time Spent</th>
@@ -102,32 +101,38 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            toastrOption();
-            $("#btnSave").click(function () {
-                debugger;
-                var year = $('#Year').val()
-                var quarter = $('#Quarter').val()
-                var fileName = $('#fileName').val()
+            toastrOption();           
+        });
+        function SaveSkillMatrix() {
+            debugger;
+            var year = $('#Year').val()
+            var quarter = $('#Quarter').val()
+            var fileName = $('#fileName').val()
+            if (fileName == '') {
+                toastr.warning("Please select file to import");
+            }
+            else {
+                $('#fileName').val('')
                 $.ajax({
                     type: 'POST',
                     dataType: 'JSON',
                     url: '/SkillMatrix/SaveSkillMatrix',
-                    data: { fileName: $('#fileName').val(), year: $('#Year').val(), quarter: $('#Quarter').val()},
+                    data: { fileName: fileName, year: year, quarter: quarter },
                     success: function (response) {
-                        if(response.success == true) {
-                            toastr.success("Employees saved successfully");
+                        debugger;
+                        if (response.success == true) {
+                            toastr.success(response.message);
                         }
                         else {
-                            toastr.warning("Employees saved successfully");
+                            toastr.warning(response.message);
                         }
                     },
                     error: function (response) {
                         toastr.error("There is some problem to process your request");
                     }
                 });
-            });
-        });
-
+            }            
+        }
         function toastrOption() {
             toastr.options = {
                 "closeButton": true,

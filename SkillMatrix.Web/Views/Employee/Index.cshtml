@@ -10,11 +10,10 @@
                 <div class="ml-3"><span>Select File:</span></div>
                 <div class="ml-3"><input type="file" name="file" size="50"/></div>
                 <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import" /></div>
-                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" /></div>
-                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Clear" id="btnClear" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveEmployees()" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Clear" id="btnClear" onclick="Clear()"/></div>
             </div>
         </div>
-        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
         <input type="hidden" id="fileName" value="@ViewBag.FileName" />
     </div>
 </form>
@@ -25,6 +24,7 @@
         <thead>
             <tr>
                 <th>Sr.No</th>
+                <th>EmployeeId</th>
                 <th>Name</th>
                 <th>Date Hired</th>
                 <th>Created Date</th>
@@ -35,12 +35,13 @@
             {
                 <tr>
                     <td> @counter</td>
+                    <td> @item.EmployeeId</td>
                     <td> @item.Name</td>
                     <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
                     <td> @Convert.ToDateTime(item.CreatedDate).Date.ToShortDateString()</td>
                 </tr>
                 counter++;
-       }
+            }
         </tbody>
     </table>
     <hr />
@@ -51,28 +52,36 @@
     <script type="text/javascript">
         $(document).ready(function () {
             toastrOption();
-            $("#btnSave").click(function () {
-                var fileName = $('#fileName').val()
+        });
+
+        function SaveEmployees() {
+            debugger;
+            var fileName = $('#fileName').val()
+            if (fileName == '') {
+                toastr.warning("Please select file to import");
+            }
+            else {
+                $('#fileName').val('')
                 $.ajax({
                     type: 'POST',
                     dataType: 'JSON',
                     url: '/Employee/SaveEmployees',
-                    data: { fileName: $('#fileName').val()},
+                    data: { fileName: fileName },
                     success: function (response) {
+                        debugger;
                         if (response.success == true) {
-                            toastr.success("Employees saved successfully");
+                            toastr.success(response.message);
                         }
                         else {
-                            toastr.warning("Employees saved successfully");
+                            toastr.warning(response.message);
                         }
                     },
                     error: function (response) {
                         toastr.error("There is some problem to process your request");
                     }
                 });
-            });
-        });
-
+            }
+        }
         function toastrOption() {
             toastr.options = {
                 "closeButton": true,
@@ -91,6 +100,24 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
+        }
+        function Clear() {
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                url: '/Employee/Index',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success("Success");
+                    }
+                    else {
+                        toastr.warning("Success");
+                    }
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
         }
     </script>
 }
