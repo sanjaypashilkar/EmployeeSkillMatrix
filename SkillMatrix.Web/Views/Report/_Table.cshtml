@@ -6,7 +6,12 @@
 
 @if (skillMatrix.Count > 0)
 {
-    <Center><b>@string.Format("Skill Matrix {0} Querter {1}", Model.SkillMatrixFilter.Year, Model.SkillMatrixFilter.Quarter)</b></Center>
+    <Center>
+        <div>
+            <b>@string.Format("Skill Matrix {0} Querter {1}", Model.SkillMatrixFilter.Year, Model.SkillMatrixFilter.Quarter)</b>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" onclick="Excel()">Download</button>
+    </Center>
     <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
         <thead>
             <tr>

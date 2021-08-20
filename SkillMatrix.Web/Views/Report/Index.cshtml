@@ -76,6 +76,33 @@
             Show();
         }
 
+        function Excel() {
+            var filter = {
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                Team: $("#Team").val(),
+                CompetencyLevel: $("#Competency").val(),
+                TenureLevel: $("#Tenure").val(),
+            }
+            $.ajax({
+                type: 'POST',
+                /*dataType: 'JSON',*/
+                url: '/Report/Excel',
+                data: filter,
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success(response.message);
+                    }
+                    else {
+                        toastr.warning(response.message);
+                    }
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
         function toastrOption() {
             toastr.options = {
                 "closeButton": true,
