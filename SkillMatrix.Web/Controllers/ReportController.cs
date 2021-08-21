@@ -36,17 +36,21 @@ namespace SkillMatrix.Web.Controllers
             return PartialView("_Table", report);
         }
 
-        public IActionResult Excel(SkillMatrixFilter filter)
+        [HttpGet]
+        public IActionResult Excel(int year, int quarter, string team, string competency, string tenure)
         {
-            Response response = new Response();
-            var filter1 = new SkillMatrixFilter
+            var filter = new SkillMatrixFilter
             {
-                Year=2020,
-                Quarter=1,
-                Team = "EMEA Books"
+                Year=year,
+                Quarter=quarter,
+                Team = team,
+                CompetencyLevel = competency,
+                TenureLevel = tenure,
             };
 
-            var skillReport = _reportService.GetSkillMatrixReport(filter1);
+            var skillReport = _reportService.GetSkillMatrixReport(filter);
+
+            #region Workbook
 
             using (var workbook = new XLWorkbook())
             {
@@ -57,7 +61,7 @@ namespace SkillMatrix.Web.Controllers
 
                 #region Header
 
-                worksheet.Cell(currentRow, 7).Value = "Proficiency Report";                
+                worksheet.Cell(currentRow, 7).Value = "Proficiency Report";
                 worksheet.Cell(currentRow, 9).Value = "Time Spent";
                 worksheet.Cell(currentRow, 12).Value = "Questions Statistics Report";
                 worksheet.Cell(currentRow, 15).Value = "Certification Score";
@@ -70,42 +74,42 @@ namespace SkillMatrix.Web.Controllers
                 IXLRange range1_7_8 = worksheet.Range(worksheet.Cell(currentRow, 7).Address, worksheet.Cell(currentRow, 8).Address);
                 range1_7_8.Merge();
                 range1_7_8.Style.Font.Bold = true;
-                range1_7_8.Style.Font.FontSize = 10;
+                range1_7_8.Style.Font.FontSize = 9;
                 range1_7_8.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#f0bf60"));
                 range1_7_8.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                 IXLRange range1_9_11 = worksheet.Range(worksheet.Cell(currentRow, 9).Address, worksheet.Cell(currentRow, 11).Address);
                 range1_9_11.Merge();
                 range1_9_11.Style.Font.Bold = true;
-                range1_9_11.Style.Font.FontSize = 10;
+                range1_9_11.Style.Font.FontSize = 9;
                 range1_9_11.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#f0bf60"));
                 range1_9_11.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                 IXLRange range1_12_14 = worksheet.Range(worksheet.Cell(currentRow, 12).Address, worksheet.Cell(currentRow, 14).Address);
                 range1_12_14.Merge();
                 range1_12_14.Style.Font.Bold = true;
-                range1_12_14.Style.Font.FontSize = 10;
+                range1_12_14.Style.Font.FontSize = 9;
                 range1_12_14.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#f0bf60"));
                 range1_12_14.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                 IXLRange range1_15_16 = worksheet.Range(worksheet.Cell(currentRow, 15).Address, worksheet.Cell(currentRow, 16).Address);
                 range1_15_16.Merge();
                 range1_15_16.Style.Font.Bold = true;
-                range1_15_16.Style.Font.FontSize = 10;
+                range1_15_16.Style.Font.FontSize = 9;
                 range1_15_16.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#f0bf60"));
                 range1_15_16.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                 IXLRange range1_17_18 = worksheet.Range(worksheet.Cell(currentRow, 17).Address, worksheet.Cell(currentRow, 18).Address);
                 range1_17_18.Merge();
                 range1_17_18.Style.Font.Bold = true;
-                range1_17_18.Style.Font.FontSize = 10;
+                range1_17_18.Style.Font.FontSize = 9;
                 range1_17_18.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#FF944D"));
                 range1_17_18.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                 IXLRange range1_19_20 = worksheet.Range(worksheet.Cell(currentRow, 19).Address, worksheet.Cell(currentRow, 20).Address);
                 range1_19_20.Merge();
                 range1_19_20.Style.Font.Bold = true;
-                range1_19_20.Style.Font.FontSize = 10;
+                range1_19_20.Style.Font.FontSize = 9;
                 range1_19_20.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#2463E6"));
                 range1_19_20.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
@@ -139,42 +143,42 @@ namespace SkillMatrix.Web.Controllers
                 worksheet.Cell(currentRow, 18).Value = "CSAT Level";
                 worksheet.Cell(currentRow, 19).Value = "QC Score";
                 worksheet.Cell(currentRow, 20).Value = "QC Level";
-                worksheet.Cell(currentRow, 21).Value = "Overall Score";                
+                worksheet.Cell(currentRow, 21).Value = "Overall Score";
                 worksheet.Cell(currentRow, 22).Value = "Competency Level";
                 worksheet.Cell(currentRow, 23).Value = "Tenure + Competency";
                 worksheet.Cell(currentRow, 24).Value = "Matched/Unmatched";
 
                 IXLRange range2_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
                 range2_1_6.Style.Font.Bold = true;
-                range2_1_6.Style.Font.FontSize = 10;
+                range2_1_6.Style.Font.FontSize = 9;
                 range2_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 range2_1_6.Style.Fill.SetBackgroundColor(XLColor.Black);
-                range2_1_6.Style.Font.SetFontColor(XLColor.White);                
+                range2_1_6.Style.Font.SetFontColor(XLColor.White);
 
                 IXLRange range2_7_16 = worksheet.Range(worksheet.Cell(currentRow, 7).Address, worksheet.Cell(currentRow, 16).Address);
                 range2_7_16.Style.Font.Bold = true;
-                range2_7_16.Style.Font.FontSize = 10;
+                range2_7_16.Style.Font.FontSize = 9;
                 range2_7_16.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 range2_7_16.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#f0bf60"));
                 range2_7_16.Style.Font.SetFontColor(XLColor.Black);
 
                 IXLRange range2_17_18 = worksheet.Range(worksheet.Cell(currentRow, 17).Address, worksheet.Cell(currentRow, 18).Address);
                 range2_17_18.Style.Font.Bold = true;
-                range2_17_18.Style.Font.FontSize = 10;
+                range2_17_18.Style.Font.FontSize = 9;
                 range2_17_18.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 range2_17_18.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#FF944D"));
                 range2_17_18.Style.Font.SetFontColor(XLColor.Black);
 
                 IXLRange range2_19_20 = worksheet.Range(worksheet.Cell(currentRow, 19).Address, worksheet.Cell(currentRow, 20).Address);
                 range2_19_20.Style.Font.Bold = true;
-                range2_19_20.Style.Font.FontSize = 10;
+                range2_19_20.Style.Font.FontSize = 9;
                 range2_19_20.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 range2_19_20.Style.Fill.SetBackgroundColor(XLColor.FromHtml("#2463E6"));
                 range2_19_20.Style.Font.SetFontColor(XLColor.Black);
 
                 IXLRange range2_21_24 = worksheet.Range(worksheet.Cell(currentRow, 21).Address, worksheet.Cell(currentRow, 24).Address);
                 range2_21_24.Style.Font.Bold = true;
-                range2_21_24.Style.Font.FontSize = 10;
+                range2_21_24.Style.Font.FontSize = 9;
                 range2_21_24.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 range2_21_24.Style.Fill.SetBackgroundColor(XLColor.Black);
                 range2_21_24.Style.Font.SetFontColor(XLColor.White);
@@ -225,7 +229,7 @@ namespace SkillMatrix.Web.Controllers
                     worksheet.Cell(currentRow, 15).Value = skillMatrix.CertificationScore;
                     worksheet.Cell(currentRow, 16).Value = skillMatrix.CertificationLevel;
 
-                    worksheet.Cell(currentRow, 17).Value = (skillMatrix.CSATScore != 0)? $"{skillMatrix.CSATScore}%":string.Empty;
+                    worksheet.Cell(currentRow, 17).Value = (skillMatrix.CSATScore != 0) ? $"{skillMatrix.CSATScore}%" : string.Empty;
                     worksheet.Cell(currentRow, 17).Style.NumberFormat.Format = "0.00%";
                     worksheet.Cell(currentRow, 17).DataType = XLDataType.Number;
 
@@ -241,7 +245,9 @@ namespace SkillMatrix.Web.Controllers
                     worksheet.Cell(currentRow, 23).Value = skillMatrix.TenureLevel;
                     worksheet.Cell(currentRow, 24).Value = skillMatrix.TenurePlusCompetency;
 
-                    IXLBorder border1_24 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 24).Address).Style.Border;
+                    IXLRange range1_24 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 24).Address);
+                    range1_24.Style.Font.FontSize = 9;
+                    IXLBorder border1_24 = range1_24.Style.Border;
                     border1_24.BottomBorder = border1_24.TopBorder = border1_24.LeftBorder = border1_24.RightBorder = XLBorderStyleValues.Thin;
                 }
 
@@ -250,9 +256,9 @@ namespace SkillMatrix.Web.Controllers
 
                 #endregion
 
+                var fileName = $"SkillMatrix_{filter.Year}_Q{filter.Quarter}.xlsx";                
                 using (var stream = new MemoryStream())
                 {
-                    var fileName = $"SkillMatrix_{filter.Year}_Q{filter.Quarter}.xlsx";
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
                     return File(
@@ -260,11 +266,10 @@ namespace SkillMatrix.Web.Controllers
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         fileName
                         );
-                }                
+                }
             }
-            response.Success = true;
-            response.Message = $"Skill matrix report downloaded successfully";
-            return Json(response);
+
+            #endregion
         }
     }
 }

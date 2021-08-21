@@ -30,6 +30,7 @@
 {
     <script type="text/javascript">
         function Show() {
+            debugger;
             var filter = {
                 Year: $("#Year").val(),
                 Quarter: $("#Quarter").val()
@@ -77,6 +78,7 @@
         }
 
         function Excel() {
+            debugger;
             var filter = {
                 Year: $("#Year").val(),
                 Quarter: $("#Quarter").val(),
@@ -84,23 +86,11 @@
                 CompetencyLevel: $("#Competency").val(),
                 TenureLevel: $("#Tenure").val(),
             }
-            $.ajax({
-                type: 'POST',
-                /*dataType: 'JSON',*/
-                url: '/Report/Excel',
-                data: filter,
-                success: function (response) {
-                    if (response.success == true) {
-                        toastr.success(response.message);
-                    }
-                    else {
-                        toastr.warning(response.message);
-                    }
-                },
-                error: function (response) {
-                    toastr.error("There is some problem to process your request");
-                }
-            });
+            debugger;
+            window.location = '/Report/Excel?year=' + filter.Year + '&quarter=' + filter.Quarter + '&team=' + filter.Team + '&competency=' + filter.CompetencyLevel + '&tenure=' + filter.TenureLevel;
+            setTimeout(function () {
+                toastr.success("Skill matrix report downloaded successfully");
+            }, 1000);                       
         }
 
         function toastrOption() {

@@ -15,6 +15,5 @@ namespace SkillMatrix.Service
         Dictionary<string, string> mtdGetYears();
         Dictionary<string, string> mtdGetQuarters();
         Dictionary<string, string> mtdGetTeams(int year, int quarter);
-        //XLWorkbook GenerateExcel(SkillMatrixFilter filter);
     }
 }
