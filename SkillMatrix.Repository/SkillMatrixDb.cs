@@ -149,7 +149,7 @@ namespace SkillMatrix.Repository
                     Id = 1,
                     LowerScore = 6,
                     UpperScore = 9,
-                    Level = "Beginner",
+                    Level = "Novice",
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
@@ -158,7 +158,7 @@ namespace SkillMatrix.Repository
                     Id = 2,
                     LowerScore = 10,
                     UpperScore = 12,
-                    Level = "Novice",
+                    Level = "Advanced Beginner",
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
@@ -167,7 +167,7 @@ namespace SkillMatrix.Repository
                     Id = 3,
                     LowerScore = 13,
                     UpperScore = 1000,
-                    Level = "Advanced",
+                    Level = "Competent",
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 },
@@ -176,7 +176,16 @@ namespace SkillMatrix.Repository
                     Id = 4,
                     LowerScore = 13,
                     UpperScore = 1000,
-                    Level = "SME",
+                    Level = "Proficient",
+                    CreatedDate = DateTime.Today,
+                    UpdatedDate = DateTime.Today
+                },
+                new TenureLevel
+                {
+                    Id = 5,
+                    LowerScore = 13,
+                    UpperScore = 1000,
+                    Level = "Expert",
                     CreatedDate = DateTime.Today,
                     UpdatedDate = DateTime.Today
                 }

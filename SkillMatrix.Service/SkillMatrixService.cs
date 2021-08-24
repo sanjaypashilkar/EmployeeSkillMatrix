@@ -175,8 +175,27 @@ namespace SkillMatrix.Service
                 employeeSkillMatrix.OverallScore = overallScore;
                 employeeSkillMatrix.CompetencyLevel = competencyLevelScoring.Where(cl => overallScore >= cl.LowerScore && overallScore <= cl.UpperScore).FirstOrDefault().Level;
                 var tenure = ((tenureYears * 12) + tenuremonths);
-                employeeSkillMatrix.TenureLevel = tenureScoringLevel.Where(t=> tenure >= t.LowerScore && tenure<= t.UpperScore).FirstOrDefault().Level;
-                employeeSkillMatrix.TenurePlusCompetency = (employeeSkillMatrix.CompetencyLevel.ToLower() == employeeSkillMatrix.TenureLevel.ToLower()) ? "Matched" : "For evaluation";
+                var tenuteLevels = tenureScoringLevel.Where(t => tenure >= t.LowerScore && tenure <= t.UpperScore).ToList();
+                if(tenuteLevels.Count>1)
+                {
+                    bool isMatched = tenuteLevels.Any(t => t.Level.ToLower() == employeeSkillMatrix.CompetencyLevel.ToLower());
+                    if(isMatched)
+                    {
+                        employeeSkillMatrix.TenurePlusCompetency = "Matched";
+                        employeeSkillMatrix.TenureLevel = employeeSkillMatrix.CompetencyLevel;
+                    }
+                    else
+                    {
+                        employeeSkillMatrix.TenureLevel = tenuteLevels.FirstOrDefault().Level;
+                        employeeSkillMatrix.TenurePlusCompetency = "For evaluation";
+                    }                    
+                }
+                else
+                {
+                    employeeSkillMatrix.TenureLevel = tenuteLevels.FirstOrDefault().Level;
+                    employeeSkillMatrix.TenurePlusCompetency = (employeeSkillMatrix.CompetencyLevel.ToLower() == employeeSkillMatrix.TenureLevel.ToLower()) ? "Matched" : "For evaluation";
+                }                
+                
                 employeeSkillMatrix.CreatedDate = DateTime.Today;
                 employeeSkillMatrices.Add(employeeSkillMatrix);
             }
