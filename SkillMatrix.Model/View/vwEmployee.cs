@@ -6,11 +6,13 @@ namespace SkillMatrix.Model
 {
     public class vwEmployee
     {
-        public int Id { get; set; }
-        public string EmployeeId { get; set; }
-        public string Name { get; set; }
-        public DateTime DateHired { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public virtual List<Employee> Employees { get; set; }
+        public virtual List<Employee> PaginatedEmployees { get; set; }
+        public virtual Pager Pager { get; set; }
+
+        public vwEmployee()
+        {
+            Employees = new List<Employee>();
+        }
     }
 }

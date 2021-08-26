@@ -55,17 +55,18 @@ namespace SkillMatrix.Service
             }
             if (skillMatrices.Count > 0)
             {
+                var sortedList = skillMatrices.OrderBy(s => s.Team).ThenBy(s => s.Name).ToList();
                 if (filter.PageNumber < 1)
                     filter.PageNumber = 1;
 
-                int rescCount = skillMatrices.Count();
+                int rescCount = sortedList.Count();
                 int recSkip = (filter.PageNumber - 1) * pageSize;
                 var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
                 report.Pager = pager;
                 
-                var paginatedData = skillMatrices.Skip(recSkip).Take(pager.PageSize).ToList();
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
                 report.PaginatedSkills = paginatedData;
-                report.SkillMatrix = skillMatrices;
+                report.SkillMatrix = sortedList;
             }
             return report;
         }

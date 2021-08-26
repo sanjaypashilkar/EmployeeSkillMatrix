@@ -25,14 +25,14 @@ namespace SkillMatrix.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var employees = new List<vwEmployee>();
+            var employees = new vwEmployee();
             return View(employees);
         }
 
         [HttpPost]
         public IActionResult Index(IFormFile file)
         {
-            List<vwEmployee> employees = new List<vwEmployee>();
+            vwEmployee employees = new vwEmployee();
             if (file != null)
             {
                 string path = Path.Combine(this.Environment.WebRootPath, "Files");
@@ -84,6 +84,13 @@ namespace SkillMatrix.Web.Controllers
         {
             var employees = _employeeService.GetEmployees();
             return View(employees);
+        }
+
+        [HttpPost]
+        public IActionResult Employees(int pg)
+        {
+            var employees = _employeeService.GetEmployees(pg);
+            return PartialView("_Table", employees);
         }
     }
 }
