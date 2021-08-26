@@ -12,6 +12,7 @@ namespace SkillMatrix.Service
     public class ReportService : IReportService
     {
         public ISkillMatrixRepository _skillMatrixRepository { get; set; }
+        const int pageSize = 10;
 
         public ReportService(ISkillMatrixRepository skillMatrixRepository)
         {
@@ -29,6 +30,7 @@ namespace SkillMatrix.Service
                 int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
                 filter.Year = selectedYear;
                 filter.Quarter = selectedQuarter;
+                filter.PageNumber = 1;
             }
 
             vwSkillReport report = new vwSkillReport();
@@ -53,6 +55,16 @@ namespace SkillMatrix.Service
             }
             if (skillMatrices.Count > 0)
             {
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = skillMatrices.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+                
+                var paginatedData = skillMatrices.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedSkills = paginatedData;
                 report.SkillMatrix = skillMatrices;
             }
             return report;

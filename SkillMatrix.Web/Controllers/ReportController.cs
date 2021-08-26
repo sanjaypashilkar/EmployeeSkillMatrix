@@ -12,6 +12,7 @@ namespace SkillMatrix.Web.Controllers
     public class ReportController : Controller
     {
         public IReportService _reportService { get; set; }
+        const int pageSize = 10;
         public ReportController(IReportService reportService)
         {
             _reportService = reportService;

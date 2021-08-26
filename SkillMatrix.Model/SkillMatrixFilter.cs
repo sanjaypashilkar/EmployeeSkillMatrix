@@ -14,5 +14,6 @@ namespace SkillMatrix.Model
         public string Team { get; set; }
         public string CompetencyLevel { get; set; }
         public string TenureLevel { get; set; }
+        public int PageNumber { get; set; }
     }
 }
