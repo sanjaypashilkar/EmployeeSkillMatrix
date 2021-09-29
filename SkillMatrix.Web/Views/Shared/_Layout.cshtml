@@ -23,8 +23,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>
+                        <li class="nav-item dropdown" style="cursor:pointer">
+                            @*<a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Report</a>*@
+                            <NavLink class="nav-link text-dark"
+                                     href="Report" id="navbarDropdown"
+                                     role="button" data-toggle="dropdown" aria-haspopup="true"
+                                     aria-expanded="false">
+                                Report
+                            </NavLink>
+                            <div class="dropdown-menu dropright dropdown-menu-autoshow" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Report" asp-action="Quality">Quality</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Report" asp-action="Index">SkillMatrix</a>
+                            </div>
                         </li>
                         <li class="nav-item dropdown" style="cursor:pointer">
                             <NavLink class="nav-link text-dark"
@@ -34,8 +44,9 @@
                                 Import
                             </NavLink>
                             <div class="dropdown-menu dropright dropdown-menu-autoshow" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="SkillMatrix" asp-action="Index">SkillMatrix</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Attribute" asp-action="Quality">Quality</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="SkillMatrix" asp-action="Index">SkillMatrix</a>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -65,11 +76,3 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-@*@section Scripts
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            
-        });
-    </script>   
-}*@

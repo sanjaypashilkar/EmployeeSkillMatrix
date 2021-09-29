@@ -15,5 +15,8 @@ namespace SkillMatrix.Service
         Dictionary<string, string> mtdGetYears();
         Dictionary<string, string> mtdGetQuarters();
         Dictionary<string, string> mtdGetTeams(int year, int quarter);
+        Dictionary<string, string> mtdGetDepartments();
+        Dictionary<string, string> mtdGetReportTypes();
+        vwQualityReport GetQualityReport(QualityFilter filter);
     }
 }

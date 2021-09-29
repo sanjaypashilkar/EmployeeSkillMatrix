@@ -13,6 +13,7 @@ namespace SkillMatrix.Repository
         public DbSet<CategoryScoring> CategoryScoring { get; set; }
         public DbSet<CompetencyLevelScoring> CompetencyLevelScoring { get; set; }
         public DbSet<TenureLevel> TenureLevel { get; set; }
+        public DbSet<QualityRating> QualityRating { get; set; }
         public SkillMatrixDb()
         { }
 
@@ -35,6 +36,7 @@ namespace SkillMatrix.Repository
         {
             modelBuilder.Entity<Employee>();
             modelBuilder.Entity<EmployeeSkillMatrix>();
+            modelBuilder.Entity<QualityRating>();
 
             #region DataSeed
 

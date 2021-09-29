@@ -1,0 +1,124 @@
+﻿@model SkillMatrix.Model.vwQualityReport
+@{
+    Layout = "_Layout";
+    var counter = 1;
+    var minDate = Model.QualityFilter.StartDate.ToString("yyyy-MM-dd");
+    var maxDate = Model.QualityFilter.EndDate.ToString("yyyy-MM-dd");
+    <style>
+        th[colspan]:not([colspan="1"]) {
+            text-align: center;
+        }
+    </style>
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Quality">
+    <div class="card text-center">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select" })</div>
+                <div class="ml-3">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
+                <div class="ml-3">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
+                <div class="ml-3">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
+                <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="reportTable">
+    @{
+        await Html.RenderPartialAsync("_QualityTable", Model);
+    }
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function Show() {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                ReportType: $("#ReportType").val(),
+                Department: $("#Department").val(),
+                PageNumber: 1
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/Quality',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function Paginate(pageNo) {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                ReportType: $("#ReportType").val(),
+                Department: $("#Department").val(),
+                PageNumber: pageNo
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/Quality',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function ClearFilter() {
+            Show();
+        }
+
+        function Excel() {
+            debugger;
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                ReportType: $("#ReportType").val(),
+                Department: $("#Department").val(),
+            }
+            debugger;
+            window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
+            setTimeout(function () {
+                toastr.success("Quality summary report downloaded successfully");
+            }, 200);
+        }
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        $(document).ready(function () {
+            toastrOption();
+        });
+    </script>
+}

@@ -1,0 +1,147 @@
+﻿@model SkillMatrix.Model.vwImportAndSaveQualityRating
+@{
+    Layout = "_Layout";
+    var qualityRatings = Model.QualityRatings;
+    var counter = 1;
+    var todayDate = DateTime.Today.ToString("yyyy-MM-dd");    
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Attribute" asp-action="Quality">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3"><span>Select File:</span></div>
+                <div class="ml-3"><input type="file" name="file" size="50" /></div>
+                <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import Quality" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3">
+                    Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @Id = "Department", @class = "form-select" })
+                </div>
+                <div class="ml-3 date-range-position">
+                    Record Date : <input type="date" id="recordDate" value="@todayDate" placeholder="Record Date"/>
+                </div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveQualityRating()" /></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+</form>
+@if (qualityRatings.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Team</th>
+                <th>Agent Name</th>
+                <th>Emp #</th>
+                <th>Task Done Date</th>
+                <th>QA Date</th>
+                <th>ROW/US</th>
+                <th>Ticket Number</th>
+                <th>Ticket Status</th>
+                <th>Request Reason</th>
+                <th>Internal/External Customer</th>
+                <th>Adherence to Correct Processes(MAX: 25)</th>
+                <th>Email Handling(MAX: 30)</th>
+                <th>Resolution  (MAX: 30)</th>
+                <th>Tone (MAX: 15)</th>
+                @*<th>Total Score</th>*@
+                <th>Remarks</th>
+                <th>QTP Name</th>
+                <th>QTP #</th>
+            </tr>            
+        </thead>
+        <tbody>
+            @foreach (var item in qualityRatings)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Team</td>
+                    <td> @item.AgentName</td>
+                    <td> @item.EmployeeId</td>
+                    <td> @Convert.ToDateTime(item.TaskCompletionDate).Date.ToShortDateString()</td>
+                    <td> @Convert.ToDateTime(item.QADate).Date.ToShortDateString()</td>
+                    <td> @item.Region</td>
+                    <td> @item.TicketNumber</td>
+                    <td> @item.TicketStatus</td>
+                    <td> @item.RequestReason</td>
+                    <td> @item.CustomerType</td>
+                    <td> @item.ProcessAdheranceScore</td>
+                    <td> @item.EmailHandlingScore</td>
+                    <td> @item.ResolutionScore</td>
+                    <td> @item.ToneScore</td>
+                    <td> @item.Remarks</td>
+                    <td> @item.QTPName</td>
+                    <td> @item.QTPEmployeeId</td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastrOption();
+        });
+        function SaveQualityRating() {
+            debugger;
+            var department = $('#Department').val()
+            var recordDate = $('#recordDate').val()
+            
+            var fileName = $('#fileName').val()
+            if (fileName == '') {
+                toastr.warning("Please select file to import");
+            }
+            else {
+                $('#fileName').val('')
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '/Attribute/SaveQualityRating',
+                    data: { fileName: fileName, department: department, recordDate: recordDate },
+                    success: function (response) {
+                        debugger;
+                        if (response.success == true) {
+                            toastr.success(response.message);
+                        }
+                        else {
+                            toastr.warning(response.message);
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error("There is some problem to process your request");
+                    }
+                });
+            }
+        }
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }       
+    </script>
+}

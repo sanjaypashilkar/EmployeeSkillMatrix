@@ -19,7 +19,6 @@ namespace SkillMatrix
         #region Global Variables
         private IConfiguration _configuration { get; }
         private readonly string _connectionString = string.Empty;
-        private readonly MySqlDbConnector _dbConnector; 
 
 
         #endregion
@@ -27,7 +26,6 @@ namespace SkillMatrix
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("SkillMatrixDb") ?? string.Empty;
-            //_dbConnector = GetDatabaseConnector();
         }
 
         public IConfiguration Configuration { get; }
@@ -39,6 +37,7 @@ namespace SkillMatrix
             services.AddTransient<ISkillMatrixService, SkillMatrixService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IReportService, ReportService>();
+            services.AddTransient<IAttributeService, AttributeService>();
             services.AddMvc();
             services.AddControllersWithViews();
             ConfigureSkillMatrxServices(services);

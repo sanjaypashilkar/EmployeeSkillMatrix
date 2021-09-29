@@ -17,6 +17,8 @@ namespace SkillMatrix.Web.Controllers
         {
             _reportService = reportService;
         }
+
+        #region SkillMatrix
         public IActionResult Index()
         {
             var report = _reportService.GetSkillMatrixReport(null);
@@ -272,5 +274,282 @@ namespace SkillMatrix.Web.Controllers
 
             #endregion
         }
+
+        #endregion
+
+        #region QualityRating
+
+        public IActionResult Quality()
+        {
+            var report = _reportService.GetQualityReport(null);
+            return View(report);
+        }
+
+        [HttpPost]
+        public IActionResult Quality(QualityFilter filter)
+        {
+            var report = _reportService.GetQualityReport(filter);
+            return PartialView("_QualityTable", report);
+        }
+
+        [HttpGet]
+        public IActionResult QualityExcel(DateTime minDate, DateTime maxDate, string department, string reportType)
+        {
+            var filter = new QualityFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+                Department = department,
+                ReportType = reportType
+            };
+
+            var qualityReport = _reportService.GetQualityReport(filter);
+
+            #region Workbook
+
+            if(filter.ReportType == ReportType.External.ToString() || filter.ReportType == ReportType.Internal.ToString())
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    var tab = $"Summary";
+                    var worksheet = workbook.Worksheets.Add(tab);
+                    worksheet.Style.Font.SetFontName("Calibri");
+                    var currentRow = 1;
+
+                    #region Header
+
+                    worksheet.Cell(currentRow, 1).Value = "Summary Table";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 1).Style.Font.FontSize = 16;
+                    worksheet.Cell(currentRow, 1).Style.Font.SetFontColor(XLColor.DarkRed);
+
+                    currentRow++;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = "Date Range";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 1).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 1).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 1).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 2).Value = filter.StartDate;
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 3).Value = "to";
+                    worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 3).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 3).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 3).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 4).Value = filter.EndDate;
+                    worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 1).Value = "Checks by Customer Type and Request Reason";
+                    IXLRange range5_1_3 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 3).Address);
+                    range5_1_3.Merge();
+                    range5_1_3.Style.Font.Bold = true;
+                    range5_1_3.Style.Font.FontSize = 14;
+
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 2).Value = "Target Score";
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 2).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 2).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 3).Value = "85";
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    #endregion
+
+                    #region Body
+
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 1).Value = "";
+                    worksheet.Cell(currentRow, 2).Value = "Tickets Checked";
+                    worksheet.Cell(currentRow, 3).Value = "Tickets Passed";
+                    worksheet.Cell(currentRow, 4).Value = "Average SPI Score";
+                    worksheet.Cell(currentRow, 5).Value = "Average SNCS Score";
+
+                    IXLRange range7_1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address);
+                    range7_1_5.Style.Fill.SetBackgroundColor(XLColor.FromArgb(24,54,66));
+                    range7_1_5.Style.Font.SetFontColor(XLColor.FromArgb(206, 219, 224));
+
+                    foreach (var summary in qualityReport.QualitySummary)
+                    {
+                        currentRow++;
+
+                        worksheet.Cell(currentRow, 1).Value = summary.Category;
+
+                        worksheet.Cell(currentRow, 2).Value = summary.TicketsChecked;
+                        worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 3).Value = $"{summary.TicketsPassed}%";
+                        worksheet.Cell(currentRow, 3).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 3).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 4).Value = $"{summary.AvgSPIScore}%";
+                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 4).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 5).Value = $"{summary.AvgSNCSScore}%";
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 5).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        if (summary.Category == ReportType.Internal.ToString() || summary.Category == ReportType.External.ToString())
+                        {
+                            IXLRange range1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address);
+                            range1_5.Style.Fill.SetBackgroundColor(XLColor.FromArgb(206, 219, 224));
+                            range1_5.Style.Font.Bold = true;
+
+                            IXLBorder border1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address).Style.Border;
+                            border1_5.BottomBorder = XLBorderStyleValues.Thin;
+                        }
+                    }
+                    worksheet.Columns().AdjustToContents();
+
+                    #endregion
+
+                    var fileName = $"QualitySummary_{filter.Department}_{filter.ReportType}.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            fileName
+                            );
+                    }
+                }
+            }
+            else
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    var tab = $"Summary";
+                    var worksheet = workbook.Worksheets.Add(tab);
+                    worksheet.Style.Font.SetFontName("Calibri");
+                    var currentRow = 1;
+
+                    #region Header
+
+                    worksheet.Cell(currentRow, 1).Value = "Summary Table";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 1).Style.Font.FontSize = 16;
+                    worksheet.Cell(currentRow, 1).Style.Font.SetFontColor(XLColor.DarkRed);
+
+                    currentRow++;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = "Date Range";
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 1).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 1).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 1).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 2).Value = filter.StartDate;
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 3).Value = "to";
+                    worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 3).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 3).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 3).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 4).Value = filter.EndDate;
+                    worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 1).Value = "Checks by Ticket Status";
+                    IXLRange range5_1_3 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 3).Address);
+                    range5_1_3.Merge();
+                    range5_1_3.Style.Font.Bold = true;
+                    range5_1_3.Style.Font.FontSize = 14;
+
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 2).Value = "Target Score";
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Style.Font.FontSize = 11;
+                    worksheet.Cell(currentRow, 2).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
+                    worksheet.Cell(currentRow, 2).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 3).Value = "85";
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    #endregion
+
+                    #region Body
+                    currentRow++;
+
+                    var colName = string.Empty;
+                    if(filter.ReportType == ReportType.TicketStatus.ToString())
+                    {
+                        colName = "Ticket Status";
+                    }
+                    else
+                    {
+                        colName = "Team Location";
+                    }
+                    worksheet.Cell(currentRow, 1).Value = colName;
+                    worksheet.Cell(currentRow, 2).Value = "Tickets Checked";
+                    worksheet.Cell(currentRow, 3).Value = "Tickets Passed";
+                    worksheet.Cell(currentRow, 4).Value = "Average SPI Score";
+                    worksheet.Cell(currentRow, 5).Value = "Average SNCS Score";
+
+                    IXLRange range7_1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address);
+                    range7_1_5.Style.Fill.SetBackgroundColor(XLColor.FromArgb(24, 54, 66));
+                    range7_1_5.Style.Font.SetFontColor(XLColor.FromArgb(206, 219, 224));
+
+                    foreach (var summary in qualityReport.QualitySummary)
+                    {
+                        currentRow++;
+                        worksheet.Cell(currentRow, 1).Value = summary.Category;
+                        worksheet.Cell(currentRow, 2).Value = summary.TicketsChecked;
+                        worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 3).Value = $"{summary.TicketsPassed}%";
+                        worksheet.Cell(currentRow, 3).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 3).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 4).Value = $"{summary.AvgSPIScore}%";
+                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 4).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 5).Value = $"{summary.AvgSNCSScore}%";
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 5).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    }
+
+                    worksheet.Columns().AdjustToContents();                   
+
+                    #endregion
+
+                    var fileName = $"QualitySummary_{filter.Department}_{filter.ReportType}.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            fileName
+                            );
+                    }
+                }
+            }
+            
+            #endregion
+        }
+
+        #endregion
     }
 }

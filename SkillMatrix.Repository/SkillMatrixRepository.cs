@@ -53,6 +53,16 @@ namespace SkillMatrix.Repository
             return _context.Employee;
         }
 
+        public IQueryable<QualityRating> GetQualityRating()
+        {
+            return _context.QualityRating;
+        }
+
+        public IQueryable<QualityRating> GetQualityRatingByDate(DateTime startDate, DateTime endDate)
+        {
+            return _context.QualityRating.Where(e => e.TaskCompletionDate >= startDate && e.TaskCompletionDate <= endDate).AsNoTracking();
+        }
+
         public int AddEntry<TEntity>(TEntity entry) where TEntity:class
         {
             _context.Set<TEntity>().Add(entry);
@@ -92,6 +102,11 @@ namespace SkillMatrix.Repository
         public int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix)
         {
             employeeSkillMatrix.ToList().ForEach(e => _context.EmployeeSkillMatrix.Add(e));
+            return _context.SaveChanges();
+        }
+        public int SaveQualityRating(IEnumerable<QualityRating> qualityRating)
+        {
+            qualityRating.ToList().ForEach(e => _context.QualityRating.Add(e));
             return _context.SaveChanges();
         }
 
