@@ -76,5 +76,20 @@ namespace SkillMatrix.Web.Controllers
             }
             return Json(response);
         }
+
+        [HttpGet]
+        public IActionResult DownloadTemplate()
+        {
+            string fileName = "Template_QualityChecks.xlsx";
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path1 = Path.Combine(path, "Templates");
+            string fullFilePath = Path.Combine(path, fileName);
+            byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
+            return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                    );
+        }
     }
 }

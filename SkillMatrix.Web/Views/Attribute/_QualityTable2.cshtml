@@ -1,0 +1,88 @@
+﻿@model List<SkillMatrix.Model.vwQualityRating2>
+@{
+    var qualityRatings = Model;
+    var counter = 1;
+}
+
+@if (qualityRatings.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Name</th>
+                <th>Emp #</th>
+                <th>Group</th>
+                <th>Team Leader</th>
+                <th>Task Completion Date</th>
+                <th>Date Audited</th>
+                <th>Process</th>
+                <th>Error Type</th>
+                <th>Checker Remarks</th>
+                <th>Modified</th>
+                <th>Ticket Number</th>
+                <th>Lines</th>
+                <th>Issue Type</th>
+                <th>TL Analysis</th>
+                <th>Level 1 Opportunity</th>
+                <th>Level 2 Opportunity</th>
+                <th>Root Cause</th>
+                <th>Corrective Action</th>
+                <th>Preventive Action</th>
+                <th>Process Change</th>
+                <th>Verification of Effectiveness</th>
+                <th>Audit Result</th>
+                <th>Date of Issue Verification</th>
+                <th>Is Correct</th>
+                <th>Is Error</th>
+                <th>Week Range</th>
+                <th>Date</th>
+                <th>Volume</th>
+                <th>Counter</th>
+                <th>EmpID - Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in qualityRatings)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Name</td>
+                    <td> @item.EmployeeId</td>
+                    <td> @item.Group</td>
+                    <td> @item.TeamLeader</td>
+                    <td> @Convert.ToDateTime(item.TaskCompletionDate).Date.ToShortDateString()</td>
+                    <td> @Convert.ToDateTime(item.AuditedDate).Date.ToShortDateString()</td>
+                    <td> @item.Process</td>
+                    <td> @item.ErrorType</td>
+                    <td> @item.CheckerRemarks</td>
+                    <td> @item.Modified</td>
+                    <td> @item.TicketNumber</td>
+                    <td> @item.Shift</td>
+                    <td> @item.Lines</td>
+                    <td> @item.IssueType</td>
+                    <td> @item.TLAnalysis</td>
+                    <td> @item.Level1Opportunity</td>
+                    <td> @item.Level2Opportunity</td>
+                    <td> @item.RootCause</td>
+                    <td> @item.CorrectiveAction</td>
+                    <td> @item.PreventiveAction</td>
+                    <td> @item.ProcessChange</td>
+                    <td> @item.EffectivenessVerification</td>
+                    <td> @item.AuditResult</td>
+                    <td> @item.DOIVerification</td>
+                    <td> @item.IsCorrect</td>
+                    <td> @item.IsError</td>
+                    <td> @item.WeekRange</td>
+                    <td> @Convert.ToDateTime(item.Date).Date.ToString("MMM dd")</td>
+                    <td> @item.Volume</td>
+                    <td> @item.Counter</td>
+                    <td> @item.EmpIdDate</td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

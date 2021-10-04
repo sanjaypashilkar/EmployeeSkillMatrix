@@ -1,0 +1,62 @@
+﻿@model List<SkillMatrix.Model.vwQualityRating>
+@{
+    var qualityRatings = Model;
+    var counter = 1;
+}
+
+@if (qualityRatings.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Team</th>
+                <th>Agent Name</th>
+                <th>Emp #</th>
+                <th>Task Done Date</th>
+                <th>QA Date</th>
+                <th>ROW/US</th>
+                <th>Ticket Number</th>
+                <th>Ticket Status</th>
+                <th>Request Reason</th>
+                <th>Internal/External Customer</th>
+                <th>Adherence to Correct Processes(MAX: 25)</th>
+                <th>Email Handling(MAX: 30)</th>
+                <th>Resolution  (MAX: 30)</th>
+                <th>Tone (MAX: 15)</th>
+                @*<th>Total Score</th>*@
+                <th>Remarks</th>
+                <th>QTP Name</th>
+                <th>QTP #</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in qualityRatings)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Team</td>
+                    <td> @item.AgentName</td>
+                    <td> @item.EmployeeId</td>
+                    <td> @Convert.ToDateTime(item.TaskCompletionDate).Date.ToShortDateString()</td>
+                    <td> @Convert.ToDateTime(item.QADate).Date.ToShortDateString()</td>
+                    <td> @item.Region</td>
+                    <td> @item.TicketNumber</td>
+                    <td> @item.TicketStatus</td>
+                    <td> @item.RequestReason</td>
+                    <td> @item.CustomerType</td>
+                    <td> @item.ProcessAdheranceScore</td>
+                    <td> @item.EmailHandlingScore</td>
+                    <td> @item.ResolutionScore</td>
+                    <td> @item.ToneScore</td>
+                    <td> @item.Remarks</td>
+                    <td> @item.QTPName</td>
+                    <td> @item.QTPEmployeeId</td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

@@ -35,12 +35,14 @@ namespace SkillMatrix.Model
     public class vwImportAndSaveQualityRating
     {
         public virtual List<vwQualityRating> QualityRatings { get; set; }
+        public virtual List<vwQualityRating2> QualityRatings2 { get; set; }
         public virtual Dictionary<string, string> lstDepartments { get; set; }
         public virtual QualityFilter QualityFilter { get; set; }
 
         public vwImportAndSaveQualityRating()
         {
             QualityRatings = new List<vwQualityRating>();
+            QualityRatings2 = new List<vwQualityRating2>();
             lstDepartments = new Dictionary<string, string>();
             QualityFilter = new QualityFilter();
         }

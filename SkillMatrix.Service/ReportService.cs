@@ -126,6 +126,7 @@ namespace SkillMatrix.Service
                 //filter.EndDate = new DateTime(2021, 07, 31).Date;
                 filter.Department = Department.CustomerService.ToString();
                 filter.ReportType = ReportType.External.ToString();
+                filter.TargetScore = 85;
                 filter.PageNumber = 1;
             }
 
@@ -148,15 +149,15 @@ namespace SkillMatrix.Service
                 List<vwQualityReportSummary> reportSummaries = new List<vwQualityReportSummary>();
                 if(filter.ReportType == ReportType.Internal.ToString() || filter.ReportType == ReportType.External.ToString())
                 {
-                    reportSummaries = GetCustomerTypeReport(qualityRatings, filter.ReportType);
+                    reportSummaries = GetCustomerTypeReport(qualityRatings, filter.ReportType, filter.TargetScore);
                 }
                 else if(filter.ReportType == ReportType.TicketStatus.ToString())
                 {
-                    reportSummaries = GetTicketStatusReport(qualityRatings);
+                    reportSummaries = GetTicketStatusReport(qualityRatings, filter.TargetScore);
                 }
                 else
                 {
-                    reportSummaries = GetTeamLocationReport(qualityRatings);
+                    reportSummaries = GetTeamLocationReport(qualityRatings, filter.TargetScore);
                 }
                 var sortedList = reportSummaries.OrderByDescending(s => s.TicketsChecked).ToList();
                 if (filter.PageNumber < 1)
@@ -174,10 +175,9 @@ namespace SkillMatrix.Service
             return report;
         }
 
-        private List<vwQualityReportSummary> GetCustomerTypeReport(List<QualityRating> qualityRatings, string customerType)
+        private List<vwQualityReportSummary> GetCustomerTypeReport(List<QualityRating> qualityRatings, string customerType, int targetScore)
         {
             List<vwQualityReportSummary> reportSummaries = new List<vwQualityReportSummary>();
-            var targetScore = 85;
             var straiveQualityRating = qualityRatings.Where(q => q.Team.ToLower() == TeamForReviews.Straive.ToString().ToLower()).ToList();
             double customerTypeCount = straiveQualityRating.Count();
             double passedTickets = straiveQualityRating.Where(q => q.TotalScore >= targetScore).Count();
@@ -225,10 +225,9 @@ namespace SkillMatrix.Service
             }
             return reportSummaries;
         }
-        private List<vwQualityReportSummary> GetTicketStatusReport(List<QualityRating> qualityRatings)
+        private List<vwQualityReportSummary> GetTicketStatusReport(List<QualityRating> qualityRatings, int targetScore)
         {
             List<vwQualityReportSummary> reportSummaries = new List<vwQualityReportSummary>();
-            var targetScore = 85;
             var straiveQualityRating = qualityRatings.Where(q => q.Team.ToLower() == TeamForReviews.Straive.ToString().ToLower()).ToList();
             var snQualityRating = qualityRatings.Where(q => q.Team.ToLower() == TeamForReviews.SpringerNature.ToString().ToLower()).ToList();           
             var ticketStatus = qualityRatings.Select(q => q.TicketStatus).Distinct().OrderBy(q => q).ToList();
@@ -256,10 +255,9 @@ namespace SkillMatrix.Service
             return reportSummaries;
         }
 
-        private List<vwQualityReportSummary> GetTeamLocationReport(List<QualityRating> qualityRatings)
+        private List<vwQualityReportSummary> GetTeamLocationReport(List<QualityRating> qualityRatings, int targetScore)
         {
             List<vwQualityReportSummary> reportSummaries = new List<vwQualityReportSummary>();
-            var targetScore = 85;
             var snQualityRating = qualityRatings.Where(q => q.Team.ToLower() == TeamForReviews.SpringerNature.ToString().ToLower()).ToList();
             var teamLocations = snQualityRating.Select(q => q.QTPName).Distinct().OrderBy(q => q).ToList();
             foreach (var team in teamLocations)

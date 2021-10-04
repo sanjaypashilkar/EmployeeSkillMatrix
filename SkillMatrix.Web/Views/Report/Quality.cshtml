@@ -14,11 +14,12 @@
     <div class="card text-center">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml-3">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select" })</div>
-                <div class="ml-3">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
-                <div class="ml-3">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
-                <div class="ml-3">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
-                <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
+                <div class="ml-sm-1">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select" })</div>
+                <div class="ml-sm-1">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
+                <div class="ml-sm-1">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
+                <div class="ml-sm-1">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
+                <div class="ml-sm-1">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
+                <div class="ml-sm-1"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>                
             </div>
         </div>
     </div>
@@ -38,6 +39,7 @@
                 EndDate: $("#maxDate").val(),
                 ReportType: $("#ReportType").val(),
                 Department: $("#Department").val(),
+                TargetScore: $("#TargetScore").val(),
                 PageNumber: 1
             }
             $.ajax({
@@ -61,6 +63,7 @@
                 EndDate: $("#maxDate").val(),
                 ReportType: $("#ReportType").val(),
                 Department: $("#Department").val(),
+                TargetScore: $("#TargetScore").val(),
                 PageNumber: pageNo
             }
             $.ajax({
@@ -83,15 +86,15 @@
         }
 
         function Excel() {
-            debugger;
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
                 ReportType: $("#ReportType").val(),
                 Department: $("#Department").val(),
+                TargetScore: $("#TargetScore").val(),
             }
             debugger;
-            window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
+            window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType + '&targetScore=' + filter.TargetScore;
             setTimeout(function () {
                 toastr.success("Quality summary report downloaded successfully");
             }, 200);

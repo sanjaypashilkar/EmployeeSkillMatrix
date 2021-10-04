@@ -10,6 +10,7 @@ namespace SkillMatrix.Model
         public string ReportType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int TargetScore { get; set; }
         public int PageNumber { get; set; }
     }
 }

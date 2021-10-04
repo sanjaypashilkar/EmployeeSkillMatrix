@@ -293,14 +293,15 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult QualityExcel(DateTime minDate, DateTime maxDate, string department, string reportType)
+        public IActionResult QualityExcel(DateTime minDate, DateTime maxDate, string department, string reportType, int targetScore)
         {
             var filter = new QualityFilter
             {
                 StartDate = minDate,
                 EndDate = maxDate,
                 Department = department,
-                ReportType = reportType
+                ReportType = reportType,
+                TargetScore = targetScore
             };
 
             var qualityReport = _reportService.GetQualityReport(filter);
@@ -358,7 +359,7 @@ namespace SkillMatrix.Web.Controllers
                     worksheet.Cell(currentRow, 2).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
                     worksheet.Cell(currentRow, 2).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
                     worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Cell(currentRow, 3).Value = "85";
+                    worksheet.Cell(currentRow, 3).Value = targetScore;
                     worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                     #endregion
@@ -479,7 +480,7 @@ namespace SkillMatrix.Web.Controllers
                     worksheet.Cell(currentRow, 2).Style.Fill.SetBackgroundColor(XLColor.FromArgb(60, 156, 215));
                     worksheet.Cell(currentRow, 2).Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
                     worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Cell(currentRow, 3).Value = "85";
+                    worksheet.Cell(currentRow, 3).Value = targetScore;
                     worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                     #endregion

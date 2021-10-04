@@ -6,10 +6,13 @@ namespace SkillMatrix.Model
 {
     public enum Department
     {
-        CustomerService = 1,
-        FrontDesk = 2,
-        OnlineService = 3,
-        OrderManagement = 4
+        CustomerService = 1,        
+        OnlineService = 2,
+        FrontDesk = 3,
+        FreshDesk = 4,
+        AuthorSupport = 5,
+        OrderManagement = 6,
+        ComCopy =7,
     }
 
     public enum TeamForReviews
