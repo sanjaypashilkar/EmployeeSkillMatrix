@@ -245,11 +245,11 @@ namespace SkillMatrix.Service
                     rating.EffectivenessVerification = qualityRating.EffectivenessVerification;
                     rating.AuditResult = qualityRating.AuditResult;
                     rating.DOIVerification = qualityRating.DOIVerification;                    
-                    rating.IsCorrect = Convert.ToBoolean(qualityRating.IsCorrect);
-                    rating.IsError = Convert.ToBoolean(qualityRating.IsError);
+                    rating.IsCorrect = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsCorrect));
+                    rating.IsError = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsError));
                     rating.WeekRange = qualityRating.WeekRange;
                     rating.Date = qualityRating.Date;
-                    rating.Volume = Convert.ToDouble(qualityRating.Volume);
+                    rating.Volume = string.IsNullOrEmpty(qualityRating.Volume)? 0 : Convert.ToDouble(qualityRating.Volume);
                     rating.Counter = Convert.ToInt32(qualityRating.Counter);
                     rating.EmpIdDate = qualityRating.EmpIdDate;
                     rating.Date = qualityRating.Date;

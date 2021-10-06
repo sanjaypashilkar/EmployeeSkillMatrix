@@ -78,9 +78,13 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadTemplate()
+        public IActionResult DownloadTemplate(string department)
         {
             string fileName = "Template_QualityChecks.xlsx";
+            if (department.ToLowerInvariant() == Department.ComCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
+            {
+                fileName = "Template_QualityForms.xlsx";
+            }
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
