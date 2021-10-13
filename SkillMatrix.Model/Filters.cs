@@ -26,6 +26,8 @@ namespace SkillMatrix.Model
         External = 1,
         Internal = 2,
         TicketStatus = 3,
-        TeamLocation = 4
+        TeamLocation = 4,
+        WeeklyLevelSummary = 5,
+        DailySamplingPercentage = 6
     }
 }

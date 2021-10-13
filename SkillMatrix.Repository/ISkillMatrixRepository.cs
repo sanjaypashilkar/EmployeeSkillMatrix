@@ -17,6 +17,7 @@ namespace SkillMatrix.Repository
         IQueryable<Employee> GetEmployees();
         IQueryable<QualityRating> GetQualityRating();
         IQueryable<QualityRating> GetQualityRatingByDate(DateTime startDate, DateTime endDate);
+        IQueryable<QualityRating2> GetQualityRatingByDate2(DateTime startDate, DateTime endDate);
         int SaveEmployees(IEnumerable<Employee> employees);
         int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
         int SaveQualityRating(IEnumerable<QualityRating> qualityRating);

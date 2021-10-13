@@ -288,8 +288,25 @@ namespace SkillMatrix.Web.Controllers
         [HttpPost]
         public IActionResult Quality(QualityFilter filter)
         {
-            var report = _reportService.GetQualityReport(filter);
-            return PartialView("_QualityTable", report);
+            vwQualityReport report = new vwQualityReport();
+            if(filter.Department == Department.ComCopy.ToString() || filter.Department == Department.OrderManagement.ToString())
+            {
+                if (filter.ReportType == ReportType.WeeklyLevelSummary.ToString())
+                {
+                    report = _reportService.GetQualityReport2(filter);
+                    return PartialView("_QualityTable2", report);
+                }
+                else
+                {
+                    report = _reportService.GetQualityReport2(filter);
+                    return PartialView("_QualityTable3", report);
+                }
+            }
+            else
+            {
+                report = _reportService.GetQualityReport(filter);
+                return PartialView("_QualityTable", report);
+            }            
         }
 
         [HttpGet]

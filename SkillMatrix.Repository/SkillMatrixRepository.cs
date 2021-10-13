@@ -63,6 +63,11 @@ namespace SkillMatrix.Repository
             return _context.QualityRating.Where(e => e.TaskCompletionDate >= startDate && e.TaskCompletionDate <= endDate).AsNoTracking();
         }
 
+        public IQueryable<QualityRating2> GetQualityRatingByDate2(DateTime startDate, DateTime endDate)
+        {
+            return _context.QualityRating2.Where(e => e.TaskCompletionDate >= startDate && e.TaskCompletionDate <= endDate).AsNoTracking();
+        }
+
         public int AddEntry<TEntity>(TEntity entry) where TEntity:class
         {
             _context.Set<TEntity>().Add(entry);

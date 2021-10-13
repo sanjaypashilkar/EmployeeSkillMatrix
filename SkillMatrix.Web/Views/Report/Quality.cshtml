@@ -14,11 +14,11 @@
     <div class="card text-center">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml-sm-1">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select" })</div>
+                <div class="ml-sm-1">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select", @onchange = "SelectedIndexChanged()" })</div>
                 <div class="ml-sm-1">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
                 <div class="ml-sm-1">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
                 <div class="ml-sm-1">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
-                <div class="ml-sm-1">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
+                <div class="ml-sm-1" id="divTargetScore">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
                 <div class="ml-sm-1"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>                
             </div>
         </div>
@@ -98,6 +98,24 @@
             setTimeout(function () {
                 toastr.success("Quality summary report downloaded successfully");
             }, 200);
+        }
+
+            function SelectedIndexChanged() {
+                debugger;
+                var dept = $("#Department").val();
+                var reportType = $("#ReportType").val();
+                if (dept == 'OrderManagement' || dept == 'ComCopy') {
+                    $("#divTargetScore").hide();
+                    if ((reportType != 'WeeklyLevelSummary') && (reportType != 'DailySamplingPercentage')) {
+                        $("#ReportType").val("WeeklyLevelSummary");
+                    }                    
+                }
+                else {
+                    $("#divTargetScore").show();
+                    if ((reportType != 'External') && (reportType != 'Internal') && (reportType != 'TicketStatus') && (reportType != 'TeamLocation')) {
+                        $("#ReportType").val("External");
+                    }                    
+                }
         }
 
         function toastrOption() {

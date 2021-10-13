@@ -18,5 +18,6 @@ namespace SkillMatrix.Service
         Dictionary<string, string> mtdGetDepartments();
         Dictionary<string, string> mtdGetReportTypes();
         vwQualityReport GetQualityReport(QualityFilter filter);
+        vwQualityReport GetQualityReport2(QualityFilter filter);
     }
 }
