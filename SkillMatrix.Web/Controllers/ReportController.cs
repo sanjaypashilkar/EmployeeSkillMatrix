@@ -568,6 +568,304 @@ namespace SkillMatrix.Web.Controllers
             #endregion
         }
 
+        [HttpGet]
+        public IActionResult QualityExcel2(DateTime minDate, DateTime maxDate, string department, string reportType)
+        {
+            var filter = new QualityFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+                Department = department,
+                ReportType = reportType
+            };
+
+            var qualityReport = _reportService.GetQualityReport2(filter);
+
+            #region Workbook
+
+            using (var workbook = new XLWorkbook())
+            {
+                var tab = $"Summary";
+                var worksheet = workbook.Worksheets.Add(tab);
+                worksheet.Style.Font.SetFontName("Calibri");
+                var currentRow = 1;
+
+                #region Header
+
+                int counter = 1;
+                if (qualityReport.WeeklyQualityReport.Count > 0)
+                {                    
+                    worksheet.Cell(currentRow, counter).Value = "#";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "Agent Name";
+                    counter++;
+                    foreach (var weeklyAccuracy in qualityReport.WeeklyQualityReport[0].WeeklyAccuracy)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = weeklyAccuracy.Week;
+                        counter++;
+                    }
+                    worksheet.Cell(currentRow, counter).Value = "Avg MTD";
+
+                    IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address);
+                    range1_1_n.Style.Font.Bold = true;
+                    range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(255, 102, 0));
+                    range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    range1_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    range1_1_n.Style.Font.FontSize = 11;
+
+                    IXLBorder border_1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_1_1_n.BottomBorder = border_1_1_n.TopBorder = border_1_1_n.LeftBorder = border_1_1_n.RightBorder = XLBorderStyleValues.Thin;
+                }                
+
+                #endregion
+
+                #region Body
+
+                currentRow++;
+
+                foreach (var weeklyReport in qualityReport.WeeklyQualityReport)
+                {
+                    counter = 1;
+                    worksheet.Cell(currentRow, counter).Value = currentRow-1;
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = weeklyReport.AgentName;
+                    counter++;
+
+                    foreach (var accuracy in weeklyReport.WeeklyAccuracy)
+                    {
+                        if(accuracy.AccuracyRate>0)
+                        {
+                            worksheet.Cell(currentRow, counter).Value = $"{accuracy.AccuracyRate}%";
+                        }                        
+                        worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        counter++;
+                    }
+
+                    if (weeklyReport.AverageMTD > 0)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = $"{weeklyReport.AverageMTD}%";
+                    }                    
+                    worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLBorder border_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_1_n.BottomBorder = border_1_n.TopBorder = border_1_n.LeftBorder = border_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+                }
+
+                if (qualityReport.WeeklyQualityReport.Count > 0)
+                {
+                    counter = 1;
+                    worksheet.Cell(currentRow, counter).Value = "";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "Avg MTD";
+                    counter++;
+                    foreach (var weeklyAccuracy in qualityReport.WeeklyQualityReport[0].WeeklyAccuracy)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = $"{weeklyAccuracy.AverageMTD}%";
+                        worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        counter++;
+                    }
+                    worksheet.Cell(currentRow, counter).Value = $"{qualityReport.WeeklyQualityReport[0].AvgOfAvgMTD}%";
+                    worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address);
+                    range_n_1_n.Style.Font.Bold = true;
+                    range_n_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(255, 102, 0));
+                    range_n_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    range_n_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    range_n_1_n.Style.Font.FontSize = 11;
+
+                    IXLBorder border_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
+                }
+
+                worksheet.Columns().AdjustToContents();
+
+                #endregion
+
+                var fileName = $"WeeklyLevelSummary_{filter.Department}_{filter.ReportType}.xlsx";
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        fileName
+                        );
+                }
+            }
+
+            #endregion
+            
+
+        }
+
+        [HttpGet]
+        public IActionResult QualityExcel3(DateTime minDate, DateTime maxDate, string department, string reportType)
+        {
+            var filter = new QualityFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+                Department = department,
+                ReportType = reportType
+            };
+
+            var qualityReport = _reportService.GetQualityReport2(filter);
+
+            #region Workbook
+
+            using (var workbook = new XLWorkbook())
+            {
+                var tab = $"Summary";
+                var worksheet = workbook.Worksheets.Add(tab);
+                worksheet.Style.Font.SetFontName("Calibri");
+                var currentRow = 1;
+
+                #region Header
+
+                int counter = 1;
+                if (qualityReport.DailyQualityReport.Count > 0)
+                {
+                    worksheet.Cell(currentRow, counter).Value = "#";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "Team Lead";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "Agent Name";
+                    counter++;
+                    foreach (var dailySample in qualityReport.DailyQualityReport[0].DailySampling)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = dailySample.Date.ToString("dd-MMM-yy");
+                        worksheet.Cell(currentRow, counter).Style.DateFormat.Format = "dd-MMM-yy";
+                        worksheet.Cell(currentRow, counter).DataType = XLDataType.DateTime;
+                        counter++;
+                    }
+                    worksheet.Cell(currentRow, counter).Value = "Grand Total";
+
+                    IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address);
+                    range1_1_n.Style.Font.Bold = true;
+                    range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(255, 102, 0));
+                    range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    range1_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    range1_1_n.Style.Font.FontSize = 11;
+
+                    IXLBorder border_1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_1_1_n.BottomBorder = border_1_1_n.TopBorder = border_1_1_n.LeftBorder = border_1_1_n.RightBorder = XLBorderStyleValues.Thin;
+                }
+
+                #endregion
+
+                #region Body
+
+                currentRow++;
+
+                foreach (var dailyReport in qualityReport.DailyQualityReport)
+                {
+                    counter = 1;
+                    worksheet.Cell(currentRow, counter).Value = currentRow - 1;
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = dailyReport.TeamLead;
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = dailyReport.AgentName;
+                    counter++;
+
+                    foreach (var sample in dailyReport.DailySampling)
+                    {
+                        if (sample.SamplePercentage > 0)
+                        {
+                            worksheet.Cell(currentRow, counter).Value = $"{sample.SamplePercentage}%";
+                            worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;                            
+                        }
+                        worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        counter++;
+                    }
+
+                    if (dailyReport.AvgSampling > 0)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = $"{dailyReport.AvgSampling}%";
+                    }
+                    worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLBorder border_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_1_n.BottomBorder = border_1_n.TopBorder = border_1_n.LeftBorder = border_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+                }
+
+                if (qualityReport.DailyQualityReport.Count > 0)
+                {
+                    counter = 1;
+                    worksheet.Cell(currentRow, counter).Value = "";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "";
+                    counter++;
+                    worksheet.Cell(currentRow, counter).Value = "Grand Total";
+                    counter++;
+                    foreach (var dailySample in qualityReport.DailyQualityReport[0].DailySampling)
+                    {
+                        if(dailySample.AvgSamplePercentage>0)
+                        {
+                            worksheet.Cell(currentRow, counter).Value = $"{dailySample.AvgSamplePercentage}%";
+                            worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                        }                        
+                        worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        counter++;
+                    }
+                    if(qualityReport.DailyQualityReport[0].AvgOfAvgSampling>0)
+                    {
+                        worksheet.Cell(currentRow, counter).Value = $"{qualityReport.DailyQualityReport[0].AvgOfAvgSampling}%";
+                        worksheet.Cell(currentRow, counter).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, counter).DataType = XLDataType.Number;
+                    }                    
+                    worksheet.Cell(currentRow, counter).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address);
+                    range_n_1_n.Style.Font.Bold = true;
+                    range_n_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(255, 102, 0));
+                    range_n_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    range_n_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    range_n_1_n.Style.Font.FontSize = 11;
+
+                    IXLBorder border_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, counter).Address).Style.Border;
+                    border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
+                }
+
+                worksheet.Columns().AdjustToContents();
+
+                #endregion
+
+                var fileName = $"DailySamplingPercentage_{filter.Department}_{filter.ReportType}.xlsx";
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        fileName
+                        );
+                }
+            }
+
+            #endregion
+
+
+        }
+
         #endregion
     }
 }

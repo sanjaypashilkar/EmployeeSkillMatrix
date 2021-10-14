@@ -100,6 +100,34 @@
             }, 200);
         }
 
+            function Excel2() {
+                var filter = {
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    ReportType: $("#ReportType").val(),
+                    Department: $("#Department").val(),
+                }
+                debugger;
+                window.location = '/Report/QualityExcel2?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
+                setTimeout(function () {
+                    toastr.success("Weekly Level Summary downloaded successfully");
+                }, 200);
+            }
+
+            function Excel3() {
+                var filter = {
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    ReportType: $("#ReportType").val(),
+                    Department: $("#Department").val(),
+                }
+                debugger;
+                window.location = '/Report/QualityExcel3?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
+                setTimeout(function () {
+                    toastr.success("Daily sampling percentage report downloaded successfully");
+                }, 200);
+            }
+
             function SelectedIndexChanged() {
                 debugger;
                 var dept = $("#Department").val();
