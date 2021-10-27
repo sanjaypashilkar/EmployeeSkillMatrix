@@ -810,10 +810,10 @@ namespace SkillMatrix.Web.Controllers
                     counter = 1;
                     worksheet.Cell(currentRow, counter).Value = "";
                     counter++;
-                    worksheet.Cell(currentRow, counter).Value = "";
-                    counter++;
                     worksheet.Cell(currentRow, counter).Value = "Grand Total";
                     counter++;
+                    worksheet.Cell(currentRow, counter).Value = "";
+                    counter++;                    
                     foreach (var dailySample in qualityReport.DailyQualityReport[0].DailySampling)
                     {
                         if(dailySample.AvgSamplePercentage>0)
@@ -844,6 +844,13 @@ namespace SkillMatrix.Web.Controllers
                     border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
                 }
 
+                if(qualityReport.DailyQualityReport.Count>0)
+                {
+                    if(string.IsNullOrEmpty(qualityReport.DailyQualityReport[0].AgentName))
+                    {
+                        worksheet.Column(3).Hide();
+                    }
+                }
                 worksheet.Columns().AdjustToContents();
 
                 #endregion

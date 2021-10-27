@@ -215,7 +215,7 @@ namespace SkillMatrix.Service
                     report.PaginatedWeeklyReport = paginatedData;
                     report.WeeklyQualityReport = sortedList;
                 }
-                else
+                else if (filter.ReportType == ReportType.DailySamplingPercentage.ToString())
                 {
                     var dailySamplingReport = GetDailySamplingPercentReport(qualityRatings, filter.StartDate, filter.EndDate);
                     var sortedList = dailySamplingReport.OrderBy(s => s.TeamLead).ThenBy(s=>s.AgentName).ToList();
@@ -230,7 +230,23 @@ namespace SkillMatrix.Service
                     var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
                     report.PaginatedDailyReport = paginatedData;
                     report.DailyQualityReport = sortedList;
-                }                
+                }
+                else
+                {
+                    var teamLeadSamplingReport = GetTeamLeadSamplingPercentReport(qualityRatings, filter.StartDate, filter.EndDate);
+                    var sortedList = teamLeadSamplingReport.OrderBy(s => s.TeamLead).ToList();
+                    if (filter.PageNumber < 1)
+                        filter.PageNumber = 1;
+
+                    int rescCount = sortedList.Count();
+                    int recSkip = (filter.PageNumber - 1) * pageSize;
+                    var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                    report.Pager = pager;
+
+                    var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                    report.PaginatedDailyReport = paginatedData;
+                    report.DailyQualityReport = sortedList;
+                }
             }
             return report;
         }
@@ -474,6 +490,76 @@ namespace SkillMatrix.Service
                 });
             }
             return dailySamplingReport;
+        }
+
+        private List<vwQualityReportDaily> GetTeamLeadSamplingPercentReport(List<QualityRating2> qualityRatings, DateTime startDate, DateTime endDate)
+        {
+            List<vwQualityReportDaily> teamleadSamplingReport = new List<vwQualityReportDaily>();
+            var dailySamplingReport = GetDailySamplingPercentReport(qualityRatings, startDate, endDate);
+            if(dailySamplingReport.Count>0)
+            {
+                double totalAvgSampling = 0;
+                int avgSamplingCounter = 0;
+                var teamLeads = qualityRatings.Select(q => q.TeamLeader).Distinct().OrderBy(q => q).ToList();
+                var sampleDates = dailySamplingReport[0].DailySampling.Select(d => d.Date).ToList();
+                foreach (var teamLead in teamLeads)
+                {
+                    vwQualityReportDaily teamLeadReport = new vwQualityReportDaily();
+                    teamLeadReport.TeamLead = teamLead;
+                    double totalSampling = 0;
+                    int samplingCounter = 0;
+                    var teamleadSamples = dailySamplingReport.Where(d => d.TeamLead == teamLead).ToList();
+                    foreach (var sampling in teamleadSamples[0].DailySampling)
+                    {
+                        DailySampling teamLeadSample = new DailySampling();
+                        teamLeadSample.Date = sampling.Date;
+                        teamLeadSample.DateString = sampling.DateString;
+
+                        var teamLeadDateSampling = teamleadSamples.Select(t => t.DailySampling.Where(d => d.DateString == sampling.DateString).FirstOrDefault()).ToList();
+                        int teamLeadSampleCount = teamLeadDateSampling.Where(d => d.SamplePercentage > 0).Count();
+                        var teamLeadSampleSum = teamLeadDateSampling.Where(d => d.SamplePercentage > 0).Sum(s => s.SamplePercentage);
+                        double teamLeadsamplingAverage = 0;
+                        if (teamLeadSampleCount>0)
+                        {
+                            teamLeadsamplingAverage = Math.Round((teamLeadSampleSum / teamLeadSampleCount),2);
+                            totalSampling += teamLeadsamplingAverage;
+                            samplingCounter += 1;
+                        }
+                        teamLeadSample.SamplePercentage = teamLeadsamplingAverage;
+                        teamLeadReport.DailySampling.Add(teamLeadSample);
+                    }
+                    if(samplingCounter > 0)
+                    {
+                        var avgSampling = Math.Round((totalSampling / samplingCounter),2);
+                        teamLeadReport.AvgSampling = avgSampling;
+                        totalAvgSampling += avgSampling;
+                        avgSamplingCounter += 1;
+                    }                    
+                    teamleadSamplingReport.Add(teamLeadReport);
+                }
+                var avgOfAvgSample = Math.Round(((double)totalAvgSampling / avgSamplingCounter), 2);
+                foreach (var sampling in dailySamplingReport[0].DailySampling)
+                {
+                    var counter = 0;
+                    double totalDateSampling = 0;
+                    var temLeadSampleData = teamleadSamplingReport.Select(s => s.DailySampling.Where(d => d.Date == sampling.Date).FirstOrDefault()).ToList();
+                    foreach (var sample in temLeadSampleData)
+                    {
+                        if (sample.SamplePercentage != 0)
+                        {
+                            counter += 1;
+                            totalDateSampling += sample.SamplePercentage;
+                        }
+                    }
+                    var avgSamplePercentage = Math.Round(((double)totalDateSampling / counter), 2);
+                    teamleadSamplingReport.ForEach(a =>
+                    {
+                        a.DailySampling.Where(w => w.Date == sampling.Date).FirstOrDefault().AvgSamplePercentage = avgSamplePercentage;
+                        a.AvgOfAvgSampling = avgOfAvgSample;
+                    });
+                }
+            }
+            return teamleadSamplingReport;
         }
 
         private List<WeeklyAccuracy> GetWeekRanges (DateTime startDate, DateTime endDate)

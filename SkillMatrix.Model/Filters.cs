@@ -9,10 +9,12 @@ namespace SkillMatrix.Model
         CustomerService = 1,        
         OnlineService = 2,
         FrontDesk = 3,
-        FreshDesk = 4,
-        AuthorSupport = 5,
-        OrderManagement = 6,
-        ComCopy =7,
+        ORSupportGeneral = 4,
+        ORSupportInstitutional = 5,
+        ORSupportPayments = 6,
+        AuthorSupport = 7,
+        OrderManagement = 8,
+        ComCopy =9,
     }
 
     public enum TeamForReviews
@@ -28,6 +30,7 @@ namespace SkillMatrix.Model
         TicketStatus = 3,
         TeamLocation = 4,
         WeeklyLevelSummary = 5,
-        DailySamplingPercentage = 6
+        DailySamplingPercentage = 6,
+        TeamLeadSampling = 7
     }
 }

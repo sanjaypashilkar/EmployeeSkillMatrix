@@ -35,7 +35,10 @@
                 <tr>
                     <th>Sr.No</th>
                     <th>Team Lead</th>
-                    <th>Agent Name</th>                    
+                    @if(!string.IsNullOrEmpty(dailySamplingPercentage[0].AgentName))
+                    {
+                        <th>Agent Name</th>    
+                    }                    
                     @foreach (var dailySampling in dailySamplingPercentage[0].DailySampling)
                     {
                         <th>@dailySampling.DateString</th>
@@ -46,8 +49,11 @@
             <tbody>
                 <tr>
                     <th>#</th>
-                    <th></th>
                     <th>Grand Total</th>
+                    @if (!string.IsNullOrEmpty(dailySamplingPercentage[0].AgentName))
+                    {
+                        <th></th>
+                    }
                     @foreach (var item in dailySamplingPercentage[0].DailySampling)
                     {
                         <th>
@@ -65,7 +71,10 @@
                     <tr>
                         <td>@counter</td>
                         <td>@item.TeamLead</td>
-                        <td>@item.AgentName</td>                        
+                        @if (!string.IsNullOrEmpty(item.AgentName))
+                        {
+                        <td>@item.AgentName</td>
+                        }                        
                         @foreach (var dailySampling in item.DailySampling)
                         {
                             <td>
