@@ -78,7 +78,7 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadTemplate(string department)
+        public IActionResult DownloadQualityTemplate(string department)
         {
             string fileName = "Template_QualityChecks.xlsx";
             if (department.ToLowerInvariant() == Department.ComCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
