@@ -121,7 +121,7 @@ namespace SkillMatrix.Repository
         }
         public int SaveTicketingRecords(IEnumerable<TicketingTool> ticketingRecords)
         {
-            //ticketingRecords.ToList().ForEach(e => _context.ticketingRecords.Add(e));
+            ticketingRecords.ToList().ForEach(e => _context.TicketingTool.Add(e));
             return _context.SaveChanges();
         }
 
