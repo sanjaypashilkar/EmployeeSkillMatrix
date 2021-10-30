@@ -1,0 +1,106 @@
+﻿@model SkillMatrix.Model.vwImportAndSaveTicketingTool
+@{
+    Layout = "_Layout";
+    var ticketingTools = Model.TicketingTools;
+    var counter = 1;
+    var todayDate = DateTime.Today.ToString("yyyy-MM-dd");
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Attribute" asp-action="TicketingTool">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3"><span>Select File:</span></div>
+                <div class="ml-3"><input type="file" name="file" size="50" /></div>
+                <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import Ticketing Records" /></div>
+                <div class="ml-sm-1">
+                    <button id="download" class="btn btn-secondary btn-sm" type="button" onclick="DownloadTicketingTemplate()" title="Download Template">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3 date-range-position">
+                    Record Date : <input type="date" id="recordDate" value="@todayDate" placeholder="Record Date" />
+                </div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveTicketingRecords()" /></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+</form>
+<div id="ticketingTable">
+    @{
+        await Html.RenderPartialAsync("_TicketingTable", Model.TicketingTools);
+    }
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastrOption();
+        });
+        function SaveTicketingRecords() {
+            var recordDate = $('#recordDate').val()
+
+            var fileName = $('#fileName').val()
+            if (fileName == '') {
+                toastr.warning("Please select file to import");
+            }
+            else {
+                $('#fileName').val('')
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '/Attribute/SaveTicketingRecords',
+                    data: { fileName: fileName, recordDate: recordDate },
+                    success: function (response) {
+                        if (response.success == true) {
+                            toastr.success(response.message);
+                        }
+                        else {
+                            toastr.warning(response.message);
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error("There is some problem to process your request");
+                    }
+                });
+            }
+        }
+
+        function DownloadQualityTemplate() {
+            window.location = '/Attribute/DownloadTicketingTemplate';
+            setTimeout(function () {
+                toastr.success("Successfully downloaded template for ticketing tool");
+            }, 200);
+        }
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+    </script>
+}

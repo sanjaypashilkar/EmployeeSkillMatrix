@@ -22,6 +22,7 @@ namespace SkillMatrix.Repository
         int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
         int SaveQualityRating(IEnumerable<QualityRating> qualityRating);
         int SaveQualityRating(IEnumerable<QualityRating2> qualityRating);
+        int SaveTicketingRecords(IEnumerable<TicketingTool> ticketingRecords);
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;
         int UpdateEntry<TEntity>(TEntity entry) where TEntity : class;
         int DeleteEntry<TEntity>(TEntity entry) where TEntity : class;

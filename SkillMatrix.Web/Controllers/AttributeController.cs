@@ -102,9 +102,73 @@ namespace SkillMatrix.Web.Controllers
 
         public IActionResult TicketingTool()
         {
-            vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
-            qualityRating.lstDepartments = _attributeService.mtdGetDepartments();
-            return View(qualityRating);
+            vwImportAndSaveTicketingTool ticketingTool = new vwImportAndSaveTicketingTool();
+            ticketingTool.lstDepartments = _attributeService.mtdGetDepartments();
+            return View(ticketingTool);
+        }
+
+        [HttpPost]
+        public IActionResult TicketingTool(IFormFile file)
+        {
+            vwImportAndSaveTicketingTool ticketingTool = new vwImportAndSaveTicketingTool();
+            if (file != null)
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                string fileName = Path.GetFileName(file.FileName);
+                string fullFilePath = Path.Combine(path, fileName);
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
+                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                    stream.Flush();
+                    ViewBag.FileName += fileName;
+                }
+                ticketingTool = _attributeService.GetUploadedTicketingRecords(fullFilePath);
+            }
+            return View(ticketingTool);
+        }
+
+        [HttpPost]
+        public IActionResult SaveTicketingRecords(string fileName, string recordDate)
+        {
+            Response response = new Response();
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string fullFilePath = Path.Combine(path, fileName);
+                _attributeService.SaveTicketingRecords(fullFilePath, recordDate);
+                response.Success = true;
+                response.Message = $"Ticketing tool records saved successfully";
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = $"Please select file to import";
+            }
+            return Json(response);
+        }
+
+        [HttpGet]
+        public IActionResult DownloadTicketingTemplate()
+        {
+            string fileName = "Template_TicketingTool.xlsx";
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path1 = Path.Combine(path, "Templates");
+            string fullFilePath = Path.Combine(path, fileName);
+            byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
+            return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                    );
         }
     }
 }

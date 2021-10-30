@@ -7,7 +7,6 @@ namespace SkillMatrix.Model
     public class TicketingTool
     {
         public int Id { get; set; }
-        public string Department { get; set; }
         public DateTime Date { get; set; }
         public string Status { get; set; }
         public int TicketNumber { get; set; }

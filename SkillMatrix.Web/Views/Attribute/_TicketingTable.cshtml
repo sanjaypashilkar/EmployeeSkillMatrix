@@ -1,0 +1,43 @@
+﻿@model List<SkillMatrix.Model.vwTicketingTool>
+@{
+    var ticketingRecords = Model;
+    var counter = 1;
+}
+
+@if (ticketingRecords.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>TN</th>
+                <th>Team</th>
+                <th>Comment</th>
+                <th>Additional Comments</th>
+                <th>Concerned Rep</th>
+                <th>Remark</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ticketingRecords)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @Convert.ToDateTime(item.Date).Date.ToShortDateString()</td>
+                    <td> @item.Status</td>
+                    <td> @item.TicketNumber</td>
+                    <td> @item.Team</td>
+                    <td> @item.Comment</td>
+                    <td> @item.AdditionalComments</td>
+                    <td> @item.ConcernedRep</td>
+                    <td> @item.Remarks</td>                    
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

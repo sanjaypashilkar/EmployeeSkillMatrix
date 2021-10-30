@@ -7,8 +7,10 @@ namespace SkillMatrix.Service
 {
     public interface IAttributeService
     {
-        vwImportAndSaveQualityRating GetUploadedQualityRating(string fileName);
         Dictionary<string, string> mtdGetDepartments();
+        vwImportAndSaveQualityRating GetUploadedQualityRating(string fileName);        
         void SaveQualityRatings(string fileName, string department, string recordDate);
+        vwImportAndSaveTicketingTool GetUploadedTicketingRecords(string fileName);
+        void SaveTicketingRecords(string fileName, string recordDate);
     }
 }

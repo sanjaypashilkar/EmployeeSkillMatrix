@@ -119,6 +119,11 @@ namespace SkillMatrix.Repository
             qualityRating.ToList().ForEach(e => _context.QualityRating2.Add(e));
             return _context.SaveChanges();
         }
+        public int SaveTicketingRecords(IEnumerable<TicketingTool> ticketingRecords)
+        {
+            //ticketingRecords.ToList().ForEach(e => _context.ticketingRecords.Add(e));
+            return _context.SaveChanges();
+        }
 
         public async Task<int> AddEntryAsync<TEntity>(TEntity entry) where TEntity : class
         {

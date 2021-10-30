@@ -300,5 +300,72 @@ namespace SkillMatrix.Service
                 }
             }
         }
+
+        public vwImportAndSaveTicketingTool GetUploadedTicketingRecords(string fileName)
+        {
+            vwImportAndSaveTicketingTool importAndSaveTicketingRecords = new vwImportAndSaveTicketingTool();
+            importAndSaveTicketingRecords.lstDepartments = mtdGetDepartments();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.Depth != 0)
+                        {
+                            string date = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                            string status = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                            string ticketNumber = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                            if (string.IsNullOrEmpty(ticketNumber) && string.IsNullOrEmpty(status))
+                                break;
+                            var team = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                            var comment = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                            var additionalComments = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                            var concernedRep = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                            var remarks = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+
+                            importAndSaveTicketingRecords.TicketingTools.Add(new vwTicketingTool
+                            {
+                                Date = Convert.ToDateTime(date),
+                                Status = status,
+                                TicketNumber = Convert.ToInt32(ticketNumber),
+                                Team = TeamForReviews.Straive.ToString(),
+                                Comment = comment,
+                                AdditionalComments = additionalComments,
+                                ConcernedRep = concernedRep,
+                                Remarks = remarks,                                
+                            });
+                        }
+                    }
+                }
+            }
+            return importAndSaveTicketingRecords;
+        }
+
+        public void SaveTicketingRecords(string fileName, string recordDate)
+        {
+            var importAndSave = GetUploadedTicketingRecords(fileName);
+            List<TicketingTool> ticketingRecords = new List<TicketingTool>();
+            foreach (var ticketingRecord in importAndSave.TicketingTools)
+            {
+                TicketingTool record = new TicketingTool();
+                record.Date = ticketingRecord.Date;
+                record.Status = ticketingRecord.Status;
+                record.TicketNumber = ticketingRecord.TicketNumber;
+                record.Team = ticketingRecord.Team;
+                record.Comment = ticketingRecord.Comment;
+                record.AdditionalComments = ticketingRecord.AdditionalComments;
+                record.ConcernedRep = ticketingRecord.ConcernedRep;
+                record.Remarks = ticketingRecord.Remarks;
+                record.RecordDate = Convert.ToDateTime(recordDate).Date;
+                record.CreatedDate = DateTime.Now;
+                ticketingRecords.Add(record);
+            }
+            if (ticketingRecords.Count > 0)
+            {
+                _skillMatrixRepository.SaveTicketingRecords(ticketingRecords);
+            }
+        }
     }
 }
