@@ -21,6 +21,8 @@ namespace SkillMatrix.Web.Controllers
             _attributeService = attributeService;
         }
 
+        #region QUALITY
+
         public IActionResult Quality()
         {
             vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
@@ -94,6 +96,15 @@ namespace SkillMatrix.Web.Controllers
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     fileName
                     );
+        }
+
+        #endregion
+
+        public IActionResult TicketingTool()
+        {
+            vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
+            qualityRating.lstDepartments = _attributeService.mtdGetDepartments();
+            return View(qualityRating);
         }
     }
 }
