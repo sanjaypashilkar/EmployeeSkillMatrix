@@ -18,7 +18,7 @@ namespace SkillMatrix.Web.Controllers
             _reportService = reportService;
         }
 
-        #region SkillMatrix
+        #region SKILL MATRIX
         public IActionResult Index()
         {
             var report = _reportService.GetSkillMatrixReport(null);
@@ -291,7 +291,7 @@ namespace SkillMatrix.Web.Controllers
             vwQualityReport report = new vwQualityReport();
             if(filter.Department == Department.ComCopy.ToString() || filter.Department == Department.OrderManagement.ToString())
             {
-                if (filter.ReportType == ReportType.WeeklyLevelSummary.ToString())
+                if (filter.ReportType == QCReportType2.WeeklyLevelSummary.ToString())
                 {
                     report = _reportService.GetQualityReport2(filter);
                     return PartialView("_QualityTable2", report);
@@ -325,7 +325,7 @@ namespace SkillMatrix.Web.Controllers
 
             #region Workbook
 
-            if(filter.ReportType == ReportType.External.ToString() || filter.ReportType == ReportType.Internal.ToString())
+            if(filter.ReportType == QCReportType1.External.ToString() || filter.ReportType == QCReportType1.Internal.ToString())
             {
                 using (var workbook = new XLWorkbook())
                 {
@@ -419,7 +419,7 @@ namespace SkillMatrix.Web.Controllers
                         worksheet.Cell(currentRow, 5).DataType = XLDataType.Number;
                         worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
-                        if (summary.Category == ReportType.Internal.ToString() || summary.Category == ReportType.External.ToString())
+                        if (summary.Category == QCReportType1.Internal.ToString() || summary.Category == QCReportType1.External.ToString())
                         {
                             IXLRange range1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address);
                             range1_5.Style.Fill.SetBackgroundColor(XLColor.FromArgb(206, 219, 224));
@@ -506,7 +506,7 @@ namespace SkillMatrix.Web.Controllers
                     currentRow++;
 
                     var colName = string.Empty;
-                    if(filter.ReportType == ReportType.TicketStatus.ToString())
+                    if(filter.ReportType == QCReportType1.TicketStatus.ToString())
                     {
                         colName = "Ticket Status";
                     }

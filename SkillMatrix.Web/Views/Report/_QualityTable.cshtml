@@ -35,11 +35,11 @@
             <thead class="thead-light">
                 <tr>
                     <th>Sr.No</th>
-                    @if (Model.QualityFilter.ReportType == ReportType.Internal.ToString() || Model.QualityFilter.ReportType == ReportType.External.ToString())
+                    @if (Model.QualityFilter.ReportType == QCReportType1.Internal.ToString() || Model.QualityFilter.ReportType == QCReportType1.External.ToString())
                     {
                         <th></th>
                     }
-                    else if(Model.QualityFilter.ReportType == ReportType.TicketStatus.ToString())
+                    else if(Model.QualityFilter.ReportType == QCReportType1.TicketStatus.ToString())
                     {
                         <th>Ticket Status</th>
                     }
@@ -56,7 +56,7 @@
             <tbody>
                 @foreach (var item in qualitySummary)
                 {
-                    if (item.Category == ReportType.Internal.ToString() || item.Category == ReportType.External.ToString())
+                    if (item.Category == QCReportType1.Internal.ToString() || item.Category == QCReportType1.External.ToString())
                     {
                         <tr>
                             <th> @counter</th>

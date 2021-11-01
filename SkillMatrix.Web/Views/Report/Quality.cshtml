@@ -14,12 +14,19 @@
     <div class="card text-center">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="ml-sm-1">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select", @onchange = "SelectedIndexChanged()" })</div>
-                <div class="ml-sm-1">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
-                <div class="ml-sm-1">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
-                <div class="ml-sm-1">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
-                <div class="ml-sm-1" id="divTargetScore">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
-                <div class="ml-sm-1"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>                
+                <div class="ml-sm-3">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
+                <div class="ml-sm-3">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
+            </div>
+            <br />
+            <div class="d-flex justify-content-center">
+                <div class="ml-sm-3">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select", @onchange = "SelectedIndexChanged()" })</div>
+                <div class="ml-sm-3" id="divReportType1">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType1, "Key", "Value"), new { @id = "ReportType1", @class = "form-select" })</div>
+                <div class="ml-sm-3" id="divReportType2">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType2, "Key", "Value"), new { @id = "ReportType2", @class = "form-select" })</div>
+                <div class="ml-sm-3" id="divTargetScore">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
+            </div>
+            <br />
+            <div>
+                <div class="ml-sm-3"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
             </div>
         </div>
     </div>
@@ -34,11 +41,21 @@
 {
     <script type="text/javascript">
         function Show() {
+            debugger;
+            var dept = $("#Department").val();
+            var reportType = "";
+            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+                reportType = $("#ReportType2").val();
+            }
+            else {
+                reportType = $("#ReportType1").val();
+            }
+            
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
-                ReportType: $("#ReportType").val(),
-                Department: $("#Department").val(),
+                Department: dept,
+                ReportType: reportType,                
                 TargetScore: $("#TargetScore").val(),
                 PageNumber: 1
             }
@@ -58,11 +75,19 @@
         }
 
         function Paginate(pageNo) {
+            var dept = $("#Department").val();
+            var reportType = "";
+            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+                reportType = $("#ReportType2").val();
+            }
+            else {
+                reportType = $("#ReportType1").val();
+            }
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
-                ReportType: $("#ReportType").val(),
-                Department: $("#Department").val(),
+                Department: dept,
+                ReportType: reportType,
                 TargetScore: $("#TargetScore").val(),
                 PageNumber: pageNo
             }
@@ -86,11 +111,20 @@
         }
 
         function Excel() {
+            var dept = $("#Department").val();
+            var reportType = "";
+            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+                reportType = $("#ReportType2").val();
+            }
+            else {
+                reportType = $("#ReportType1").val();
+            }
+
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
-                ReportType: $("#ReportType").val(),
-                Department: $("#Department").val(),
+                Department: dept,
+                ReportType: reportType,
                 TargetScore: $("#TargetScore").val(),
             }
             debugger;
@@ -104,7 +138,7 @@
                 var filter = {
                     StartDate: $("#minDate").val(),
                     EndDate: $("#maxDate").val(),
-                    ReportType: $("#ReportType").val(),
+                    ReportType: $("#ReportType2").val(),
                     Department: $("#Department").val(),
                 }
                 debugger;
@@ -118,7 +152,7 @@
                 var filter = {
                     StartDate: $("#minDate").val(),
                     EndDate: $("#maxDate").val(),
-                    ReportType: $("#ReportType").val(),
+                    ReportType: $("#ReportType2").val(),
                     Department: $("#Department").val(),
                 }
                 debugger;
@@ -131,18 +165,15 @@
             function SelectedIndexChanged() {
                 debugger;
                 var dept = $("#Department").val();
-                var reportType = $("#ReportType").val();
                 if (dept == 'OrderManagement' || dept == 'ComCopy') {
                     $("#divTargetScore").hide();
-                    if ((reportType != 'WeeklyLevelSummary') && (reportType != 'DailySamplingPercentage')) {
-                        $("#ReportType").val("WeeklyLevelSummary");
-                    }                    
+                    $("#divReportType1").hide();
+                    $("#divReportType2").show();                  
                 }
                 else {
                     $("#divTargetScore").show();
-                    if ((reportType != 'External') && (reportType != 'Internal') && (reportType != 'TicketStatus') && (reportType != 'TeamLocation')) {
-                        $("#ReportType").val("External");
-                    }                    
+                    $("#divReportType1").show();
+                    $("#divReportType2").hide();                
                 }
         }
 
@@ -168,6 +199,7 @@
 
         $(document).ready(function () {
             toastrOption();
+            $("#divReportType2").hide();
         });
     </script>
 }

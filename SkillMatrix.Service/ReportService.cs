@@ -105,13 +105,22 @@ namespace SkillMatrix.Service
 
         public Dictionary<string, string> mtdGetDepartments()
         {
-            var selectList = Enum.GetNames(typeof(Department)).ToList().Select(i => new { key = i.ToString(), value = i.ToString() }).ToDictionary(x => x.key, x => x.value);
+            var departments = Helper.GetEnumValuesAndDescriptions<Department>();
+            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
             return selectList;
         }
 
-        public Dictionary<string, string> mtdGetReportTypes()
+        public Dictionary<string, string> mtdGetQCReportTypes1()
         {
-            var selectList = Enum.GetNames(typeof(ReportType)).ToList().Select(i => new { key = i.ToString(), value = i.ToString() }).ToDictionary(x => x.key, x => x.value);
+            var reportTypes = Helper.GetEnumValuesAndDescriptions<QCReportType1>();
+            var selectList = reportTypes.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
+        public Dictionary<string, string> mtdGetQCReportTypes2()
+        {
+            var reportTypes = Helper.GetEnumValuesAndDescriptions<QCReportType2>();
+            var selectList = reportTypes.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
             return selectList;
         }
 
@@ -127,7 +136,7 @@ namespace SkillMatrix.Service
                 //filter.StartDate = new DateTime(2021, 08, 02).Date;
                 //filter.EndDate = new DateTime(2021, 09, 05).Date;
                 filter.Department = Department.CustomerService.ToString();
-                filter.ReportType = ReportType.External.ToString();
+                filter.ReportType = QCReportType1.External.ToString();
                 filter.TargetScore = 85;
                 filter.PageNumber = 1;
             }
@@ -135,25 +144,26 @@ namespace SkillMatrix.Service
             vwQualityReport report = new vwQualityReport();
             report.QualityFilter = filter;
             report.lstDepartments = mtdGetDepartments();            
-            report.lstReportType = mtdGetReportTypes();
+            report.lstReportType1 = mtdGetQCReportTypes1();
+            report.lstReportType2 = mtdGetQCReportTypes2();
 
             var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate(filter.StartDate, filter.EndDate).ToList();            
             if (!string.IsNullOrEmpty(filter.Department))
             {
                 qualityRatings = qualityRatings.Where(s => s.Department.ToLower() == filter.Department.ToLower()).ToList();
             }
-            if (filter.ReportType == ReportType.Internal.ToString() || filter.ReportType == ReportType.External.ToString())
+            if (filter.ReportType == QCReportType1.Internal.ToString() || filter.ReportType == QCReportType1.External.ToString())
             {
                 qualityRatings = qualityRatings.Where(s => s.CustomerType.ToLower() == filter.ReportType.ToLower()).ToList();
             }
             if (qualityRatings.Count > 0)
             {
                 List<vwQualityReportSummary> reportSummaries = new List<vwQualityReportSummary>();
-                if(filter.ReportType == ReportType.Internal.ToString() || filter.ReportType == ReportType.External.ToString())
+                if(filter.ReportType == QCReportType1.Internal.ToString() || filter.ReportType == QCReportType1.External.ToString())
                 {
                     reportSummaries = GetCustomerTypeReport(qualityRatings, filter.ReportType, filter.TargetScore);
                 }
-                else if(filter.ReportType == ReportType.TicketStatus.ToString())
+                else if(filter.ReportType == QCReportType1.TicketStatus.ToString())
                 {
                     reportSummaries = GetTicketStatusReport(qualityRatings, filter.TargetScore);
                 }
@@ -187,7 +197,7 @@ namespace SkillMatrix.Service
                 //filter.StartDate = new DateTime(2021, 08, 02).Date;
                 //filter.EndDate = new DateTime(2021, 09, 05).Date;
                 filter.Department = Department.OrderManagement.ToString();
-                filter.ReportType = ReportType.WeeklyLevelSummary.ToString();
+                filter.ReportType = QCReportType2.WeeklyLevelSummary.ToString();
                 filter.TargetScore = 85;
                 filter.PageNumber = 1;
             }
@@ -195,13 +205,14 @@ namespace SkillMatrix.Service
             vwQualityReport report = new vwQualityReport();
             report.QualityFilter = filter;
             report.lstDepartments = mtdGetDepartments();
-            report.lstReportType = mtdGetReportTypes();
+            report.lstReportType1 = mtdGetQCReportTypes1();
+            report.lstReportType2 = mtdGetQCReportTypes2();
 
             var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate2(filter.StartDate, filter.EndDate).ToList();            
             qualityRatings = qualityRatings.Where(s => s.Department.ToLower() == filter.Department.ToLower()).ToList();            
             if (qualityRatings.Count > 0)
             {
-                if(filter.ReportType == ReportType.WeeklyLevelSummary.ToString())
+                if(filter.ReportType == QCReportType2.WeeklyLevelSummary.ToString())
                 {
                     var weeklyAccuracyReport = GetWeeklyAccuracyReport(qualityRatings, filter.StartDate, filter.EndDate);
                     var sortedList = weeklyAccuracyReport.OrderBy(s => s.AgentName).ToList();
@@ -217,7 +228,7 @@ namespace SkillMatrix.Service
                     report.PaginatedWeeklyReport = paginatedData;
                     report.WeeklyQualityReport = sortedList;
                 }
-                else if (filter.ReportType == ReportType.DailySamplingPercentage.ToString())
+                else if (filter.ReportType == QCReportType2.DailySamplingPercentage.ToString())
                 {
                     var dailySamplingReport = GetDailySamplingPercentReport(qualityRatings, filter.StartDate, filter.EndDate);
                     var sortedList = dailySamplingReport.OrderBy(s => s.TeamLead).ThenBy(s=>s.AgentName).ToList();

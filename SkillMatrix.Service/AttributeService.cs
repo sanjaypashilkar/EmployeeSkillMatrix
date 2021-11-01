@@ -20,7 +20,8 @@ namespace SkillMatrix.Service
 
         public Dictionary<string, string> mtdGetDepartments()
         {
-            var selectList = Enum.GetNames(typeof(Department)).ToList().Select(i => new { key = i.ToString(), value = i.ToString() }).ToDictionary(x => x.key, x => x.value);
+            var departments = Helper.GetEnumValuesAndDescriptions<Department>();
+            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
             return selectList;
         }
 

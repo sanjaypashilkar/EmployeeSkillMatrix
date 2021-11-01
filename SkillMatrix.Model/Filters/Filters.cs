@@ -33,7 +33,7 @@ namespace SkillMatrix.Model
         SpringerNature = 2
     }
 
-    public enum ReportType
+    public enum QCReportType1
     {
         [Description("External")]
         External = 1,
@@ -43,11 +43,15 @@ namespace SkillMatrix.Model
         TicketStatus = 3,
         [Description("Team Location")]
         TeamLocation = 4,
+    }
+
+    public enum QCReportType2
+    {
         [Description("Weekly Level Summary")]
-        WeeklyLevelSummary = 5,
+        WeeklyLevelSummary = 1,
         [Description("Daily Sampling Percentage")]
-        DailySamplingPercentage = 6,
-        [Description("TeamLead Sampling")]
-        TeamLeadSampling = 7
+        DailySamplingPercentage = 2,
+        [Description("Team Lead Sampling")]
+        TeamLeadSampling = 3
     }
 }

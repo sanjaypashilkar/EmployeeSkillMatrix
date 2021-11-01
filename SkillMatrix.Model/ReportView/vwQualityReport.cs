@@ -16,7 +16,8 @@ namespace SkillMatrix.Model
         public virtual List<vwQualityReportDaily> PaginatedDailyReport { get; set; }
 
         public virtual Dictionary<string, string> lstDepartments { get; set; }
-        public virtual Dictionary<string, string> lstReportType { get; set; }
+        public virtual Dictionary<string, string> lstReportType1 { get; set; }
+        public virtual Dictionary<string, string> lstReportType2 { get; set; }
         public virtual QualityFilter QualityFilter { get; set; }
         public virtual Pager Pager { get; set; }
 
@@ -32,7 +33,8 @@ namespace SkillMatrix.Model
             PaginatedDailyReport = new List<vwQualityReportDaily>();
 
             lstDepartments = new Dictionary<string, string>();
-            lstReportType = new Dictionary<string, string>();
+            lstReportType1 = new Dictionary<string, string>();
+            lstReportType2 = new Dictionary<string, string>();
             QualityFilter = new QualityFilter();
             Pager = new Pager();
         }
