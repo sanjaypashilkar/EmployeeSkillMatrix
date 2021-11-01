@@ -81,9 +81,9 @@
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
             }
-            window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType + '&targetScore=' + filter.TargetScore;
+            window.location = '/Report/TicketingToolExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate;
             setTimeout(function () {
-                toastr.success("Quality summary report downloaded successfully");
+                toastr.success("Ticketing tool report downloaded successfully");
             }, 200);
         }            
 

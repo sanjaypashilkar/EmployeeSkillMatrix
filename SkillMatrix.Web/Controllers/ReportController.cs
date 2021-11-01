@@ -891,6 +891,134 @@ namespace SkillMatrix.Web.Controllers
             return PartialView("_TicketingToolTable", report);
         }
 
+        [HttpGet]
+        public IActionResult TicketingToolExcel(DateTime minDate, DateTime maxDate)
+        {
+            var filter = new TicketingToolFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+            };
+
+            var ticketingToolReport = _reportService.GetTicketingToolReport(filter);
+
+            #region Workbook
+
+            using (var workbook = new XLWorkbook())
+            {
+                var tab = $"Status Checked";
+                var worksheet = workbook.Worksheets.Add(tab);
+                worksheet.Style.Font.SetFontName("Calibri");
+                var currentRow = 1;
+
+
+                worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
+                IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                range0_1_6.Merge();
+                range0_1_6.Style.Font.Bold = true;                
+                range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                currentRow++;
+
+
+                #region Body
+
+                worksheet.Cell(currentRow, 1).Value = "Sr.No";
+                worksheet.Cell(currentRow, 2).Value = "Engagement";
+                worksheet.Cell(currentRow, 3).Value = "Tickets Checked";
+                worksheet.Cell(currentRow, 4).Value = "Correct Tickets";
+                worksheet.Cell(currentRow, 5).Value = "Error Counts";
+                worksheet.Cell(currentRow, 6).Value = "Accuracy Rate";
+
+                IXLRange range1_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                range1_1_6.Style.Font.Bold = true;
+                range1_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                range1_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                IXLBorder border1_1_6 = range1_1_6.Style.Border;
+                border1_1_6.BottomBorder = border1_1_6.TopBorder = border1_1_6.LeftBorder = border1_1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                currentRow++;
+
+                foreach (var statusReport in ticketingToolReport.TicketingStatusReport)
+                {                    
+                    worksheet.Cell(currentRow, 1).Value = currentRow-2;
+
+                    worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 3).Value = statusReport.TicketsChecked;
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 4).Value = statusReport.CorrectTickets;
+                    worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 5).Value = statusReport.ErrorCounts;
+                    worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 6).Value = $"{statusReport.AccuracyRate}%";
+                    worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLRange range_n_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    range_n_1_6.Style.Font.FontSize = 9;
+                    IXLBorder border_n_1_6 = range_n_1_6.Style.Border;
+                    border_n_1_6.BottomBorder = border_n_1_6.TopBorder = border_n_1_6.LeftBorder = border_n_1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+                }
+
+                worksheet.Cell(currentRow, 1).Value = "";
+
+                worksheet.Cell(currentRow, 2).Value = "Total";
+                worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                worksheet.Cell(currentRow, 3).Value = ticketingToolReport.TotalTicketsChecked;
+                worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                worksheet.Cell(currentRow, 4).Value = ticketingToolReport.TotalCorrectTickets;
+                worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                worksheet.Cell(currentRow, 5).Value = ticketingToolReport.TotalErrorCounts;
+                worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                worksheet.Cell(currentRow, 6).Value = $"{ticketingToolReport.AvgAccuracyRate}%";
+                worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
+                worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
+                worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                IXLRange range1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                range1_6.Style.Font.Bold = true;
+                range1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                range1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                IXLBorder border1_6 = range1_6.Style.Border;
+                border1_6.BottomBorder = border1_6.TopBorder = border1_6.LeftBorder = border1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                worksheet.Columns().AdjustToContents();
+
+                #endregion
+
+                var fileName = $"Ticketing_Tool_Month_End_Accuracy_report.xlsx";
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        fileName
+                        );
+                }
+            }
+
+            #endregion
+        }
+
         #endregion
     }
 }
