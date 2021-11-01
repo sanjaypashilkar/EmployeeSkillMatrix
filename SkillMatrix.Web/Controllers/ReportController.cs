@@ -277,7 +277,7 @@ namespace SkillMatrix.Web.Controllers
 
         #endregion
 
-        #region QualityRating
+        #region QUALITY RATING
 
         public IActionResult Quality()
         {
@@ -871,6 +871,24 @@ namespace SkillMatrix.Web.Controllers
             #endregion
 
 
+        }
+
+        #endregion
+
+        #region TICKETING TOOL
+
+        public IActionResult TicketingTool()
+        {
+            var report = _reportService.GetTicketingToolReport(null);
+            return View(report);
+        }
+
+        [HttpPost]
+        public IActionResult TicketingTool(TicketingToolFilter filter)
+        {
+            vwTicketingToolReport report = new vwTicketingToolReport();
+            report = _reportService.GetTicketingToolReport(filter);
+            return PartialView("_TicketingToolTable", report);
         }
 
         #endregion

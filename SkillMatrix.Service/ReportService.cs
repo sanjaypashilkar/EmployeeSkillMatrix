@@ -115,6 +115,8 @@ namespace SkillMatrix.Service
             return selectList;
         }
 
+        #region QUALITY REPORTS
+
         public vwQualityReport GetQualityReport(QualityFilter filter = null)
         {
             if (filter == null)
@@ -250,6 +252,8 @@ namespace SkillMatrix.Service
             }
             return report;
         }
+
+        #region PRIVATE METHODS
 
         private List<vwQualityReportSummary> GetCustomerTypeReport(List<QualityRating> qualityRatings, string customerType, int targetScore)
         {
@@ -491,7 +495,6 @@ namespace SkillMatrix.Service
             }
             return dailySamplingReport;
         }
-
         private List<vwQualityReportDaily> GetTeamLeadSamplingPercentReport(List<QualityRating2> qualityRatings, DateTime startDate, DateTime endDate)
         {
             List<vwQualityReportDaily> teamleadSamplingReport = new List<vwQualityReportDaily>();
@@ -561,7 +564,6 @@ namespace SkillMatrix.Service
             }
             return teamleadSamplingReport;
         }
-
         private List<WeeklyAccuracy> GetWeekRanges (DateTime startDate, DateTime endDate)
         {
             List<WeeklyAccuracy> weekRanges = new List<WeeklyAccuracy>();
@@ -579,7 +581,6 @@ namespace SkillMatrix.Service
             }
             return weekRanges;
         }
-
         private List<DailySampling> GetDailySampling(DateTime startDate, DateTime endDate)
         {
             List<DailySampling> dailySamplings = new List<DailySampling>();
@@ -596,17 +597,90 @@ namespace SkillMatrix.Service
             }
             return dailySamplings;
         }
-
         private DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
         {
             int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
             return dt.AddDays(-1 * diff).Date;
         }
-
         private DateTime EndOfWeek(DateTime dt, DayOfWeek endOfWeek)
         {
             int diff = (7 + (endOfWeek - dt.DayOfWeek)) % 7;
             return dt.AddDays(diff).Date;
         }
+
+        #endregion
+
+        #endregion
+
+        #region TICKETING TOOL REPORTS
+
+        public vwTicketingToolReport GetTicketingToolReport(TicketingToolFilter filter = null)
+        {
+            if (filter == null)
+            {
+                filter = new TicketingToolFilter();
+                var today = DateTime.Today;
+                var month = new DateTime(today.Year, today.Month, 1);
+                var first = month.AddMonths(-1);
+                var last = month.AddDays(-1);
+                filter.StartDate = first;
+                filter.EndDate = last;
+                filter.PageNumber = 1;
+            }
+
+            vwTicketingToolReport report = new vwTicketingToolReport();
+            report.TicketingFilter = filter;
+            var ticketingRecords = _skillMatrixRepository.GetTicketingRecordsByDate(filter.StartDate, filter.EndDate).ToList();
+            if (ticketingRecords.Count > 0)
+            {
+                List<vwTicketingStatusReport> statusReport = GetTicketingToolStatusReport(ticketingRecords);
+                report.TotalTicketsChecked = statusReport.Sum(s => s.TicketsChecked);
+                report.TotalCorrectTickets = statusReport.Sum(s => s.CorrectTickets);
+                report.TotalErrorCounts = statusReport.Sum(s => s.ErrorCounts);
+                report.AvgAccuracyRate = Math.Round(((double)report.TotalCorrectTickets / report.TotalTicketsChecked) * 100, 2);
+
+                var sortedList = statusReport.OrderBy(s => s.Engagement).ToList();
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = sortedList.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedStatusReport = paginatedData;
+                report.TicketingStatusReport = sortedList;
+            }
+            return report;
+        }
+
+        private List<vwTicketingStatusReport> GetTicketingToolStatusReport(List<TicketingTool> ticketingRecords)
+        {
+            List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();
+            var engagements = ticketingRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = ticketingRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                int ticketsChecked = engagementRecords.Count();
+                int errorTickets = engagementRecords.Where(q => q.Comment.Trim().ToLower() !=  "correct").Count();
+                int correctTickets = ticketsChecked - errorTickets;
+                double accuracyRate = 0;
+                if (ticketsChecked > 0 && correctTickets>0)
+                {
+                    accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                }
+                vwTicketingStatusReport engagementStatus = new vwTicketingStatusReport();
+                engagementStatus.Engagement = engagement;
+                engagementStatus.TicketsChecked = ticketsChecked;
+                engagementStatus.ErrorCounts = errorTickets;
+                engagementStatus.CorrectTickets = correctTickets;
+                engagementStatus.AccuracyRate = accuracyRate;
+                statusReport.Add(engagementStatus);
+            }
+            return statusReport;
+        }
+
+        #endregion
     }
 }

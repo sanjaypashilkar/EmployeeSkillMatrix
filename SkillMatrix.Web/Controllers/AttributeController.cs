@@ -21,7 +21,7 @@ namespace SkillMatrix.Web.Controllers
             _attributeService = attributeService;
         }
 
-        #region QUALITY
+        #region QUALITY RATING
 
         public IActionResult Quality()
         {
@@ -100,6 +100,8 @@ namespace SkillMatrix.Web.Controllers
 
         #endregion
 
+        #region TICKETING TOOL
+
         public IActionResult TicketingTool()
         {
             vwImportAndSaveTicketingTool ticketingTool = new vwImportAndSaveTicketingTool();
@@ -170,5 +172,7 @@ namespace SkillMatrix.Web.Controllers
                     fileName
                     );
         }
+
+        #endregion
     }
 }

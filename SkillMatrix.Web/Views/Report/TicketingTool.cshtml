@@ -1,0 +1,114 @@
+﻿@model SkillMatrix.Model.vwTicketingToolReport
+@{
+    Layout = "_Layout";
+    var counter = 1;
+    var minDate = Model.TicketingFilter.StartDate.ToString("yyyy-MM-dd");
+    var maxDate = Model.TicketingFilter.EndDate.ToString("yyyy-MM-dd");
+    <style>
+        th[colspan]:not([colspan="1"]) {
+            text-align: center;
+        }
+    </style>
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Quality">
+    <div class="card text-center">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">                
+                <div class="ml-sm-1">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
+                <div class="ml-sm-1">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
+                <div class="ml-sm-1"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="reportTable">
+    @{
+        await Html.RenderPartialAsync("_TicketingToolTable", Model);
+    }
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function Show() {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                PageNumber: 1
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/TicketingTool',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function Paginate(pageNo) {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                PageNumber: pageNo
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/TicketingTool',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function ClearFilter() {
+            Show();
+        }
+
+        function Excel() {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+            }
+            window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType + '&targetScore=' + filter.TargetScore;
+            setTimeout(function () {
+                toastr.success("Quality summary report downloaded successfully");
+            }, 200);
+        }            
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        $(document).ready(function () {
+            toastrOption();
+        });
+    </script>
+}

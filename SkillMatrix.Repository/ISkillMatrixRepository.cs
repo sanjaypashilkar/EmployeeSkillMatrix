@@ -14,15 +14,28 @@ namespace SkillMatrix.Repository
         IQueryable<CategoryScoring> GetCategoryScoring();
         IQueryable<CompetencyLevelScoring> GetCompetencyLevelScoring();
         IQueryable<TenureLevel> GetTenureLevel();
+        int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
+
         IQueryable<Employee> GetEmployees();
+        int SaveEmployees(IEnumerable<Employee> employees);
+
+        #region QUALITY RATING
+
         IQueryable<QualityRating> GetQualityRating();
         IQueryable<QualityRating> GetQualityRatingByDate(DateTime startDate, DateTime endDate);
         IQueryable<QualityRating2> GetQualityRatingByDate2(DateTime startDate, DateTime endDate);
-        int SaveEmployees(IEnumerable<Employee> employees);
-        int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
         int SaveQualityRating(IEnumerable<QualityRating> qualityRating);
         int SaveQualityRating(IEnumerable<QualityRating2> qualityRating);
+
+        #endregion
+
+        #region TICKETING TOOL
+        IQueryable<TicketingTool> GetTicketingRecordsByDate(DateTime startDate, DateTime endDate);
         int SaveTicketingRecords(IEnumerable<TicketingTool> ticketingRecords);
+        #endregion
+
+        #region COMMON METHODS
+
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;
         int UpdateEntry<TEntity>(TEntity entry) where TEntity : class;
         int DeleteEntry<TEntity>(TEntity entry) where TEntity : class;
@@ -33,5 +46,7 @@ namespace SkillMatrix.Repository
         Task<int> DeleteEntryAsync<TEntity>(TEntity entry) where TEntity : class;
         Task<T> FindAsync<T>(object key) where T : class;
         Task<int> SaveChangesAsync();
+
+        #endregion
     }
 }

@@ -330,7 +330,7 @@ namespace SkillMatrix.Service
                                 Date = Convert.ToDateTime(date),
                                 Status = status,
                                 TicketNumber = Convert.ToInt32(ticketNumber),
-                                Team = TeamForReviews.Straive.ToString(),
+                                Team = team,
                                 Comment = comment,
                                 AdditionalComments = additionalComments,
                                 ConcernedRep = concernedRep,
