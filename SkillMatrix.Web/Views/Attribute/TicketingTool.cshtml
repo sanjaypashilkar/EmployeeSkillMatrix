@@ -29,11 +29,11 @@
                 <div class="ml-3 date-range-position">
                     Record Date : <input type="date" id="recordDate" value="@todayDate" placeholder="Record Date" />
                 </div>
-                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveTicketingRecords()" /></div>
+                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveRecords()"/></div>
             </div>
         </div>
     </div>
-    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
+    <input type="hidden" id="fileName" value="@ViewBag.FileName"/>
 </form>
 <div id="ticketingTable">
     @{
@@ -47,10 +47,12 @@
         $(document).ready(function () {
             toastrOption();
         });
-        function SaveTicketingRecords() {
-            var recordDate = $('#recordDate').val()
 
-            var fileName = $('#fileName').val()
+        function SaveRecords() {
+            debugger;
+            var recordDate = $('#recordDate').val();            
+            var fileName = $('#fileName').val();
+            
             if (fileName == '') {
                 toastr.warning("Please select file to import");
             }
