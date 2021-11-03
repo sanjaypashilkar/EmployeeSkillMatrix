@@ -44,7 +44,7 @@
             debugger;
             var dept = $("#Department").val();
             var reportType = "";
-            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+            if (dept == 'OrderManagement' || dept == 'CompCopy') {
                 reportType = $("#ReportType2").val();
             }
             else {
@@ -77,7 +77,7 @@
         function Paginate(pageNo) {
             var dept = $("#Department").val();
             var reportType = "";
-            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+            if (dept == 'OrderManagement' || dept == 'CompCopy') {
                 reportType = $("#ReportType2").val();
             }
             else {
@@ -113,7 +113,7 @@
         function Excel() {
             var dept = $("#Department").val();
             var reportType = "";
-            if (dept == 'OrderManagement' || dept == 'ComCopy') {
+            if (dept == 'OrderManagement' || dept == 'CompCopy') {
                 reportType = $("#ReportType2").val();
             }
             else {
@@ -165,7 +165,7 @@
             function SelectedIndexChanged() {
                 debugger;
                 var dept = $("#Department").val();
-                if (dept == 'OrderManagement' || dept == 'ComCopy') {
+                if (dept == 'OrderManagement' || dept == 'CompCopy') {
                     $("#divTargetScore").hide();
                     $("#divReportType1").hide();
                     $("#divReportType2").show();                  

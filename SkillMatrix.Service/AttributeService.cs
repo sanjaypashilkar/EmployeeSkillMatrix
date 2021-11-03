@@ -215,7 +215,7 @@ namespace SkillMatrix.Service
         public void SaveQualityRatings(string fileName, string department, string recordDate)
         {
             var importAndSave = GetUploadedQualityRating(fileName);
-            if (department == Department.ComCopy.ToString() || department == Department.OrderManagement.ToString())
+            if (department == Department.CompCopy.ToString() || department == Department.OrderManagement.ToString())
             {
                 List<QualityRating2> qualityRatings = new List<QualityRating2>();
                 foreach (var qualityRating in importAndSave.QualityRatings2)

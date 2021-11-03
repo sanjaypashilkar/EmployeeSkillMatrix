@@ -83,7 +83,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadQualityTemplate(string department)
         {
             string fileName = "Template_QualityChecks.xlsx";
-            if (department.ToLowerInvariant() == Department.ComCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
+            if (department.ToLowerInvariant() == Department.CompCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
             {
                 fileName = "Template_QualityForms.xlsx";
             }

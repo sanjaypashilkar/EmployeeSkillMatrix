@@ -289,7 +289,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult Quality(QualityFilter filter)
         {
             vwQualityReport report = new vwQualityReport();
-            if(filter.Department == Department.ComCopy.ToString() || filter.Department == Department.OrderManagement.ToString())
+            if(filter.Department == Department.CompCopy.ToString() || filter.Department == Department.OrderManagement.ToString())
             {
                 if (filter.ReportType == QCReportType2.WeeklyLevelSummary.ToString())
                 {

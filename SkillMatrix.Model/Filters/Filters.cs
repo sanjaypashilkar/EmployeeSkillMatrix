@@ -11,7 +11,7 @@ namespace SkillMatrix.Model
         CustomerService = 1,
         [Description("Online Service")]
         OnlineService = 2,
-        [Description("Fron Desk")]
+        [Description("Front Desk")]
         FrontDesk = 3,
         [Description("OR Support General")]
         ORSupportGeneral = 4,
@@ -23,8 +23,8 @@ namespace SkillMatrix.Model
         AuthorSupport = 7,
         [Description("Order Management")]
         OrderManagement = 8,
-        [Description("Com Copy")]
-        ComCopy = 9,
+        [Description("Comp Copy")]
+        CompCopy = 9,
     }
 
     public enum TeamForReviews
