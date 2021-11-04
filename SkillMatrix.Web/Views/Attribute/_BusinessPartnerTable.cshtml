@@ -1,0 +1,91 @@
+﻿@model List<SkillMatrix.Model.vwBusinessPartner>
+@{
+    var businessPartnerRecords = Model;
+    var counter = 1;
+}
+
+@if (businessPartnerRecords.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Date</th>
+                <th>Comments</th>
+                <th>Modified(Y/N)</th>
+                <th>Valid(Y/N)</th>
+                <th>TL's Remarks</th>
+                <th>Team</th>
+                <th>Business Partner</th>
+                <th>Partner Category</th>
+                <th>Partner Type</th>
+                <th>Title</th>
+                <th>Name 1</th>
+                <th>Name 2</th>
+                <th>Name 3</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Institution 1</th>
+                <th>Institution 2</th>
+                <th>Street</th>
+                <th>House No</th>
+                <th>Postal code</th>
+                <th>PO Box</th>
+                <th>Postal Code</th>
+                <th>City</th>
+                <th>Country Code</th>
+                <th>Email Address</th>
+                <th>Sales Organization</th>
+                <th>Sales Organization</th>
+                <th>Created By</th>
+                <th>Created On</th>
+                <th>Changed By</th>
+                <th>Changed On</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in businessPartnerRecords)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @Convert.ToDateTime(item.Date).Date.ToShortDateString()</td>
+                    <td> @item.Comments</td>
+                    <td> @item.Modified</td>
+                    <td> @item.Valid</td>
+                    <td> @item.TLRemarks</td>
+                    <td> @item.Team</td>
+                    <td> @item.BusinessPartnerNumber</td>
+                    <td> @item.PartnerCategory</td>
+                    <td> @item.PartnerType</td>
+                    <td> @item.Title</td>
+                    <td> @item.Name1</td>
+                    <td> @item.Name2</td>
+                    <td> @item.Name3</td>
+                    <td> @item.LastName</td>
+                    <td> @item.FirstName</td>
+                    <td> @item.Institute1</td>
+                    <td> @item.Institute2</td>
+                    <td> @item.Street</td>
+                    <td> @item.HouseNumber</td>
+                    <td> @item.PostalCode1</td>
+                    <td> @item.POBox</td>
+                    <td> @item.PostalCode2</td>
+                    <td> @item.City</td>
+                    <td> @item.CountryKey</td>
+                    <td> @item.EmailAddress</td>
+                    <td> @item.SalesOrganization1</td>
+                    <td> @item.SalesOrganization2</td>
+                    <td> @item.CreatedBy</td>
+                    <td> @Convert.ToDateTime(item.CreatedOn).Date.ToShortDateString()</td>
+                    <td> @item.ChangedBy</td>
+                    <td> @Convert.ToDateTime(item.ChangedOn).Date.ToShortDateString()</td>
+                    <td> @item.Remarks</td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

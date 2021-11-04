@@ -21,13 +21,11 @@ namespace SkillMatrix.Model
     public class vwImportAndSaveTicketingTool
     {
         public virtual List<vwTicketingTool> TicketingTools { get; set; }
-        public virtual Dictionary<string, string> lstDepartments { get; set; }
         public virtual TicketingToolFilter TicketingToolFilter { get; set; }
 
         public vwImportAndSaveTicketingTool()
         {
             TicketingTools = new List<vwTicketingTool>();
-            lstDepartments = new Dictionary<string, string>();
             TicketingToolFilter = new TicketingToolFilter();
         }
     }

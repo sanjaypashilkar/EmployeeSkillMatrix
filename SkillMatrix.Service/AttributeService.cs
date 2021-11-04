@@ -305,7 +305,6 @@ namespace SkillMatrix.Service
         public vwImportAndSaveTicketingTool GetUploadedTicketingRecords(string fileName)
         {
             vwImportAndSaveTicketingTool importAndSaveTicketingRecords = new vwImportAndSaveTicketingTool();
-            importAndSaveTicketingRecords.lstDepartments = mtdGetDepartments();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -366,6 +365,123 @@ namespace SkillMatrix.Service
             if (ticketingRecords.Count > 0)
             {
                 _skillMatrixRepository.SaveTicketingRecords(ticketingRecords);
+            }
+        }
+
+        public vwImportAndSaveBusinessPartner GetUploadedBusinessPartnerRecords(string fileName)
+        {
+            vwImportAndSaveBusinessPartner importAndSaveBusinessPartnerRecords = new vwImportAndSaveBusinessPartner();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.Depth != 0)
+                        {
+                            string date = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : DateTime.MinValue.ToString();
+                            var team = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                            if (string.IsNullOrEmpty(date) && string.IsNullOrEmpty(team))
+                                break;
+
+                            string comments = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                            string modified = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                            var valid = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                            var TLRemark = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                            var bpNumber = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                            var partnerCatagory = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                            var partnerType = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+
+                            var title = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                            var name1 = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                            var name2 = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+                            var name3 = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
+                            var lastName = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
+                            var firstName = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
+                            var institute1 = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
+                            var institute2 = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
+                            var street = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
+                            var houseNumber = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
+                            var postalCode1 = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
+                            var poBox = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
+                            var postalCode2 = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
+                            var city = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
+                            var countryKey = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
+                            var emailAddress = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
+                            var salesOrganization1 = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
+                            var salesOrganization2 = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
+                            var createdBy = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
+                            var CreatedOn = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : DateTime.MinValue.ToString();
+                            var changedBy = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
+                            var changedOn = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : DateTime.MinValue.ToString();
+                            var remarks = reader.GetValue(31) != null ? reader.GetValue(31).ToString().Trim() : string.Empty;
+
+                            DateTime changedOnDate;
+                            importAndSaveBusinessPartnerRecords.BusinessPartners.Add(new vwBusinessPartner
+                            {
+                                Date = Convert.ToDateTime(date),
+                                Comments = comments,
+                                Modified = modified,
+                                Valid = valid,
+                                TLRemarks = TLRemark,
+                                Team = team,
+                                BusinessPartnerNumber = Convert.ToDouble(bpNumber),
+                                PartnerCategory = Convert.ToUInt16(partnerCatagory),
+                                PartnerType = partnerType,
+                                Title = title,
+                                Name1 = name1,
+                                Name2 = name2,
+                                Name3 = name3,
+                                LastName = lastName,
+                                FirstName = firstName,
+                                Institute1 = institute1,
+                                Institute2 = institute2,
+                                Street = street,
+                                HouseNumber = houseNumber,
+                                PostalCode1 = postalCode1,
+                                POBox = poBox,
+                                PostalCode2 = postalCode2,
+                                City = city,
+                                CountryKey = countryKey,
+                                EmailAddress = emailAddress,
+                                SalesOrganization1 = salesOrganization1,
+                                SalesOrganization2 = salesOrganization2,
+                                CreatedBy = createdBy,
+                                CreatedOn = Convert.ToDateTime(CreatedOn),
+                                ChangedBy = changedBy,
+                                ChangedOn = DateTime.TryParse(changedOn, out changedOnDate) ? Convert.ToDateTime(changedOn) : DateTime.MinValue,
+                                Remarks = remarks,
+                            });
+                        }
+                    }
+                }
+            }
+            return importAndSaveBusinessPartnerRecords;
+        }
+
+        public void SaveBusinessPartnerRecords(string fileName, string recordDate)
+        {
+            var importAndSave = GetUploadedTicketingRecords(fileName);
+            List<BusinessPartner> businessPartnerRecords = new List<BusinessPartner>();
+            foreach (var ticketingRecord in importAndSave.TicketingTools)
+            {
+                BusinessPartner record = new BusinessPartner();
+                //record.Date = ticketingRecord.Date;
+                //record.Status = ticketingRecord.Status;
+                //record.TicketNumber = ticketingRecord.TicketNumber;
+                //record.Team = ticketingRecord.Team;
+                //record.Comment = ticketingRecord.Comment;
+                //record.AdditionalComments = ticketingRecord.AdditionalComments;
+                //record.ConcernedRep = ticketingRecord.ConcernedRep;
+                //record.Remarks = ticketingRecord.Remarks;
+                //record.RecordDate = Convert.ToDateTime(recordDate).Date;
+                //record.CreatedDate = DateTime.Now;
+                businessPartnerRecords.Add(record);
+            }
+            if (businessPartnerRecords.Count > 0)
+            {
+                //_skillMatrixRepository.SaveTicketingRecords(businessPartnerRecords);
             }
         }
     }
