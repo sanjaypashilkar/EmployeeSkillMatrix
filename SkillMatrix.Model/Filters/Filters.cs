@@ -54,4 +54,14 @@ namespace SkillMatrix.Model
         [Description("Team Lead Sampling")]
         TeamLeadSampling = 3
     }
+
+    public enum ReportType
+    {
+        [Description("Daily")]
+        Daily = 1,
+        [Description("Weekly")]
+        Weekly = 2,        
+        [Description("Monthly")]
+        Monthly = 3
+    }
 }

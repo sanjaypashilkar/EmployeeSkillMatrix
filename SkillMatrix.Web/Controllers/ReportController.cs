@@ -888,16 +888,28 @@ namespace SkillMatrix.Web.Controllers
         {
             vwTicketingToolReport report = new vwTicketingToolReport();
             report = _reportService.GetTicketingToolReport(filter);
-            return PartialView("_TicketingToolTable", report);
+            if(filter.ReportType == ReportType.Weekly.ToString())
+            {
+                return PartialView("_TicketingToolTableWeekly", report);
+            }
+            else if(filter.ReportType == ReportType.Daily.ToString())
+            {
+                return PartialView("_TicketingToolTableDaily", report);
+            }
+            else
+            {
+                return PartialView("_TicketingToolMonthly", report);
+            }            
         }
 
         [HttpGet]
-        public IActionResult TicketingToolExcel(DateTime minDate, DateTime maxDate)
+        public IActionResult TicketingToolExcel(DateTime minDate, DateTime maxDate, string reportType)
         {
             var filter = new TicketingToolFilter
             {
                 StartDate = minDate,
                 EndDate = maxDate,
+                ReportType = reportType
             };
 
             var ticketingToolReport = _reportService.GetTicketingToolReport(filter);

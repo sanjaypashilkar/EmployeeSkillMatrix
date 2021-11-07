@@ -1,7 +1,6 @@
 ﻿@model SkillMatrix.Model.vwTicketingToolReport
 @{
     Layout = "_Layout";
-    var counter = 1;
     var minDate = Model.TicketingFilter.StartDate.ToString("yyyy-MM-dd");
     var maxDate = Model.TicketingFilter.EndDate.ToString("yyyy-MM-dd");
     <style>
@@ -13,27 +12,30 @@
 <form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Quality">
     <div class="card text-center">
         <div class="card-body">
-            <div class="d-flex justify-content-center">                
+            <div class="d-flex justify-content-center">
                 <div class="ml-sm-1">From: <input type="date" id="minDate" value="@minDate" placeholder="Record Date" /></div>
                 <div class="ml-sm-1">To: <input type="date" id="maxDate" value="@maxDate" placeholder="Record Date" /></div>
-                <div class="ml-sm-1"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
+                <div class="ml-sm-1">ReportType: @Html.DropDownListFor(x => x.TicketingFilter.ReportType, new SelectList(Model.lstReportType, "Key", "Value"), new { @id = "ReportType", @class = "form-select" })</div>
+                <div class="ml-sm-3"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
             </div>
         </div>
     </div>
 </form>
 <div id="reportTable">
     @{
-        await Html.RenderPartialAsync("_TicketingToolTable", Model);
+        await Html.RenderPartialAsync("_TicketingToolTableMonthly", Model);
     }
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
+        debugger;
         function Show() {
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
+                ReportType : $("#ReportType").val(),
                 PageNumber: 1
             }
             $.ajax({
@@ -55,6 +57,7 @@
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
+                ReportType : $("#ReportType").val(),
                 PageNumber: pageNo
             }
             $.ajax({
@@ -80,8 +83,9 @@
             var filter = {
                 StartDate: $("#minDate").val(),
                 EndDate: $("#maxDate").val(),
+                ReportType : $("#ReportType").val(),
             }
-            window.location = '/Report/TicketingToolExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate;
+            window.location = '/Report/TicketingToolExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&reportType=' + filter.ReportType;
             setTimeout(function () {
                 toastr.success("Ticketing tool report downloaded successfully");
             }, 200);

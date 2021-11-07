@@ -124,6 +124,13 @@ namespace SkillMatrix.Service
             return selectList;
         }
 
+        public Dictionary<string, string> mtdGetReportTypes()
+        {
+            var reportTypes = Helper.GetEnumValuesAndDescriptions<ReportType>();
+            var selectList = reportTypes.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
         #region QUALITY REPORTS
 
         public vwQualityReport GetQualityReport(QualityFilter filter = null)
@@ -595,9 +602,9 @@ namespace SkillMatrix.Service
         private List<DailySampling> GetDailySampling(DateTime startDate, DateTime endDate)
         {
             List<DailySampling> dailySamplings = new List<DailySampling>();
-            DateTime startRange = StartOfWeek(startDate, DayOfWeek.Monday);
-            DateTime endRange = EndOfWeek(endDate, DayOfWeek.Sunday);
-            for (var dt = startRange; dt <= endDate; dt = dt.AddDays(1))
+            //DateTime startRange = StartOfWeek(startDate, DayOfWeek.Monday);
+            //DateTime endRange = EndOfWeek(endDate, DayOfWeek.Sunday);
+            for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
             {
                 DailySampling daily = new DailySampling
                 {
@@ -636,15 +643,32 @@ namespace SkillMatrix.Service
                 var last = month.AddDays(-1);
                 filter.StartDate = first;
                 filter.EndDate = last;
+                filter.StartDate = new DateTime(2021, 07, 01).Date;
+                filter.EndDate = new DateTime(2021, 07, 31).Date;
+                filter.ReportType = ReportType.Monthly.ToString();
                 filter.PageNumber = 1;
             }
 
             vwTicketingToolReport report = new vwTicketingToolReport();
+            report.lstReportType = mtdGetReportTypes();
             report.TicketingFilter = filter;
             var ticketingRecords = _skillMatrixRepository.GetTicketingRecordsByDate(filter.StartDate, filter.EndDate).ToList();
             if (ticketingRecords.Count > 0)
             {
-                List<vwTicketingStatusReport> statusReport = GetTicketingToolStatusReport(ticketingRecords);
+                List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();
+                if (filter.ReportType == ReportType.Daily.ToString())
+                {
+                    statusReport = GetTicketingToolDailyStatusReport(ticketingRecords, filter.StartDate, filter.EndDate);
+                }
+                else if(filter.ReportType == ReportType.Weekly.ToString())
+                {
+                    statusReport = GetTicketingToolWeeklyStatusReport(ticketingRecords, filter.StartDate, filter.EndDate);
+                }
+                else
+                {
+                    statusReport = GetTicketingToolStatusReport(ticketingRecords);
+                }
+                report.TicketingStatusReport = statusReport;
                 report.TotalTicketsChecked = statusReport.Sum(s => s.TicketsChecked);
                 report.TotalCorrectTickets = statusReport.Sum(s => s.CorrectTickets);
                 report.TotalErrorCounts = statusReport.Sum(s => s.ErrorCounts);
@@ -689,6 +713,153 @@ namespace SkillMatrix.Service
                 engagementStatus.AccuracyRate = accuracyRate;
                 statusReport.Add(engagementStatus);
             }
+            return statusReport;
+        }
+
+        private List<vwTicketingStatusReport> GetTicketingToolDailyStatusReport(List<TicketingTool> ticketingRecords, DateTime startDate, DateTime endDate)
+        {
+            List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();            
+            var dailySamplings = GetDailySampling(startDate, endDate);
+            double totalAvgAccuracy = 0;
+            int totalAvgCounter = 0;
+            var engagements = ticketingRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = ticketingRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                vwTicketingStatusReport status = new vwTicketingStatusReport();
+                status.Engagement = engagement;
+                status.TicketsChecked = engagementRecords.Count();
+                status.ErrorCounts = engagementRecords.Where(q => q.Comment.Trim().ToLower() != "correct").ToList().Count();
+                status.CorrectTickets = status.TicketsChecked - status.ErrorCounts;
+                status.AccuracyRate = 0;
+                if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
+                {
+                    status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
+                    totalAvgAccuracy += status.AccuracyRate;
+                    totalAvgCounter += 1;
+                }
+                
+                foreach(var sample in dailySamplings)
+                {
+                    var dailyRecords = engagementRecords.Where(e => e.Date == sample.Date).ToList();
+                    int ticketsChecked = dailyRecords.Count();
+                    int errorTickets = dailyRecords.Where(q => q.Comment.Trim().ToLower() != "correct").ToList().Count();
+                    int correctTickets = ticketsChecked - errorTickets;
+                    double accuracyRate = 0;
+                    if (ticketsChecked > 0 && correctTickets > 0)
+                    {
+                        accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                    }
+
+                    vwTicketingStatusReportDaily dailyStatus = new vwTicketingStatusReportDaily();
+                    dailyStatus.Date = sample.Date;
+                    dailyStatus.Description = sample.DateString;
+                    dailyStatus.TicketsChecked = ticketsChecked;
+                    dailyStatus.ErrorCounts = errorTickets;
+                    dailyStatus.CorrectTickets = correctTickets;
+                    dailyStatus.AccuracyRate = accuracyRate;
+                    status.TicketingStatusReportDaily.Add(dailyStatus);
+                }
+                statusReport.Add(status);
+            }
+            double avgOfAvgAccuracy = Math.Round(((double)totalAvgAccuracy / totalAvgCounter), 2);
+            foreach (var sample in dailySamplings)
+            {
+
+                var counter = 0;
+                double totalTicketsChecked = 0;
+                double totalCorrectTickets = 0;
+                var dailyStatusReport = statusReport.Select(s => s.TicketingStatusReportDaily.Where(e => e.Date == sample.Date).FirstOrDefault()).ToList();
+                foreach (var status in dailyStatusReport)
+                {
+                    if (status.AccuracyRate > 0)
+                    {
+                        counter += 1;
+                        totalTicketsChecked += status.TicketsChecked;
+                        totalCorrectTickets += status.CorrectTickets;
+                    }
+                }
+                var avgAccuracyRate = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+                statusReport.ForEach(a =>
+                {
+                    a.TicketingStatusReportDaily.Where(w => w.Date == sample.Date).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
+                    a.AvgAccuracyRate = avgOfAvgAccuracy;
+                });
+            }
+            return statusReport;
+        }
+
+        private List<vwTicketingStatusReport> GetTicketingToolWeeklyStatusReport(List<TicketingTool> ticketingRecords, DateTime startDate, DateTime endDate)
+        {
+            List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();
+            var weekRanges = GetWeekRanges(startDate, endDate);
+            double totalAvgAccuracy = 0;
+            int totalAvgCounter = 0;
+            var engagements = ticketingRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = ticketingRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                vwTicketingStatusReport status = new vwTicketingStatusReport();
+                status.Engagement = engagement;                
+                status.TicketsChecked = engagementRecords.Count();
+                status.ErrorCounts = engagementRecords.Where(q => q.Comment.Trim().ToLower() != "correct").ToList().Count();
+                status.CorrectTickets = status.TicketsChecked - status.ErrorCounts;
+                status.AccuracyRate = 0;
+                if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
+                {
+                    status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
+                    totalAvgAccuracy += status.AccuracyRate;
+                    totalAvgCounter += 1;
+                }
+                foreach (var week in weekRanges)
+                {
+                    var weeklyRecords = engagementRecords.Where(e => e.Date >= week.StartDate && e.Date <= week.EndDate).ToList();
+                    int ticketsChecked = weeklyRecords.Count();
+                    int errorTickets = weeklyRecords.Where(q => q.Comment.Trim().ToLower() != "correct").ToList().Count();
+                    int correctTickets = ticketsChecked - errorTickets;
+                    double accuracyRate = 0;
+                    if (ticketsChecked > 0 && correctTickets > 0)
+                    {
+                        accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                    }
+
+                    vwTicketingStatusReportWeekly weeklyStatus = new vwTicketingStatusReportWeekly();
+                    weeklyStatus.StartDate = week.StartDate;
+                    weeklyStatus.EndDate = week.EndDate;
+                    weeklyStatus.Description = week.Week;
+                    weeklyStatus.TicketsChecked = ticketsChecked;
+                    weeklyStatus.ErrorCounts = errorTickets;
+                    weeklyStatus.CorrectTickets = correctTickets;
+                    weeklyStatus.AccuracyRate = accuracyRate;
+                    status.TicketingStatusReportWeekly.Add(weeklyStatus);
+                }
+                statusReport.Add(status);
+            }
+            double avgOfAvgAccuracy = Math.Round(((double)totalAvgAccuracy / totalAvgCounter), 2);
+            foreach (var week in weekRanges)
+            {
+
+                var counter = 0;
+                double totalTicketsChecked = 0;
+                double totalCorrectTickets = 0;
+                var weeklyStatusReport = statusReport.Select(s => s.TicketingStatusReportWeekly.Where(e => e.StartDate >= week.StartDate && e.EndDate <= week.EndDate).FirstOrDefault()).ToList();
+                foreach (var status in weeklyStatusReport)
+                {
+                    if (status.AccuracyRate > 0)
+                    {
+                        counter += 1;
+                        totalTicketsChecked += status.TicketsChecked;
+                        totalCorrectTickets += status.CorrectTickets;
+                    }
+                }
+                var avgAccuracyRate = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2); 
+                statusReport.ForEach(a =>
+                {
+                    a.TicketingStatusReportWeekly.Where(w => w.Description == week.Week).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
+                    a.AvgAccuracyRate = avgOfAvgAccuracy;
+                });
+            }
+
             return statusReport;
         }
 
