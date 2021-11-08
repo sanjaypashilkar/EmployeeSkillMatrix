@@ -764,7 +764,11 @@ namespace SkillMatrix.Service
                 }
                 statusReport.Add(status);
             }
-            double avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            double avgOfAvgAccuracy = 0;
+            if (totalTicketsChecked > 0 && totalCorrectTickets > 0)
+            {
+                avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            }            
             foreach (var sample in dailySamplings)
             {
 
@@ -781,7 +785,11 @@ namespace SkillMatrix.Service
                         sumOfCorrectTickets += status.CorrectTickets;
                     }
                 }
-                var avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
+                double avgAccuracyRate = 0;
+                if (sumOfTicketsChecked > 0 && sumOfCorrectTickets > 0)
+                {
+                    avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
+                }
                 statusReport.ForEach(a =>
                 {
                     a.TicketingStatusReportDaily.Where(w => w.Date == sample.Date).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
@@ -839,7 +847,11 @@ namespace SkillMatrix.Service
                 }
                 statusReport.Add(status);
             }
-            double avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            double avgOfAvgAccuracy = 0;
+            if (totalTicketsChecked > 0 && totalCorrectTickets > 0)
+            {
+                avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            }
             foreach (var week in weekRanges)
             {
 
@@ -856,7 +868,11 @@ namespace SkillMatrix.Service
                         sumOfCorrectTickets += status.CorrectTickets;
                     }
                 }
-                var avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2); 
+                double avgAccuracyRate = 0;
+                if (sumOfTicketsChecked > 0 && sumOfCorrectTickets>0)
+                {
+                    avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
+                }                
                 statusReport.ForEach(a =>
                 {
                     a.TicketingStatusReportWeekly.Where(w => w.Description == week.Week).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
