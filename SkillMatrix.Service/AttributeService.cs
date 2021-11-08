@@ -427,7 +427,7 @@ namespace SkillMatrix.Service
                                 TLRemarks = TLRemark,
                                 Team = team,
                                 BusinessPartnerNumber = Convert.ToDouble(bpNumber),
-                                PartnerCategory = Convert.ToUInt16(partnerCatagory),
+                                PartnerCategory = Convert.ToInt32(partnerCatagory),
                                 PartnerType = partnerType,
                                 Title = title,
                                 Name1 = name1,
@@ -462,26 +462,51 @@ namespace SkillMatrix.Service
 
         public void SaveBusinessPartnerRecords(string fileName, string recordDate)
         {
-            var importAndSave = GetUploadedTicketingRecords(fileName);
+            var importAndSave = GetUploadedBusinessPartnerRecords(fileName);
             List<BusinessPartner> businessPartnerRecords = new List<BusinessPartner>();
-            foreach (var ticketingRecord in importAndSave.TicketingTools)
+            foreach (var bpRecord in importAndSave.BusinessPartners)
             {
                 BusinessPartner record = new BusinessPartner();
-                //record.Date = ticketingRecord.Date;
-                //record.Status = ticketingRecord.Status;
-                //record.TicketNumber = ticketingRecord.TicketNumber;
-                //record.Team = ticketingRecord.Team;
-                //record.Comment = ticketingRecord.Comment;
-                //record.AdditionalComments = ticketingRecord.AdditionalComments;
-                //record.ConcernedRep = ticketingRecord.ConcernedRep;
-                //record.Remarks = ticketingRecord.Remarks;
-                //record.RecordDate = Convert.ToDateTime(recordDate).Date;
-                //record.CreatedDate = DateTime.Now;
+                record.Date = bpRecord.Date;
+                record.Comments = bpRecord.Comments;
+                record.Modified = bpRecord.Modified;
+                record.Valid = bpRecord.Valid;
+                record.TLRemarks = bpRecord.TLRemarks;
+
+                record.Team = bpRecord.Team;
+                record.BusinessPartnerNumber = bpRecord.BusinessPartnerNumber;
+                record.PartnerCategory = Convert.ToUInt16(bpRecord.PartnerCategory);
+                record.PartnerType = bpRecord.PartnerType;
+                record.Title = bpRecord.Title;
+                record.Name1 = bpRecord.Name1;
+                record.Name2 = bpRecord.Name2;
+                record.Name3 = bpRecord.Name3;
+                record.LastName = bpRecord.LastName;
+                record.FirstName = bpRecord.FirstName;
+                record.Institute1 = bpRecord.Institute1;
+                record.Institute2 = bpRecord.Institute2;
+                record.Street = bpRecord.Street;
+                record.HouseNumber = bpRecord.HouseNumber;
+                record.PostalCode1 = bpRecord.PostalCode1;
+                record.POBox = bpRecord.POBox;
+                record.PostalCode2 = bpRecord.PostalCode2;
+                record.City = bpRecord.City;
+                record.CountryKey = bpRecord.CountryKey;
+                record.EmailAddress = bpRecord.EmailAddress;
+                record.SalesOrganization1 = bpRecord.SalesOrganization1;
+                record.SalesOrganization2 = bpRecord.SalesOrganization2;
+                record.CreatedBy = bpRecord.CreatedBy;
+                record.CreatedOn = bpRecord.CreatedOn;
+                record.ChangedBy = bpRecord.ChangedBy;
+                record.ChangedOn = bpRecord.ChangedOn;
+                record.Remarks = bpRecord.Remarks;
+                record.RecordDate = Convert.ToDateTime(recordDate).Date;
+                record.CreatedDate = DateTime.Now;
                 businessPartnerRecords.Add(record);
             }
             if (businessPartnerRecords.Count > 0)
             {
-                //_skillMatrixRepository.SaveTicketingRecords(businessPartnerRecords);
+                _skillMatrixRepository.SaveBusinessPartnersRecords(businessPartnerRecords);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace SkillMatrix.Model
         public string Valid { get; set; }
         public string TLRemarks { get; set; }        
         public string Team { get; set; }
-        public int BusinessPartnerNumber { get; set; }
+        public double BusinessPartnerNumber { get; set; }
         public int PartnerCategory { get; set; }
         public string PartnerType { get; set; }
         public string Title { get; set; }

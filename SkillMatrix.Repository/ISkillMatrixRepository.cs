@@ -34,6 +34,11 @@ namespace SkillMatrix.Repository
         int SaveTicketingRecords(IEnumerable<TicketingTool> ticketingRecords);
         #endregion
 
+        #region BUSINESS PARTNER
+        IQueryable<BusinessPartner> GetBusinessPartnerRecordsByDate(DateTime startDate, DateTime endDate);
+        int SaveBusinessPartnersRecords(IEnumerable<BusinessPartner> businessPartnersRecords);
+        #endregion
+
         #region COMMON METHODS
 
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;

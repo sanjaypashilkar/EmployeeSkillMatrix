@@ -73,6 +73,11 @@ namespace SkillMatrix.Repository
             return _context.TicketingTool.Where(e => e.Date >= startDate && e.Date <= endDate).AsNoTracking();
         }
 
+        public IQueryable<BusinessPartner> GetBusinessPartnerRecordsByDate(DateTime startDate, DateTime endDate)
+        {
+            return _context.BusinessPartner.Where(e => e.Date >= startDate && e.Date <= endDate).AsNoTracking();
+        }
+
         public int AddEntry<TEntity>(TEntity entry) where TEntity:class
         {
             _context.Set<TEntity>().Add(entry);

@@ -23,8 +23,8 @@ namespace SkillMatrix.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BusinessPartnerNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("BusinessPartnerNumber")
+                        .HasColumnType("double");
 
                     b.Property<string>("ChangedBy")
                         .HasColumnType("text");

@@ -9,7 +9,7 @@ using SkillMatrix.Repository;
 namespace SkillMatrix.Repository.Migrations
 {
     [DbContext(typeof(SkillMatrixDb))]
-    [Migration("20211108103554_BusinessPartner")]
+    [Migration("20211108113821_BusinessPartner")]
     partial class BusinessPartner
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,8 +25,8 @@ namespace SkillMatrix.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BusinessPartnerNumber")
-                        .HasColumnType("int");
+                    b.Property<double>("BusinessPartnerNumber")
+                        .HasColumnType("double");
 
                     b.Property<string>("ChangedBy")
                         .HasColumnType("text");
