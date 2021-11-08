@@ -41,7 +41,6 @@
 {
     <script type="text/javascript">
         function Show() {
-            debugger;
             var dept = $("#Department").val();
             var reportType = "";
             if (dept == 'OrderManagement' || dept == 'CompCopy') {
@@ -127,7 +126,6 @@
                 ReportType: reportType,
                 TargetScore: $("#TargetScore").val(),
             }
-            debugger;
             window.location = '/Report/QualityExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType + '&targetScore=' + filter.TargetScore;
             setTimeout(function () {
                 toastr.success("Quality summary report downloaded successfully");
@@ -141,7 +139,6 @@
                     ReportType: $("#ReportType2").val(),
                     Department: $("#Department").val(),
                 }
-                debugger;
                 window.location = '/Report/QualityExcel2?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
                 setTimeout(function () {
                     toastr.success("Weekly Level Summary downloaded successfully");
@@ -155,7 +152,6 @@
                     ReportType: $("#ReportType2").val(),
                     Department: $("#Department").val(),
                 }
-                debugger;
                 window.location = '/Report/QualityExcel3?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&department=' + filter.Department + '&reportType=' + filter.ReportType;
                 setTimeout(function () {
                     toastr.success("Daily sampling percentage report downloaded successfully");
@@ -163,7 +159,6 @@
             }
 
             function SelectedIndexChanged() {
-                debugger;
                 var dept = $("#Department").val();
                 if (dept == 'OrderManagement' || dept == 'CompCopy') {
                     $("#divTargetScore").hide();

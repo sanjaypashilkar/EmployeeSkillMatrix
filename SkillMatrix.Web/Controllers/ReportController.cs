@@ -898,7 +898,7 @@ namespace SkillMatrix.Web.Controllers
             }
             else
             {
-                return PartialView("_TicketingToolMonthly", report);
+                return PartialView("_TicketingToolTableMonthly", report);
             }            
         }
 
