@@ -129,7 +129,11 @@ namespace SkillMatrix.Repository
             ticketingRecords.ToList().ForEach(e => _context.TicketingTool.Add(e));
             return _context.SaveChanges();
         }
-
+        public int SaveBusinessPartnersRecords(IEnumerable<BusinessPartner> businessPartnersRecords)
+        {
+            businessPartnersRecords.ToList().ForEach(e => _context.BusinessPartner.Add(e));
+            return _context.SaveChanges();
+        }
         public async Task<int> AddEntryAsync<TEntity>(TEntity entry) where TEntity : class
         {
             await _context.Set<TEntity>().AddAsync(entry);

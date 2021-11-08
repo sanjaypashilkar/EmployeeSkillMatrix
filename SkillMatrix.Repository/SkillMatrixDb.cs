@@ -16,6 +16,7 @@ namespace SkillMatrix.Repository
         public DbSet<QualityRating> QualityRating { get; set; }
         public DbSet<QualityRating2> QualityRating2 { get; set; }
         public DbSet<TicketingTool> TicketingTool { get; set; }
+        public DbSet<BusinessPartner> BusinessPartner { get; set; }
         public SkillMatrixDb()
         { }
 
@@ -41,6 +42,7 @@ namespace SkillMatrix.Repository
             modelBuilder.Entity<QualityRating>();
             modelBuilder.Entity<QualityRating2>();
             modelBuilder.Entity<TicketingTool>();
+            modelBuilder.Entity<BusinessPartner>();
 
             #region DataSeed
 
