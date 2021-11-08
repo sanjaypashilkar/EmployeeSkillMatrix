@@ -719,8 +719,9 @@ namespace SkillMatrix.Service
         private List<vwTicketingStatusReport> GetTicketingToolDailyStatusReport(List<TicketingTool> ticketingRecords, DateTime startDate, DateTime endDate)
         {
             List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();            
-            var dailySamplings = GetDailySampling(startDate, endDate);
-            double totalAvgAccuracy = 0;
+            var dailySamplings = GetDates(startDate, endDate);
+            int totalTicketsChecked = 0;
+            int totalCorrectTickets = 0;
             int totalAvgCounter = 0;
             var engagements = ticketingRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
             foreach (var engagement in engagements)
@@ -735,7 +736,8 @@ namespace SkillMatrix.Service
                 if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
                 {
                     status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
-                    totalAvgAccuracy += status.AccuracyRate;
+                    totalTicketsChecked += status.TicketsChecked;
+                    totalCorrectTickets += status.CorrectTickets;
                     totalAvgCounter += 1;
                 }
                 
@@ -762,24 +764,24 @@ namespace SkillMatrix.Service
                 }
                 statusReport.Add(status);
             }
-            double avgOfAvgAccuracy = Math.Round(((double)totalAvgAccuracy / totalAvgCounter), 2);
+            double avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
             foreach (var sample in dailySamplings)
             {
 
                 var counter = 0;
-                double totalTicketsChecked = 0;
-                double totalCorrectTickets = 0;
+                int sumOfTicketsChecked = 0;
+                int sumOfCorrectTickets = 0;
                 var dailyStatusReport = statusReport.Select(s => s.TicketingStatusReportDaily.Where(e => e.Date == sample.Date).FirstOrDefault()).ToList();
                 foreach (var status in dailyStatusReport)
                 {
                     if (status.AccuracyRate > 0)
                     {
                         counter += 1;
-                        totalTicketsChecked += status.TicketsChecked;
-                        totalCorrectTickets += status.CorrectTickets;
+                        sumOfTicketsChecked += status.TicketsChecked;
+                        sumOfCorrectTickets += status.CorrectTickets;
                     }
                 }
-                var avgAccuracyRate = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+                var avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
                 statusReport.ForEach(a =>
                 {
                     a.TicketingStatusReportDaily.Where(w => w.Date == sample.Date).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
@@ -793,7 +795,8 @@ namespace SkillMatrix.Service
         {
             List<vwTicketingStatusReport> statusReport = new List<vwTicketingStatusReport>();
             var weekRanges = GetWeekRanges(startDate, endDate);
-            double totalAvgAccuracy = 0;
+            int totalTicketsChecked = 0;
+            int totalCorrectTickets = 0;
             int totalAvgCounter = 0;
             var engagements = ticketingRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
             foreach (var engagement in engagements)
@@ -808,7 +811,8 @@ namespace SkillMatrix.Service
                 if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
                 {
                     status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
-                    totalAvgAccuracy += status.AccuracyRate;
+                    totalTicketsChecked += status.TicketsChecked;
+                    totalCorrectTickets += status.CorrectTickets;
                     totalAvgCounter += 1;
                 }
                 foreach (var week in weekRanges)
@@ -835,24 +839,24 @@ namespace SkillMatrix.Service
                 }
                 statusReport.Add(status);
             }
-            double avgOfAvgAccuracy = Math.Round(((double)totalAvgAccuracy / totalAvgCounter), 2);
+            double avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
             foreach (var week in weekRanges)
             {
 
                 var counter = 0;
-                double totalTicketsChecked = 0;
-                double totalCorrectTickets = 0;
+                int sumOfTicketsChecked = 0;
+                int sumOfCorrectTickets = 0;
                 var weeklyStatusReport = statusReport.Select(s => s.TicketingStatusReportWeekly.Where(e => e.StartDate >= week.StartDate && e.EndDate <= week.EndDate).FirstOrDefault()).ToList();
                 foreach (var status in weeklyStatusReport)
                 {
                     if (status.AccuracyRate > 0)
                     {
                         counter += 1;
-                        totalTicketsChecked += status.TicketsChecked;
-                        totalCorrectTickets += status.CorrectTickets;
+                        sumOfTicketsChecked += status.TicketsChecked;
+                        sumOfCorrectTickets += status.CorrectTickets;
                     }
                 }
-                var avgAccuracyRate = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2); 
+                var avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2); 
                 statusReport.ForEach(a =>
                 {
                     a.TicketingStatusReportWeekly.Where(w => w.Description == week.Week).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
@@ -861,6 +865,24 @@ namespace SkillMatrix.Service
             }
 
             return statusReport;
+        }
+
+        private List<DailySampling> GetDates(DateTime startDate, DateTime endDate)
+        {
+            List<DailySampling> dailySamplings = new List<DailySampling>();
+            for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+            {
+                if(dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday )
+                {
+                    DailySampling daily = new DailySampling
+                    {
+                        Date = dt,
+                        DateString = dt.ToString("dd-MMM-yy")
+                    };
+                    dailySamplings.Add(daily);
+                }                
+            }
+            return dailySamplings;
         }
 
         #endregion
