@@ -643,8 +643,8 @@ namespace SkillMatrix.Service
                 var last = month.AddDays(-1);
                 filter.StartDate = first;
                 filter.EndDate = last;
-                filter.StartDate = new DateTime(2021, 07, 01).Date;
-                filter.EndDate = new DateTime(2021, 07, 31).Date;
+                //filter.StartDate = new DateTime(2021, 07, 01).Date;
+                //filter.EndDate = new DateTime(2021, 07, 31).Date;
                 filter.ReportType = ReportType.Monthly.ToString();
                 filter.PageNumber = 1;
             }
@@ -900,6 +900,261 @@ namespace SkillMatrix.Service
             }
             return dailySamplings;
         }
+
+        #endregion
+
+        #region BUSINESS PARTNER REPORTS
+
+        public vwBusinessPartnerReport GetBusinessPartnerReport(BusinessPartnerFilter filter = null)
+        {
+            if (filter == null)
+            {
+                filter = new BusinessPartnerFilter();
+                var today = DateTime.Today;
+                var month = new DateTime(today.Year, today.Month, 1);
+                var first = month.AddMonths(-1);
+                var last = month.AddDays(-1);
+                filter.StartDate = first;
+                filter.EndDate = last;
+                //filter.StartDate = new DateTime(2021, 08, 01).Date;
+                //filter.EndDate = new DateTime(2021, 08, 31).Date;
+                filter.ReportType = ReportType.Monthly.ToString();
+                filter.PageNumber = 1;
+            }
+
+            vwBusinessPartnerReport report = new vwBusinessPartnerReport();
+            report.lstReportType = mtdGetReportTypes();
+            report.BusinessPartnerFilter = filter;
+            var businessPartnerRecords = _skillMatrixRepository.GetBusinessPartnerRecordsByDate(filter.StartDate, filter.EndDate).ToList();
+            if (businessPartnerRecords.Count > 0)
+            {
+                List<vwBusinessPartnerStatusReport> statusReport = new List<vwBusinessPartnerStatusReport>();
+                if (filter.ReportType == ReportType.Daily.ToString())
+                {
+                    statusReport = GetBusinessPartnerDailyStatusReport(businessPartnerRecords, filter.StartDate, filter.EndDate);
+                }
+                else if (filter.ReportType == ReportType.Weekly.ToString())
+                {
+                    statusReport = GetBusinessPartnerWeeklyStatusReport(businessPartnerRecords, filter.StartDate, filter.EndDate);
+                }
+                else
+                {
+                    statusReport = GetBusinessPartnerStatusReport(businessPartnerRecords);
+                }
+                report.BPStatusReport = statusReport;
+                report.TotalTicketsChecked = statusReport.Sum(s => s.TicketsChecked);
+                report.TotalCorrectTickets = statusReport.Sum(s => s.CorrectTickets);
+                report.TotalErrorCounts = statusReport.Sum(s => s.ErrorCounts);
+                report.AvgAccuracyRate = Math.Round(((double)report.TotalCorrectTickets / report.TotalTicketsChecked) * 100, 2);
+
+                var sortedList = statusReport.OrderByDescending(s => s.TicketsChecked).ToList();
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = sortedList.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedStatusReport = paginatedData;
+                report.BPStatusReport = sortedList;
+            }
+            return report;
+        }
+
+        private List<vwBusinessPartnerStatusReport> GetBusinessPartnerStatusReport(List<BusinessPartner> businessPartnerRecords)
+        {
+            List<vwBusinessPartnerStatusReport> statusReport = new List<vwBusinessPartnerStatusReport>();
+            var engagements = businessPartnerRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = businessPartnerRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                int ticketsChecked = engagementRecords.Count();
+                int errorTickets = engagementRecords.Where(q => q.Remarks.Trim().ToLower() == "error").Count();
+                int correctTickets = ticketsChecked - errorTickets;
+                double accuracyRate = 0;
+                if (ticketsChecked > 0 && correctTickets > 0)
+                {
+                    accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                }
+                vwBusinessPartnerStatusReport engagementStatus = new vwBusinessPartnerStatusReport();
+                engagementStatus.Engagement = engagement;
+                engagementStatus.TicketsChecked = ticketsChecked;
+                engagementStatus.ErrorCounts = errorTickets;
+                engagementStatus.CorrectTickets = correctTickets;
+                engagementStatus.AccuracyRate = accuracyRate;
+                statusReport.Add(engagementStatus);
+            }
+            return statusReport;
+        }
+
+        private List<vwBusinessPartnerStatusReport> GetBusinessPartnerDailyStatusReport(List<BusinessPartner> businessPartnerRecords, DateTime startDate, DateTime endDate)
+        {
+            List<vwBusinessPartnerStatusReport> statusReport = new List<vwBusinessPartnerStatusReport>();
+            var dailySamplings = GetDates(startDate, endDate);
+            int totalTicketsChecked = 0;
+            int totalCorrectTickets = 0;
+            int totalAvgCounter = 0;
+            var engagements = businessPartnerRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = businessPartnerRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                vwBusinessPartnerStatusReport status = new vwBusinessPartnerStatusReport();
+                status.Engagement = engagement;
+                status.TicketsChecked = engagementRecords.Count();
+                status.ErrorCounts = engagementRecords.Where(q => q.Remarks.Trim().ToLower() == "error").ToList().Count();
+                status.CorrectTickets = status.TicketsChecked - status.ErrorCounts;
+                status.AccuracyRate = 0;
+                if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
+                {
+                    status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
+                    totalTicketsChecked += status.TicketsChecked;
+                    totalCorrectTickets += status.CorrectTickets;
+                    totalAvgCounter += 1;
+                }
+
+                foreach (var sample in dailySamplings)
+                {
+                    var dailyRecords = engagementRecords.Where(e => e.Date == sample.Date).ToList();
+                    int ticketsChecked = dailyRecords.Count();
+                    int errorTickets = dailyRecords.Where(q => q.Remarks.Trim().ToLower() == "error").ToList().Count();
+                    int correctTickets = ticketsChecked - errorTickets;
+                    double accuracyRate = 0;
+                    if (ticketsChecked > 0 && correctTickets > 0)
+                    {
+                        accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                    }
+
+                    vwBusinessPartnerStatusReportDaily dailyStatus = new vwBusinessPartnerStatusReportDaily();
+                    dailyStatus.Date = sample.Date;
+                    dailyStatus.Description = sample.DateString;
+                    dailyStatus.TicketsChecked = ticketsChecked;
+                    dailyStatus.ErrorCounts = errorTickets;
+                    dailyStatus.CorrectTickets = correctTickets;
+                    dailyStatus.AccuracyRate = accuracyRate;
+                    status.BPStatusReportDaily.Add(dailyStatus);
+                }
+                statusReport.Add(status);
+            }
+            double avgOfAvgAccuracy = 0;
+            if (totalTicketsChecked > 0 && totalCorrectTickets > 0)
+            {
+                avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            }
+            foreach (var sample in dailySamplings)
+            {
+
+                var counter = 0;
+                int sumOfTicketsChecked = 0;
+                int sumOfCorrectTickets = 0;
+                var dailyStatusReport = statusReport.Select(s => s.BPStatusReportDaily.Where(e => e.Date == sample.Date).FirstOrDefault()).ToList();
+                foreach (var status in dailyStatusReport)
+                {
+                    if (status.AccuracyRate > 0)
+                    {
+                        counter += 1;
+                        sumOfTicketsChecked += status.TicketsChecked;
+                        sumOfCorrectTickets += status.CorrectTickets;
+                    }
+                }
+                double avgAccuracyRate = 0;
+                if (sumOfTicketsChecked > 0 && sumOfCorrectTickets > 0)
+                {
+                    avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
+                }
+                statusReport.ForEach(a =>
+                {
+                    a.BPStatusReportDaily.Where(w => w.Date == sample.Date).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
+                    a.AvgAccuracyRate = avgOfAvgAccuracy;
+                });
+            }
+            return statusReport;
+        }
+
+        private List<vwBusinessPartnerStatusReport> GetBusinessPartnerWeeklyStatusReport(List<BusinessPartner> businessPartnerRecords, DateTime startDate, DateTime endDate)
+        {
+            List<vwBusinessPartnerStatusReport> statusReport = new List<vwBusinessPartnerStatusReport>();
+            var weekRanges = GetWeekRanges(startDate, endDate);
+            int totalTicketsChecked = 0;
+            int totalCorrectTickets = 0;
+            int totalAvgCounter = 0;
+            var engagements = businessPartnerRecords.Select(q => q.Team).Distinct().OrderBy(q => q).ToList();
+            foreach (var engagement in engagements)
+            {
+                var engagementRecords = businessPartnerRecords.Where(s => s.Team.ToLower() == engagement.ToLower()).ToList();
+                vwBusinessPartnerStatusReport status = new vwBusinessPartnerStatusReport();
+                status.Engagement = engagement;
+                status.TicketsChecked = engagementRecords.Count();
+                status.ErrorCounts = engagementRecords.Where(q => q.Remarks.Trim().ToLower() == "error").ToList().Count();
+                status.CorrectTickets = status.TicketsChecked - status.ErrorCounts;
+                status.AccuracyRate = 0;
+                if (status.TicketsChecked > 0 && status.CorrectTickets > 0)
+                {
+                    status.AccuracyRate = Math.Round(((double)status.CorrectTickets / status.TicketsChecked) * 100, 2);
+                    totalTicketsChecked += status.TicketsChecked;
+                    totalCorrectTickets += status.CorrectTickets;
+                    totalAvgCounter += 1;
+                }
+                foreach (var week in weekRanges)
+                {
+                    var weeklyRecords = engagementRecords.Where(e => e.Date >= week.StartDate && e.Date <= week.EndDate).ToList();
+                    int ticketsChecked = weeklyRecords.Count();
+                    int errorTickets = weeklyRecords.Where(q => q.Remarks.Trim().ToLower() == "error").ToList().Count();
+                    int correctTickets = ticketsChecked - errorTickets;
+                    double accuracyRate = 0;
+                    if (ticketsChecked > 0 && correctTickets > 0)
+                    {
+                        accuracyRate = Math.Round(((double)correctTickets / ticketsChecked) * 100, 2);
+                    }
+
+                    vwBusinessPartnerStatusReportWeekly weeklyStatus = new vwBusinessPartnerStatusReportWeekly();
+                    weeklyStatus.StartDate = week.StartDate;
+                    weeklyStatus.EndDate = week.EndDate;
+                    weeklyStatus.Description = week.Week;
+                    weeklyStatus.TicketsChecked = ticketsChecked;
+                    weeklyStatus.ErrorCounts = errorTickets;
+                    weeklyStatus.CorrectTickets = correctTickets;
+                    weeklyStatus.AccuracyRate = accuracyRate;
+                    status.BPStatusReportWeekly.Add(weeklyStatus);
+                }
+                statusReport.Add(status);
+            }
+            double avgOfAvgAccuracy = 0;
+            if (totalTicketsChecked > 0 && totalCorrectTickets > 0)
+            {
+                avgOfAvgAccuracy = Math.Round(((double)totalCorrectTickets / totalTicketsChecked) * 100, 2);
+            }
+            foreach (var week in weekRanges)
+            {
+
+                var counter = 0;
+                int sumOfTicketsChecked = 0;
+                int sumOfCorrectTickets = 0;
+                var weeklyStatusReport = statusReport.Select(s => s.BPStatusReportWeekly.Where(e => e.StartDate >= week.StartDate && e.EndDate <= week.EndDate).FirstOrDefault()).ToList();
+                foreach (var status in weeklyStatusReport)
+                {
+                    if (status.AccuracyRate > 0)
+                    {
+                        counter += 1;
+                        sumOfTicketsChecked += status.TicketsChecked;
+                        sumOfCorrectTickets += status.CorrectTickets;
+                    }
+                }
+                double avgAccuracyRate = 0;
+                if (sumOfTicketsChecked > 0 && sumOfCorrectTickets > 0)
+                {
+                    avgAccuracyRate = Math.Round(((double)sumOfCorrectTickets / sumOfTicketsChecked) * 100, 2);
+                }
+                statusReport.ForEach(a =>
+                {
+                    a.BPStatusReportWeekly.Where(w => w.Description == week.Week).FirstOrDefault().AvgAccuracyRate = avgAccuracyRate;
+                    a.AvgAccuracyRate = avgOfAvgAccuracy;
+                });
+            }
+
+            return statusReport;
+        }        
 
         #endregion
     }

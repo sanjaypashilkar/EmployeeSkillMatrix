@@ -75,7 +75,7 @@ namespace SkillMatrix.Repository
 
         public IQueryable<BusinessPartner> GetBusinessPartnerRecordsByDate(DateTime startDate, DateTime endDate)
         {
-            return _context.BusinessPartner.Where(e => e.Date >= startDate && e.Date <= endDate).AsNoTracking();
+            return _context.BusinessPartner.Where(e => e.CreatedOn >= startDate && e.CreatedOn <= endDate).AsNoTracking();
         }
 
         public int AddEntry<TEntity>(TEntity entry) where TEntity:class

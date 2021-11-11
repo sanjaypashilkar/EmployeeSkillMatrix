@@ -21,5 +21,6 @@ namespace SkillMatrix.Service
         vwQualityReport GetQualityReport(QualityFilter filter);
         vwQualityReport GetQualityReport2(QualityFilter filter);
         vwTicketingToolReport GetTicketingToolReport(TicketingToolFilter filter);
+        vwBusinessPartnerReport GetBusinessPartnerReport(BusinessPartnerFilter filter);
     }
 }
