@@ -1332,406 +1332,406 @@ namespace SkillMatrix.Web.Controllers
             }
         }
 
-        //[HttpGet]
-        //public IActionResult BusinessPartnerExcel(DateTime minDate, DateTime maxDate, string reportType)
-        //{
-        //    var filter = new BusinessPartnerFilter
-        //    {
-        //        StartDate = minDate,
-        //        EndDate = maxDate,
-        //        ReportType = reportType
-        //    };
-
-        //    var ticketingToolReport = _reportService.GetBusinessPartnerReport(filter);
-
-        //    if (filter.ReportType == ReportType.Daily.ToString())
-        //    {
-        //        #region Daily Workbook
-
-        //        using (var workbook = new XLWorkbook())
-        //        {
-        //            var tab = $"Daily Status";
-        //            var worksheet = workbook.Worksheets.Add(tab);
-        //            worksheet.Style.Font.SetFontName("Calibri");
-        //            var currentRow = 1;
-
-        //            //worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
-        //            //IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //            //range0_1_6.Merge();
-        //            //range0_1_6.Style.Font.Bold = true;
-        //            //range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
-        //            //range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-        //            //range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            currentRow++;
-
-        //            if (ticketingToolReport.TicketingStatusReport.Count > 0)
-        //            {
-        //                #region Body
-
-        //                worksheet.Cell(currentRow, 1).Value = "Sr.No";
-        //                worksheet.Cell(currentRow, 2).Value = "Engagement";
-        //                int headerCounter = 3;
-        //                foreach (var header in ticketingToolReport.TicketingStatusReport[0].TicketingStatusReportDaily)
-        //                {
-        //                    worksheet.Cell(currentRow, headerCounter).Value = header.Description;
-        //                    headerCounter++;
-        //                }
-        //                worksheet.Cell(currentRow, headerCounter).Value = "Average Accuracy";
-
-        //                IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, headerCounter).Address);
-        //                range1_1_n.Style.Font.Bold = true;
-        //                range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //                range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //                IXLBorder border1_1_n = range1_1_n.Style.Border;
-        //                border1_1_n.BottomBorder = border1_1_n.TopBorder = border1_1_n.LeftBorder = border1_1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                currentRow++;
-
-        //                foreach (var statusReport in ticketingToolReport.TicketingStatusReport)
-        //                {
-        //                    worksheet.Cell(currentRow, 1).Value = currentRow - 2;
-
-        //                    worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
-        //                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-        //                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                    int dailyHeaderCtr = 3;
-        //                    foreach (var dailyData in statusReport.TicketingStatusReportDaily)
-        //                    {
-        //                        if (dailyData.AccuracyRate > 0)
-        //                        {
-        //                            worksheet.Cell(currentRow, dailyHeaderCtr).Value = $"{dailyData.AccuracyRate}%";
-        //                        }
-        //                        worksheet.Cell(currentRow, dailyHeaderCtr).Style.NumberFormat.Format = "0.00%";
-        //                        worksheet.Cell(currentRow, dailyHeaderCtr).DataType = XLDataType.Number;
-        //                        worksheet.Cell(currentRow, dailyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                        dailyHeaderCtr++;
-        //                    }
-
-        //                    worksheet.Cell(currentRow, dailyHeaderCtr).Value = $"{statusReport.AccuracyRate}%";
-        //                    worksheet.Cell(currentRow, dailyHeaderCtr).Style.NumberFormat.Format = "0.00%";
-        //                    worksheet.Cell(currentRow, dailyHeaderCtr).DataType = XLDataType.Number;
-        //                    worksheet.Cell(currentRow, dailyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                    IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, dailyHeaderCtr).Address);
-        //                    range_n_1_n.Style.Font.FontSize = 9;
-        //                    IXLBorder border_n_1_n = range_n_1_n.Style.Border;
-        //                    border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                    currentRow++;
-        //                }
-
-        //                worksheet.Cell(currentRow, 1).Value = "";
-
-        //                worksheet.Cell(currentRow, 2).Value = "Total";
-        //                worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                int dailyTotalCtr = 3;
-        //                foreach (var dailyReport in ticketingToolReport.TicketingStatusReport[0].TicketingStatusReportDaily)
-        //                {
-        //                    if (dailyReport.AvgAccuracyRate > 0)
-        //                    {
-        //                        worksheet.Cell(currentRow, dailyTotalCtr).Value = $"{dailyReport.AvgAccuracyRate}%";
-        //                    }
-        //                    worksheet.Cell(currentRow, dailyTotalCtr).Style.NumberFormat.Format = "0.00%";
-        //                    worksheet.Cell(currentRow, dailyTotalCtr).DataType = XLDataType.Number;
-        //                    worksheet.Cell(currentRow, dailyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                    dailyTotalCtr++;
-        //                }
-
-        //                worksheet.Cell(currentRow, dailyTotalCtr).Value = $"{ticketingToolReport.TicketingStatusReport[0].AvgAccuracyRate}%";
-        //                worksheet.Cell(currentRow, dailyTotalCtr).Style.NumberFormat.Format = "0.00%";
-        //                worksheet.Cell(currentRow, dailyTotalCtr).DataType = XLDataType.Number;
-        //                worksheet.Cell(currentRow, dailyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                IXLRange range1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, dailyTotalCtr).Address);
-        //                range1_n.Style.Font.Bold = true;
-        //                range1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //                range1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //                IXLBorder border1_n = range1_n.Style.Border;
-        //                border1_n.BottomBorder = border1_n.TopBorder = border1_n.LeftBorder = border1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                worksheet.Cell(1, 1).Value = "Daily Statuses Checked per Team";
-        //                IXLRange range0_1_n = worksheet.Range(worksheet.Cell(1, 1).Address, worksheet.Cell(1, dailyTotalCtr).Address);
-        //                range0_1_n.Merge();
-        //                range0_1_n.Style.Font.Bold = true;
-        //                range0_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
-        //                range0_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-        //                range0_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Columns().AdjustToContents();
-
-        //                #endregion
-        //            }
-
-        //            var fileName = $"Ticketing_Tool_Month_End_Accuracy_report.xlsx";
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                return File(
-        //                    content,
-        //                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                    fileName
-        //                    );
-        //            }
-        //        }
-
-        //        #endregion
-        //    }
-        //    else if (filter.ReportType == ReportType.Weekly.ToString())
-        //    {
-        //        #region Weekly Workbook
-
-        //        using (var workbook = new XLWorkbook())
-        //        {
-        //            var tab = $"Weekly Status";
-        //            var worksheet = workbook.Worksheets.Add(tab);
-        //            worksheet.Style.Font.SetFontName("Calibri");
-        //            var currentRow = 1;
-
-
-        //            //worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
-        //            //IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //            //range0_1_6.Merge();
-        //            //range0_1_6.Style.Font.Bold = true;
-        //            //range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
-        //            //range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-        //            //range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            currentRow++;
-
-        //            if (ticketingToolReport.TicketingStatusReport.Count > 0)
-        //            {
-        //                #region Body
-
-        //                worksheet.Cell(currentRow, 1).Value = "Sr.No";
-        //                worksheet.Cell(currentRow, 2).Value = "Engagement";
-        //                int headerCounter = 3;
-        //                foreach (var header in ticketingToolReport.TicketingStatusReport[0].TicketingStatusReportWeekly)
-        //                {
-        //                    worksheet.Cell(currentRow, headerCounter).Value = header.Description;
-        //                    headerCounter++;
-        //                }
-        //                worksheet.Cell(currentRow, headerCounter).Value = "Average Accuracy";
-
-        //                IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, headerCounter).Address);
-        //                range1_1_n.Style.Font.Bold = true;
-        //                range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //                range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //                IXLBorder border1_1_n = range1_1_n.Style.Border;
-        //                border1_1_n.BottomBorder = border1_1_n.TopBorder = border1_1_n.LeftBorder = border1_1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                currentRow++;
-
-        //                foreach (var statusReport in ticketingToolReport.TicketingStatusReport)
-        //                {
-        //                    worksheet.Cell(currentRow, 1).Value = currentRow - 2;
-
-        //                    worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
-        //                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-        //                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                    int weeklyHeaderCtr = 3;
-        //                    foreach (var weeklyData in statusReport.TicketingStatusReportWeekly)
-        //                    {
-        //                        worksheet.Cell(currentRow, weeklyHeaderCtr).Value = $"{weeklyData.AccuracyRate}%";
-        //                        worksheet.Cell(currentRow, weeklyHeaderCtr).Style.NumberFormat.Format = "0.00%";
-        //                        worksheet.Cell(currentRow, weeklyHeaderCtr).DataType = XLDataType.Number;
-        //                        worksheet.Cell(currentRow, weeklyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                        weeklyHeaderCtr++;
-        //                    }
-
-        //                    worksheet.Cell(currentRow, weeklyHeaderCtr).Value = $"{statusReport.AccuracyRate}%";
-        //                    worksheet.Cell(currentRow, weeklyHeaderCtr).Style.NumberFormat.Format = "0.00%";
-        //                    worksheet.Cell(currentRow, weeklyHeaderCtr).DataType = XLDataType.Number;
-        //                    worksheet.Cell(currentRow, weeklyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                    IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, weeklyHeaderCtr).Address);
-        //                    range_n_1_n.Style.Font.FontSize = 9;
-        //                    IXLBorder border_n_1_n = range_n_1_n.Style.Border;
-        //                    border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                    currentRow++;
-        //                }
-
-        //                worksheet.Cell(currentRow, 1).Value = "";
-
-        //                worksheet.Cell(currentRow, 2).Value = "Total";
-        //                worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                int weeklyTotalCtr = 3;
-        //                foreach (var weeklyReport in ticketingToolReport.TicketingStatusReport[0].TicketingStatusReportWeekly)
-        //                {
-        //                    worksheet.Cell(currentRow, weeklyTotalCtr).Value = $"{weeklyReport.AvgAccuracyRate}%";
-        //                    worksheet.Cell(currentRow, weeklyTotalCtr).Style.NumberFormat.Format = "0.00%";
-        //                    worksheet.Cell(currentRow, weeklyTotalCtr).DataType = XLDataType.Number;
-        //                    worksheet.Cell(currentRow, weeklyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        //                    weeklyTotalCtr++;
-        //                }
-
-        //                worksheet.Cell(currentRow, weeklyTotalCtr).Value = $"{ticketingToolReport.TicketingStatusReport[0].AvgAccuracyRate}%";
-        //                worksheet.Cell(currentRow, weeklyTotalCtr).Style.NumberFormat.Format = "0.00%";
-        //                worksheet.Cell(currentRow, weeklyTotalCtr).DataType = XLDataType.Number;
-        //                worksheet.Cell(currentRow, weeklyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                IXLRange range1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, weeklyTotalCtr).Address);
-        //                range1_n.Style.Font.Bold = true;
-        //                range1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //                range1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //                IXLBorder border1_n = range1_n.Style.Border;
-        //                border1_n.BottomBorder = border1_n.TopBorder = border1_n.LeftBorder = border1_n.RightBorder = XLBorderStyleValues.Thin;
-
-        //                worksheet.Cell(1, 1).Value = "Weekly Statuses Checked per Team";
-        //                IXLRange range0_1_n = worksheet.Range(worksheet.Cell(1, 1).Address, worksheet.Cell(1, weeklyTotalCtr).Address);
-        //                range0_1_n.Merge();
-        //                range0_1_n.Style.Font.Bold = true;
-        //                range0_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
-        //                range0_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-        //                range0_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Columns().AdjustToContents();
-
-        //                #endregion
-        //            }
-
-        //            var fileName = $"Ticketing_Tool_Month_End_Accuracy_report.xlsx";
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                return File(
-        //                    content,
-        //                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                    fileName
-        //                    );
-        //            }
-        //        }
-
-        //        #endregion
-        //    }
-        //    else
-        //    {
-        //        #region Monthly Workbook
-
-        //        using (var workbook = new XLWorkbook())
-        //        {
-        //            var tab = $"Status Checked";
-        //            var worksheet = workbook.Worksheets.Add(tab);
-        //            worksheet.Style.Font.SetFontName("Calibri");
-        //            var currentRow = 1;
-
-
-        //            worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
-        //            IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //            range0_1_6.Merge();
-        //            range0_1_6.Style.Font.Bold = true;
-        //            range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
-        //            range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-        //            range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            currentRow++;
-
-
-        //            #region Body
-
-        //            worksheet.Cell(currentRow, 1).Value = "Sr.No";
-        //            worksheet.Cell(currentRow, 2).Value = "Engagement";
-        //            worksheet.Cell(currentRow, 3).Value = "Tickets Checked";
-        //            worksheet.Cell(currentRow, 4).Value = "Correct Tickets";
-        //            worksheet.Cell(currentRow, 5).Value = "Error Counts";
-        //            worksheet.Cell(currentRow, 6).Value = "Accuracy Rate";
-
-        //            IXLRange range1_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //            range1_1_6.Style.Font.Bold = true;
-        //            range1_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //            range1_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //            IXLBorder border1_1_6 = range1_1_6.Style.Border;
-        //            border1_1_6.BottomBorder = border1_1_6.TopBorder = border1_1_6.LeftBorder = border1_1_6.RightBorder = XLBorderStyleValues.Thin;
-
-        //            currentRow++;
-
-        //            foreach (var statusReport in ticketingToolReport.TicketingStatusReport)
-        //            {
-        //                worksheet.Cell(currentRow, 1).Value = currentRow - 2;
-
-        //                worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
-        //                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-        //                worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Cell(currentRow, 3).Value = statusReport.TicketsChecked;
-        //                worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Cell(currentRow, 4).Value = statusReport.CorrectTickets;
-        //                worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Cell(currentRow, 5).Value = statusReport.ErrorCounts;
-        //                worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                worksheet.Cell(currentRow, 6).Value = $"{statusReport.AccuracyRate}%";
-        //                worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
-        //                worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
-        //                worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //                IXLRange range_n_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //                range_n_1_6.Style.Font.FontSize = 9;
-        //                IXLBorder border_n_1_6 = range_n_1_6.Style.Border;
-        //                border_n_1_6.BottomBorder = border_n_1_6.TopBorder = border_n_1_6.LeftBorder = border_n_1_6.RightBorder = XLBorderStyleValues.Thin;
-
-        //                currentRow++;
-        //            }
-
-        //            worksheet.Cell(currentRow, 1).Value = "";
-
-        //            worksheet.Cell(currentRow, 2).Value = "Total";
-        //            worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            worksheet.Cell(currentRow, 3).Value = ticketingToolReport.TotalTicketsChecked;
-        //            worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            worksheet.Cell(currentRow, 4).Value = ticketingToolReport.TotalCorrectTickets;
-        //            worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            worksheet.Cell(currentRow, 5).Value = ticketingToolReport.TotalErrorCounts;
-        //            worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            worksheet.Cell(currentRow, 6).Value = $"{ticketingToolReport.AvgAccuracyRate}%";
-        //            worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
-        //            worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
-        //            worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-        //            IXLRange range1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
-        //            range1_6.Style.Font.Bold = true;
-        //            range1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
-        //            range1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
-
-        //            IXLBorder border1_6 = range1_6.Style.Border;
-        //            border1_6.BottomBorder = border1_6.TopBorder = border1_6.LeftBorder = border1_6.RightBorder = XLBorderStyleValues.Thin;
-
-        //            worksheet.Columns().AdjustToContents();
-
-        //            #endregion
-
-        //            var fileName = $"Ticketing_Tool_Month_End_Accuracy_report.xlsx";
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                return File(
-        //                    content,
-        //                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                    fileName
-        //                    );
-        //            }
-        //        }
-
-        //        #endregion
-        //    }
-        //}
+        [HttpGet]
+        public IActionResult BusinessPartnerExcel(DateTime minDate, DateTime maxDate, string reportType)
+        {
+            var filter = new BusinessPartnerFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+                ReportType = reportType
+            };
+
+            var businessPartnerReport = _reportService.GetBusinessPartnerReport(filter);
+
+            if (filter.ReportType == ReportType.Daily.ToString())
+            {
+                #region Daily Workbook
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var tab = $"Daily Status";
+                    var worksheet = workbook.Worksheets.Add(tab);
+                    worksheet.Style.Font.SetFontName("Calibri");
+                    var currentRow = 1;
+
+                    //worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
+                    //IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    //range0_1_6.Merge();
+                    //range0_1_6.Style.Font.Bold = true;
+                    //range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                    //range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    //range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    currentRow++;
+
+                    if (businessPartnerReport.BPStatusReport.Count > 0)
+                    {
+                        #region Body
+
+                        worksheet.Cell(currentRow, 1).Value = "Sr.No";
+                        worksheet.Cell(currentRow, 2).Value = "Group Name";
+                        int headerCounter = 3;
+                        foreach (var header in businessPartnerReport.BPStatusReport[0].BPStatusReportDaily)
+                        {
+                            worksheet.Cell(currentRow, headerCounter).Value = header.Description;
+                            headerCounter++;
+                        }
+                        worksheet.Cell(currentRow, headerCounter).Value = "Average Accuracy";
+
+                        IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, headerCounter).Address);
+                        range1_1_n.Style.Font.Bold = true;
+                        range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                        range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                        IXLBorder border1_1_n = range1_1_n.Style.Border;
+                        border1_1_n.BottomBorder = border1_1_n.TopBorder = border1_1_n.LeftBorder = border1_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                        currentRow++;
+
+                        foreach (var statusReport in businessPartnerReport.BPStatusReport)
+                        {
+                            worksheet.Cell(currentRow, 1).Value = currentRow - 2;
+
+                            worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
+                            worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                            worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                            int dailyHeaderCtr = 3;
+                            foreach (var dailyData in statusReport.BPStatusReportDaily)
+                            {
+                                if (dailyData.AccuracyRate > 0)
+                                {
+                                    worksheet.Cell(currentRow, dailyHeaderCtr).Value = $"{dailyData.AccuracyRate}%";
+                                }
+                                worksheet.Cell(currentRow, dailyHeaderCtr).Style.NumberFormat.Format = "0.00%";
+                                worksheet.Cell(currentRow, dailyHeaderCtr).DataType = XLDataType.Number;
+                                worksheet.Cell(currentRow, dailyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                                dailyHeaderCtr++;
+                            }
+
+                            worksheet.Cell(currentRow, dailyHeaderCtr).Value = $"{statusReport.AccuracyRate}%";
+                            worksheet.Cell(currentRow, dailyHeaderCtr).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, dailyHeaderCtr).DataType = XLDataType.Number;
+                            worksheet.Cell(currentRow, dailyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                            IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, dailyHeaderCtr).Address);
+                            range_n_1_n.Style.Font.FontSize = 9;
+                            IXLBorder border_n_1_n = range_n_1_n.Style.Border;
+                            border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                            currentRow++;
+                        }
+
+                        worksheet.Cell(currentRow, 1).Value = "";
+
+                        worksheet.Cell(currentRow, 2).Value = "Total";
+                        worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        int dailyTotalCtr = 3;
+                        foreach (var dailyReport in businessPartnerReport.BPStatusReport[0].BPStatusReportDaily)
+                        {
+                            if (dailyReport.AvgAccuracyRate > 0)
+                            {
+                                worksheet.Cell(currentRow, dailyTotalCtr).Value = $"{dailyReport.AvgAccuracyRate}%";
+                            }
+                            worksheet.Cell(currentRow, dailyTotalCtr).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, dailyTotalCtr).DataType = XLDataType.Number;
+                            worksheet.Cell(currentRow, dailyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                            dailyTotalCtr++;
+                        }
+
+                        worksheet.Cell(currentRow, dailyTotalCtr).Value = $"{businessPartnerReport.BPStatusReport[0].AvgAccuracyRate}%";
+                        worksheet.Cell(currentRow, dailyTotalCtr).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, dailyTotalCtr).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, dailyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        IXLRange range1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, dailyTotalCtr).Address);
+                        range1_n.Style.Font.Bold = true;
+                        range1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                        range1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                        IXLBorder border1_n = range1_n.Style.Border;
+                        border1_n.BottomBorder = border1_n.TopBorder = border1_n.LeftBorder = border1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                        worksheet.Cell(1, 1).Value = "Daily Statuses Checked per Group";
+                        IXLRange range0_1_n = worksheet.Range(worksheet.Cell(1, 1).Address, worksheet.Cell(1, dailyTotalCtr).Address);
+                        range0_1_n.Merge();
+                        range0_1_n.Style.Font.Bold = true;
+                        range0_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                        range0_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                        range0_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Columns().AdjustToContents();
+
+                        #endregion
+                    }
+
+                    var fileName = $"Business_Partner_Month_End_Accuracy_report.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            fileName
+                            );
+                    }
+                }
+
+                #endregion
+            }
+            else if (filter.ReportType == ReportType.Weekly.ToString())
+            {
+                #region Weekly Workbook
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var tab = $"Weekly Status";
+                    var worksheet = workbook.Worksheets.Add(tab);
+                    worksheet.Style.Font.SetFontName("Calibri");
+                    var currentRow = 1;
+
+
+                    //worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
+                    //IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    //range0_1_6.Merge();
+                    //range0_1_6.Style.Font.Bold = true;
+                    //range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                    //range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    //range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    currentRow++;
+
+                    if (businessPartnerReport.BPStatusReport.Count > 0)
+                    {
+                        #region Body
+
+                        worksheet.Cell(currentRow, 1).Value = "Sr.No";
+                        worksheet.Cell(currentRow, 2).Value = "Group Name";
+                        int headerCounter = 3;
+                        foreach (var header in businessPartnerReport.BPStatusReport[0].BPStatusReportWeekly)
+                        {
+                            worksheet.Cell(currentRow, headerCounter).Value = header.Description;
+                            headerCounter++;
+                        }
+                        worksheet.Cell(currentRow, headerCounter).Value = "Average Accuracy";
+
+                        IXLRange range1_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, headerCounter).Address);
+                        range1_1_n.Style.Font.Bold = true;
+                        range1_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                        range1_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                        IXLBorder border1_1_n = range1_1_n.Style.Border;
+                        border1_1_n.BottomBorder = border1_1_n.TopBorder = border1_1_n.LeftBorder = border1_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                        currentRow++;
+
+                        foreach (var statusReport in businessPartnerReport.BPStatusReport)
+                        {
+                            worksheet.Cell(currentRow, 1).Value = currentRow - 2;
+
+                            worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
+                            worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                            worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                            int weeklyHeaderCtr = 3;
+                            foreach (var weeklyData in statusReport.BPStatusReportWeekly)
+                            {
+                                worksheet.Cell(currentRow, weeklyHeaderCtr).Value = $"{weeklyData.AccuracyRate}%";
+                                worksheet.Cell(currentRow, weeklyHeaderCtr).Style.NumberFormat.Format = "0.00%";
+                                worksheet.Cell(currentRow, weeklyHeaderCtr).DataType = XLDataType.Number;
+                                worksheet.Cell(currentRow, weeklyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                                weeklyHeaderCtr++;
+                            }
+
+                            worksheet.Cell(currentRow, weeklyHeaderCtr).Value = $"{statusReport.AccuracyRate}%";
+                            worksheet.Cell(currentRow, weeklyHeaderCtr).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, weeklyHeaderCtr).DataType = XLDataType.Number;
+                            worksheet.Cell(currentRow, weeklyHeaderCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                            IXLRange range_n_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, weeklyHeaderCtr).Address);
+                            range_n_1_n.Style.Font.FontSize = 9;
+                            IXLBorder border_n_1_n = range_n_1_n.Style.Border;
+                            border_n_1_n.BottomBorder = border_n_1_n.TopBorder = border_n_1_n.LeftBorder = border_n_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                            currentRow++;
+                        }
+
+                        worksheet.Cell(currentRow, 1).Value = "";
+
+                        worksheet.Cell(currentRow, 2).Value = "Total";
+                        worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                        int weeklyTotalCtr = 3;
+                        foreach (var weeklyReport in businessPartnerReport.BPStatusReport[0].BPStatusReportWeekly)
+                        {
+                            worksheet.Cell(currentRow, weeklyTotalCtr).Value = $"{weeklyReport.AvgAccuracyRate}%";
+                            worksheet.Cell(currentRow, weeklyTotalCtr).Style.NumberFormat.Format = "0.00%";
+                            worksheet.Cell(currentRow, weeklyTotalCtr).DataType = XLDataType.Number;
+                            worksheet.Cell(currentRow, weeklyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                            weeklyTotalCtr++;
+                        }
+
+                        worksheet.Cell(currentRow, weeklyTotalCtr).Value = $"{businessPartnerReport.BPStatusReport[0].AvgAccuracyRate}%";
+                        worksheet.Cell(currentRow, weeklyTotalCtr).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, weeklyTotalCtr).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, weeklyTotalCtr).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        IXLRange range1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, weeklyTotalCtr).Address);
+                        range1_n.Style.Font.Bold = true;
+                        range1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                        range1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                        IXLBorder border1_n = range1_n.Style.Border;
+                        border1_n.BottomBorder = border1_n.TopBorder = border1_n.LeftBorder = border1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                        worksheet.Cell(1, 1).Value = "Weekly Statuses Checked per Group";
+                        IXLRange range0_1_n = worksheet.Range(worksheet.Cell(1, 1).Address, worksheet.Cell(1, weeklyTotalCtr).Address);
+                        range0_1_n.Merge();
+                        range0_1_n.Style.Font.Bold = true;
+                        range0_1_n.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                        range0_1_n.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                        range0_1_n.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Columns().AdjustToContents();
+
+                        #endregion
+                    }
+
+                    var fileName = $"Business_Partner_Month_End_Accuracy_report.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            fileName
+                            );
+                    }
+                }
+
+                #endregion
+            }
+            else
+            {
+                #region Monthly Workbook
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var tab = $"Status Checked";
+                    var worksheet = workbook.Worksheets.Add(tab);
+                    worksheet.Style.Font.SetFontName("Calibri");
+                    var currentRow = 1;
+
+
+                    worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Group";
+                    IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    range0_1_6.Merge();
+                    range0_1_6.Style.Font.Bold = true;
+                    range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                    range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                    range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    currentRow++;
+
+
+                    #region Body
+
+                    worksheet.Cell(currentRow, 1).Value = "Sr.No";
+                    worksheet.Cell(currentRow, 2).Value = "Group Name";
+                    worksheet.Cell(currentRow, 3).Value = "Tickets Checked";
+                    worksheet.Cell(currentRow, 4).Value = "Correct Tickets";
+                    worksheet.Cell(currentRow, 5).Value = "Error Counts";
+                    worksheet.Cell(currentRow, 6).Value = "Accuracy Rate";
+
+                    IXLRange range1_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    range1_1_6.Style.Font.Bold = true;
+                    range1_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                    range1_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                    IXLBorder border1_1_6 = range1_1_6.Style.Border;
+                    border1_1_6.BottomBorder = border1_1_6.TopBorder = border1_1_6.LeftBorder = border1_1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+
+                    foreach (var statusReport in businessPartnerReport.BPStatusReport)
+                    {
+                        worksheet.Cell(currentRow, 1).Value = currentRow - 2;
+
+                        worksheet.Cell(currentRow, 2).Value = statusReport.Engagement;
+                        worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 3).Value = statusReport.TicketsChecked;
+                        worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 4).Value = statusReport.CorrectTickets;
+                        worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 5).Value = statusReport.ErrorCounts;
+                        worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        worksheet.Cell(currentRow, 6).Value = $"{statusReport.AccuracyRate}%";
+                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
+                        worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
+                        worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                        IXLRange range_n_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                        range_n_1_6.Style.Font.FontSize = 9;
+                        IXLBorder border_n_1_6 = range_n_1_6.Style.Border;
+                        border_n_1_6.BottomBorder = border_n_1_6.TopBorder = border_n_1_6.LeftBorder = border_n_1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                        currentRow++;
+                    }
+
+                    worksheet.Cell(currentRow, 1).Value = "";
+
+                    worksheet.Cell(currentRow, 2).Value = "Total";
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 3).Value = businessPartnerReport.TotalTicketsChecked;
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 4).Value = businessPartnerReport.TotalCorrectTickets;
+                    worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 5).Value = businessPartnerReport.TotalErrorCounts;
+                    worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 6).Value = $"{businessPartnerReport.AvgAccuracyRate}%";
+                    worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 6).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLRange range1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                    range1_6.Style.Font.Bold = true;
+                    range1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                    range1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                    IXLBorder border1_6 = range1_6.Style.Border;
+                    border1_6.BottomBorder = border1_6.TopBorder = border1_6.LeftBorder = border1_6.RightBorder = XLBorderStyleValues.Thin;
+
+                    worksheet.Columns().AdjustToContents();
+
+                    #endregion
+
+                    var fileName = $"Business_Partner_Month_End_Accuracy_report.xlsx";
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            fileName
+                            );
+                    }
+                }
+
+                #endregion
+            }
+        }
 
         #endregion
     }
