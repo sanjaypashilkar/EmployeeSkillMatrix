@@ -56,7 +56,6 @@
         });
 
         function SaveEmployees() {
-            debugger;
             var fileName = $('#fileName').val()
             if (fileName == '') {
                 toastr.warning("Please select file to import");
@@ -69,7 +68,6 @@
                     url: '/Employee/SaveEmployees',
                     data: { fileName: fileName },
                     success: function (response) {
-                        debugger;
                         if (response.success == true) {
                             toastr.success(response.message);
                         }

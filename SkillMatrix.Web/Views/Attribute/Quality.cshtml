@@ -56,7 +56,6 @@
             toastrOption();
         });
         function SaveQualityRating() {
-            debugger;
             var department = $('#Department').val()
             var recordDate = $('#recordDate').val()
             
@@ -72,7 +71,6 @@
                     url: '/Attribute/SaveQualityRating',
                     data: { fileName: fileName, department: department, recordDate: recordDate },
                     success: function (response) {
-                        debugger;
                         if (response.success == true) {
                             toastr.success(response.message);
                         }

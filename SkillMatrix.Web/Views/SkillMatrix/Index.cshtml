@@ -103,7 +103,6 @@
             toastrOption();           
         });
         function SaveSkillMatrix() {
-            debugger;
             var year = $('#Year').val()
             var quarter = $('#Quarter').val()
             var fileName = $('#fileName').val()
@@ -118,7 +117,6 @@
                     url: '/SkillMatrix/SaveSkillMatrix',
                     data: { fileName: fileName, year: year, quarter: quarter },
                     success: function (response) {
-                        debugger;
                         if (response.success == true) {
                             toastr.success(response.message);
                         }
