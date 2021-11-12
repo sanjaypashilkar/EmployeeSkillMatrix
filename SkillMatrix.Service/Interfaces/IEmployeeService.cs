@@ -8,7 +8,7 @@ namespace SkillMatrix.Service
     public interface IEmployeeService
     {
         vwEmployee GetEmployees(int pg=0);
-        vwEmployee GetEmployees(string fileName);
+        List<Employee> GetEmployees(string fileName);
         void SaveEmployees(string fileName);
     }
 }

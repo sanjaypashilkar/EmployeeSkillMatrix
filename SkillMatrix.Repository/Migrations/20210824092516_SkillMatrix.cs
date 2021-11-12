@@ -43,23 +43,6 @@ namespace SkillMatrix.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employee",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    EmployeeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    DateHired = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employee", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EmployeeSkillMatrix",
                 columns: table => new
                 {
@@ -162,10 +145,7 @@ namespace SkillMatrix.Repository.Migrations
                 name: "CategoryScoring");
 
             migrationBuilder.DropTable(
-                name: "CompetencyLevelScoring");
-
-            migrationBuilder.DropTable(
-                name: "Employee");
+                name: "CompetencyLevelScoring");            
 
             migrationBuilder.DropTable(
                 name: "EmployeeSkillMatrix");

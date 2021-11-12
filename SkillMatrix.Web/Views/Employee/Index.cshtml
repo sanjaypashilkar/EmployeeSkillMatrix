@@ -25,10 +25,12 @@
         <thead>
             <tr>
                 <th>Sr.No</th>
-                <th>EmployeeId</th>
+                <th>SAP UserName</th>
+                <th>SPI Employee No</th>
                 <th>Name</th>
                 <th>Date Hired</th>
-                <th>Created Date</th>
+                <th>Engagement</th>
+                @*<th>Created Date</th>*@
             </tr>            
         </thead>
         <tbody>
@@ -36,10 +38,12 @@
             {
                 <tr>
                     <td> @counter</td>
-                    <td> @item.EmployeeId</td>
+                    <td> @item.SAPUserName</td>
+                    <td> @item.SPIEmployeeNo</td>
                     <td> @item.Name</td>
                     <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
-                    <td> @Convert.ToDateTime(item.CreatedDate).Date.ToShortDateString()</td>
+                    <td> @item.Engagement</td>
+                    @*<td> @Convert.ToDateTime(item.CreatedDate).Date.ToShortDateString()</td>*@
                 </tr>
                 counter++;
             }

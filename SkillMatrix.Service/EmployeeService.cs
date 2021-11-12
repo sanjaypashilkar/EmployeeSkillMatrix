@@ -41,38 +41,7 @@ namespace SkillMatrix.Service
             return employees;
         }
 
-        public vwEmployee GetEmployees(string fileName)
-        {
-            vwEmployee employees = new vwEmployee();
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
-                {
-                    while (reader.Read())
-                    {
-                        if (reader.Depth != 0)
-                        {
-                            string employeeId = reader.GetValue(0) != null ? reader.GetValue(0).ToString() : string.Empty;
-                            string employeeName = reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty;                            
-                            var dateHired = reader.GetValue(2) != null ? reader.GetValue(2).ToString() : string.Empty;
-                            var createdDate = DateTime.Now.Date;
-                            employees.Employees.Add(new Employee
-                            {
-                                EmployeeId= employeeId,
-                                Name = employeeName,
-                                DateHired = Convert.ToDateTime(dateHired),
-                                CreatedDate = createdDate,
-                                UpdatedDate = createdDate
-                            });
-                        }
-                    }
-                }
-            }
-            return employees;
-        }
-
-        public void SaveEmployees(string fileName)
+        public List<Employee> GetEmployees(string fileName)
         {
             List<Employee> employees = new List<Employee>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -84,26 +53,41 @@ namespace SkillMatrix.Service
                     {
                         if (reader.Depth != 0)
                         {
-                            string employeeId = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                            string employeeName = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
-                            var dateHired = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
-                            var createdDate = DateTime.Now.Date;
-                            employees.Add(new Employee
+                            string sapUserName = reader.GetValue(0) != null ? reader.GetValue(0).ToString() : string.Empty;
+                            string spiEmployeeNo = reader.GetValue(1) != null ? reader.GetValue(1).ToString() : string.Empty;
+                            string employeeName = reader.GetValue(2) != null ? reader.GetValue(2).ToString() : string.Empty;
+                            var dateHired = reader.GetValue(3) != null ? reader.GetValue(3).ToString() : string.Empty;
+                            DateTime dateHired_DT;
+                            bool isValidHiredDate = DateTime.TryParse(dateHired, out dateHired_DT);
+                            if (isValidHiredDate)
                             {
-                                EmployeeId = employeeId,
-                                Name = employeeName,
-                                DateHired = Convert.ToDateTime(dateHired),
-                                CreatedDate = createdDate,
-                                UpdatedDate = createdDate
-                            });
+                                string engagement = reader.GetValue(4) != null ? reader.GetValue(4).ToString() : string.Empty;
+                                var createdDate = DateTime.Now.Date;
+                                employees.Add(new Employee
+                                {
+                                    SAPUserName = sapUserName.ToUpper(),
+                                    SPIEmployeeNo = spiEmployeeNo.ToUpper(),
+                                    Name = employeeName,
+                                    DateHired = dateHired_DT,
+                                    Engagement = engagement,
+                                    CreatedDate = createdDate,
+                                    UpdatedDate = createdDate
+                                });
+                            }
                         }
                     }
                 }
             }
-            if(employees.Count>0)
+            return employees;
+        }
+
+        public void SaveEmployees(string fileName)
+        {
+            var employees = GetEmployees(fileName);
+            if (employees.Count>0)
             {
                 var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
-                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.Name.ToLower() == x.Name.ToLower())).OrderBy(o=>o.EmployeeId);
+                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.SAPUserName.ToUpper() == x.SAPUserName.ToLower())).OrderByDescending(o=>o.DateHired);
                 if(newEmployees.Count()>0)
                 {
                     _skillMatrixRepository.SaveEmployees(newEmployees);

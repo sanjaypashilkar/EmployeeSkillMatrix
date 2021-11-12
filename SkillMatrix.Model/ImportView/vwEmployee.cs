@@ -13,6 +13,8 @@ namespace SkillMatrix.Model
         public vwEmployee()
         {
             Employees = new List<Employee>();
+            PaginatedEmployees = new List<Employee>();
+            Pager = new Pager();
         }
     }
 }

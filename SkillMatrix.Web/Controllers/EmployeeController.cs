@@ -32,7 +32,7 @@ namespace SkillMatrix.Web.Controllers
         [HttpPost]
         public IActionResult Index(IFormFile file)
         {
-            vwEmployee employees = new vwEmployee();
+            vwEmployee employeesView = new vwEmployee();
             if (file != null)
             {
                 string path = Path.Combine(this.Environment.WebRootPath, "Files");
@@ -53,9 +53,10 @@ namespace SkillMatrix.Web.Controllers
                     stream.Flush();
                     ViewBag.FileName += fileName;
                 }
-                employees = _employeeService.GetEmployees(fullFilePath);
+                var employees = _employeeService.GetEmployees(fullFilePath);
+                employeesView.Employees = employees;
             }
-            return View(employees);
+            return View(employeesView);
         }
 
         [HttpPost]
