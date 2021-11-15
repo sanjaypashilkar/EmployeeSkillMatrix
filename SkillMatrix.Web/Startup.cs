@@ -7,10 +7,6 @@ using Microsoft.Extensions.Hosting;
 using SkillMatrix.Repository;
 using SkillMatrix.Repository.DbConnector;
 using SkillMatrix.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SkillMatrix
 {
@@ -77,8 +73,9 @@ namespace SkillMatrix
         private void ConfigureSkillMatrxServices(IServiceCollection services)
         {
             services.AddTransient<ISkillMatrixRepository, SkillMatrixRepository>();
-            //services.AddDbContext<SkillMatrixDb>(options => _dbConnector.GetDbContextOptions(options), ServiceLifetime.Transient);
-            services.AddDbContext<SkillMatrixDb>(options => options.UseMySQL(_connectionString));
+            //services.AddDbContext<SkillMatrixDb>(options => _dbConnector.GetDbContextOptions(options), ServiceLifetime.Transient);            
+            var serverVersion = ServerVersion.AutoDetect(_connectionString);
+            services.AddDbContext<SkillMatrixDb>(options => options.UseMySql(_connectionString, serverVersion));
         }
         private MySqlDbConnector GetDatabaseConnector()
         {
