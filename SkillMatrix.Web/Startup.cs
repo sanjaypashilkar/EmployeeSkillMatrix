@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using SkillMatrix.Repository;
 using SkillMatrix.Repository.DbConnector;
 using SkillMatrix.Service;
-using System;
 
 namespace SkillMatrix
 {
@@ -37,7 +36,7 @@ namespace SkillMatrix
             services.AddTransient<IAttributeService, AttributeService>();
             services.AddMvc();
             services.AddControllersWithViews();
-            //ConfigureSkillMatrxServices(services);
+            ConfigureSkillMatrxServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,12 +70,9 @@ namespace SkillMatrix
             }
         }
 
-        public static void ConfigureSkillMatrxServices(HostBuilderContext hostContext, IServiceCollection services)
+        private void ConfigureSkillMatrxServices(IServiceCollection services)
         {
-            if (hostContext == null)
-                throw new InvalidOperationException("HostContext can not be null");
-            var _connectionString = hostContext.Configuration.GetConnectionString("SkillMatrixDb") ?? string.Empty;
-            //services.AddTransient<ISkillMatrixRepository, SkillMatrixRepository>();
+            services.AddTransient<ISkillMatrixRepository, SkillMatrixRepository>();
             //services.AddDbContext<SkillMatrixDb>(options => _dbConnector.GetDbContextOptions(options), ServiceLifetime.Transient);            
             var serverVersion = ServerVersion.AutoDetect(_connectionString);
             services.AddDbContext<SkillMatrixDb>(options => options.UseMySql(_connectionString, serverVersion));
