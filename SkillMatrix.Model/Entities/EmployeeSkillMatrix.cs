@@ -6,8 +6,6 @@ namespace SkillMatrix.Model
 {
     public class EmployeeSkillMatrix
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int Year { get; set; }
         public int Quarter { get; set; }

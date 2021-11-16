@@ -8,8 +8,6 @@ namespace SkillMatrix.Model
 {
     public class BusinessPartner
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Comments { get; set; }

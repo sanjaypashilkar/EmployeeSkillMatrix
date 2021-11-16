@@ -9,15 +9,128 @@ using SkillMatrix.Repository;
 namespace SkillMatrix.Repository.Migrations
 {
     [DbContext(typeof(SkillMatrixDb))]
-    [Migration("20211004133353_QualityRating2")]
-    partial class QualityRating2
+    [Migration("20211116052705_SkillMatrix")]
+    partial class SkillMatrix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.8");
+                .HasAnnotation("ProductVersion", "5.0.5");
+
+            modelBuilder.Entity("SkillMatrix.Model.BusinessPartner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("BusinessPartnerNumber")
+                        .HasColumnType("double");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ChangedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CountryKey")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Institute1")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Institute2")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Modified")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name1")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name2")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name3")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("POBox")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("PartnerCategory")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PartnerType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode1")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode2")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RecordDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SalesOrganization1")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SalesOrganization2")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TLRemarks")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Team")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Valid")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BusinessPartner");
+                });
 
             modelBuilder.Entity("SkillMatrix.Model.CategoryScoring", b =>
                 {
@@ -26,7 +139,7 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("LowerScore")
                         .HasColumnType("int");
@@ -35,7 +148,7 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("double");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UpperScore")
                         .HasColumnType("int");
@@ -48,55 +161,55 @@ namespace SkillMatrix.Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 0,
                             Score = 0.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 1,
                             Score = 1.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 85
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 85,
                             Score = 2.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 92
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 92,
                             Score = 3.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 94
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 94,
                             Score = 4.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 99
                         },
                         new
                         {
                             Id = 6,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             LowerScore = 99,
                             Score = 5.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 10000
                         });
                 });
@@ -108,16 +221,16 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Level")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("LowerScore")
                         .HasColumnType("double");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double>("UpperScore")
                         .HasColumnType("double");
@@ -130,46 +243,46 @@ namespace SkillMatrix.Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Novice",
                             LowerScore = 0.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 2.4900000000000002
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Advanced Beginner",
                             LowerScore = 2.5,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 3.4900000000000002
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Competent",
                             LowerScore = 3.5,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 3.9900000000000002
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Proficient",
                             LowerScore = 4.0,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 4.4900000000000002
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Expert",
                             LowerScore = 4.5,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 5.0
                         });
                 });
@@ -181,19 +294,25 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DateHired")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("text");
+                    b.Property<string>("Engagement")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SAPUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SPIEmployeeNo")
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -210,31 +329,31 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("double");
 
                     b.Property<string>("CSATLevel")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("CSATScore")
                         .HasColumnType("double");
 
                     b.Property<string>("CertificationLevel")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("CertificationScore")
                         .HasColumnType("double");
 
                     b.Property<string>("CompetencyLevel")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DateCompleted")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DateHired")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("OverallScore")
                         .HasColumnType("double");
@@ -248,11 +367,11 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnName("QuestionsStatisticsReportProcessSpecific");
 
                     b.Property<string>("ProcessSpecific_TS")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("TimeSpentProcessSpecific");
 
                     b.Property<string>("QCLevel")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("QCScore")
                         .HasColumnType("double");
@@ -275,29 +394,29 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnName("QuestionsStatisticsReportStarAndOSvC");
 
                     b.Property<string>("StarAndOSvC_TS")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("TimeSpentStarAndOSvC");
 
                     b.Property<string>("Team")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TenureLevel")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TenureMonths")
                         .HasColumnType("int");
 
                     b.Property<string>("TenurePlusCompetency")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TenureYears")
                         .HasColumnType("int");
 
                     b.Property<string>("TotalTimeSpent")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -314,49 +433,49 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AgentName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CustomerType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Department")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("EmailHandlingScore")
                         .HasColumnType("double");
 
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("OverallExperience")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("ProcessAdheranceScore")
                         .HasColumnType("double");
 
                     b.Property<DateTime>("QADate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("QTPEmployeeId")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("QTPName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("RecordDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Region")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Remarks")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RequestReason")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("ResolutionScore")
                         .HasColumnType("double");
@@ -365,16 +484,16 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("double");
 
                     b.Property<DateTime>("TaskCompletionDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Team")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TicketNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TicketStatus")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("ToneScore")
                         .HasColumnType("double");
@@ -397,46 +516,46 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AuditResult")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("AuditedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CheckerRemarks")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CorrectiveAction")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Counter")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DOIVerification")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Date")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Department")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EffectivenessVerification")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EmpIdDate")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ErrorType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Group")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("tinyint(1)");
@@ -445,58 +564,58 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("IssueType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Level1Opportunity")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Level2Opportunity")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Lines")
                         .HasColumnType("int");
 
                     b.Property<string>("Modified")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PreventiveAction")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Process")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ProcessChange")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("RecordDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("RootCause")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Shift")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TLAnalysis")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("TaskCompletionDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("TeamLeader")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TicketNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Volume")
                         .HasColumnType("double");
 
                     b.Property<string>("WeekRange")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -510,16 +629,16 @@ namespace SkillMatrix.Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Level")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("LowerScore")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UpperScore")
                         .HasColumnType("int");
@@ -532,48 +651,89 @@ namespace SkillMatrix.Repository.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Novice",
                             LowerScore = 6,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 9
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Advanced Beginner",
                             LowerScore = 10,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 12
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Competent",
                             LowerScore = 13,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1000
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Proficient",
                             LowerScore = 13,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1000
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             Level = "Expert",
                             LowerScore = 13,
-                            UpdatedDate = new DateTime(2021, 10, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2021, 11, 16, 0, 0, 0, 0, DateTimeKind.Local),
                             UpperScore = 1000
                         });
+                });
+
+            modelBuilder.Entity("SkillMatrix.Model.TicketingTool", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AdditionalComments")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ConcernedRep")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("RecordDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Team")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TicketNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketingTool");
                 });
 #pragma warning restore 612, 618
         }

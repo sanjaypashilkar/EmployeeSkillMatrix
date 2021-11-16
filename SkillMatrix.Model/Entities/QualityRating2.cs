@@ -8,8 +8,6 @@ namespace SkillMatrix.Model
 {
     public class QualityRating2
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Department { get; set; }
         public string Name { get; set; }

@@ -37,12 +37,24 @@ namespace SkillMatrix.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>();
-            modelBuilder.Entity<EmployeeSkillMatrix>();
-            modelBuilder.Entity<QualityRating>();
-            modelBuilder.Entity<QualityRating2>();
-            modelBuilder.Entity<TicketingTool>();
-            modelBuilder.Entity<BusinessPartner>();
+            modelBuilder.Entity<Employee>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<EmployeeSkillMatrix>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<QualityRating>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<QualityRating2>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<TicketingTool>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<BusinessPartner>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
 
             #region DataSeed
 
