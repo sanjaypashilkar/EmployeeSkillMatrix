@@ -9,12 +9,12 @@ namespace SkillMatrix.Repository
 {
     public interface ISkillMatrixRepository
     {
-        IQueryable<EmployeeSkillMatrix> GetSkillMatrix();
-        IQueryable<EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter);
+        IQueryable<Model.EmployeeSkillMatrix> GetSkillMatrix();
+        IQueryable<Model.EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter);
         IQueryable<CategoryScoring> GetCategoryScoring();
         IQueryable<CompetencyLevelScoring> GetCompetencyLevelScoring();
         IQueryable<TenureLevel> GetTenureLevel();
-        int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix);
+        int SaveSkillMatrix(IEnumerable<Model.EmployeeSkillMatrix> employeeSkillMatrix);
 
         IQueryable<Employee> GetEmployees();
         int SaveEmployees(IEnumerable<Employee> employees);

@@ -9,6 +9,7 @@ namespace SkillMatrix.Model
     public class QualityRating
     {
         public int Id { get; set; }
+        public string AccountType { get; set; }
         public string Department { get; set; }
         public string Team { get; set; }
         public string AgentName { get; set; }

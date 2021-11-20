@@ -23,12 +23,12 @@ namespace SkillMatrix.Repository
             }
         }
 
-        public IQueryable<EmployeeSkillMatrix> GetSkillMatrix()
+        public IQueryable<Model.EmployeeSkillMatrix> GetSkillMatrix()
         {
             return _context.EmployeeSkillMatrix;
         }
 
-        public IQueryable<EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter)
+        public IQueryable<Model.EmployeeSkillMatrix> GetSkillMatrixByYearAndQuarter(int year, int quarter)
         {
             return _context.EmployeeSkillMatrix.Where(e=>e.Year == year && e.Quarter == quarter).AsNoTracking();
         }
@@ -114,7 +114,7 @@ namespace SkillMatrix.Repository
             employees.ToList().ForEach(emp => _context.Employee.Add(emp));            
             return _context.SaveChanges();
         }
-        public int SaveSkillMatrix(IEnumerable<EmployeeSkillMatrix> employeeSkillMatrix)
+        public int SaveSkillMatrix(IEnumerable<Model.EmployeeSkillMatrix> employeeSkillMatrix)
         {
             employeeSkillMatrix.ToList().ForEach(e => _context.EmployeeSkillMatrix.Add(e));
             return _context.SaveChanges();

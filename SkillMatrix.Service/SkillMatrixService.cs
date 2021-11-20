@@ -99,11 +99,11 @@ namespace SkillMatrix.Service
             var importAndSave = GetUploadedSkillMatrix(fileName);
             var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
             var competencyLevelScoring = _skillMatrixRepository.GetCompetencyLevelScoring().ToList();
-            var tenureScoringLevel = _skillMatrixRepository.GetTenureLevel().ToList(); 
-            List<EmployeeSkillMatrix> employeeSkillMatrices = new List<EmployeeSkillMatrix>();
+            var tenureScoringLevel = _skillMatrixRepository.GetTenureLevel().ToList();
+            List<Model.EmployeeSkillMatrix> employeeSkillMatrices = new List<Model.EmployeeSkillMatrix>();
             foreach(var employeeSkill in importAndSave.ImportSkills)
             {
-                EmployeeSkillMatrix employeeSkillMatrix = new EmployeeSkillMatrix();
+                Model.EmployeeSkillMatrix employeeSkillMatrix = new Model.EmployeeSkillMatrix();
                 employeeSkillMatrix.Year = Convert.ToInt32(year);
                 employeeSkillMatrix.Quarter = Convert.ToInt32(quarter);
                 employeeSkillMatrix.Team = employeeSkill.Team;

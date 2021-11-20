@@ -2,74 +2,38 @@
 @{
     Layout = "_Layout";
     var qualityRatings = Model.QualityRatings;
-    var counter = 1;
-    var todayDate = DateTime.Today.ToString("yyyy-MM-dd");    
+    var todayDate = DateTime.Today.ToString("yyyy-MM-dd");
 }
-<form method="post" enctype="multipart/form-data" asp-controller="Attribute" asp-action="Quality">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="ml-3"><span>Select File:</span></div>
-                <div class="ml-3"><input type="file" name="file" size="50" /></div>
-                <div class="ml-3"><input type="submit" class="btn btn-primary btn-sm" value="Import Quality" /></div>                
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="ml-3">
-                    Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @Id = "Department", @class = "form-select" })
-                </div>
-                <div class="ml-sm-1">
-                    <button id="download" class="btn btn-secondary btn-sm" type="button" onclick="DownloadQualityTemplate()" title="Download Template for selected department">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="ml-3 date-range-position">
-                    Record Date : <input type="date" id="recordDate" value="@todayDate" placeholder="Record Date" />
-                </div>
-                <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveQualityRating()" /></div>
-            </div>
-        </div>
-    </div>
-    <input type="hidden" id="fileName" value="@ViewBag.FileName" />
-</form>
-<div id="qualityTable">
-    @{
-        await Html.RenderPartialAsync("_QualityTable", Model.QualityRatings);
-    }
-</div>
-<div id="qualityTable2">
-    @{
-        await Html.RenderPartialAsync("_QualityTable2", Model.QualityRatings2);
-    }
-</div>
-
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
             toastrOption();
         });
+
         function SaveQualityRating() {
-            var department = $('#Department').val()
-            var recordDate = $('#recordDate').val()
-            
+
             var fileName = $('#fileName').val()
             if (fileName == '') {
                 toastr.warning("Please select file to import");
             }
             else {
-                $('#fileName').val('')
+                var account = $('#AccountType').val()
+                var department = $('#Department').val()
+                var recordDate = $('#recordDate').val()
+
+                var input = {
+                    AccountType: account,
+                    Department: department,
+                    FileName: fileName,
+                    RecordDate: recordDate
+                }
+
                 $.ajax({
                     type: 'POST',
                     dataType: 'JSON',
                     url: '/Attribute/SaveQualityRating',
-                    data: { fileName: fileName, department: department, recordDate: recordDate },
+                    data: input,
                     success: function (response) {
                         if (response.success == true) {
                             toastr.success(response.message);
@@ -111,6 +75,54 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
-        }       
+        }
     </script>
 }
+
+<form method="post" enctype="multipart/form-data" asp-controller="Attribute" asp-action="Quality">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-sm-1">
+                    Account: @Html.DropDownList("AccountType", new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @Id = "AccountType", @Name = "AccountType", @class = "form-select" })
+                </div>
+                <div class="ml-sm-1">
+                    Department: @Html.DropDownList("Department", new SelectList(Model.lstDepartments, "Key", "Value"), new { @Id = "Department", @Name = "Department", @class = "form-select" })
+                </div>
+                <div class="ml-sm-1"><span>Select File:</span></div>
+                <div class="ml-sm-1"><input type="file" id="file" name="file" size="30" /></div>
+                <div class="ml-sm-1">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Import Quality" />
+                    <button id="download" class="btn btn-secondary btn-sm" type="button" onclick="DownloadQualityTemplate()" title="Download Template for selected department">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <div class="ml-3 date-range-position">
+                Record Date : <input type="date" id="recordDate" value="@todayDate" placeholder="Record Date" />
+            </div>
+            <div class="ml-3"><input type="button" class="btn btn-primary btn-sm" value="Review & Save" id="btnSave" onclick="SaveQualityRating()" /></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="fileName" value="@ViewBag.FileName" />
+<div id="qualityTable">
+    @{
+        await Html.RenderPartialAsync("_QualityTable", Model.QualityRatings);
+    }
+</div>
+<div id="qualityTable2">
+    @{
+        await Html.RenderPartialAsync("_QualityTable2", Model.QualityRatings2);
+    }
+</div>
+

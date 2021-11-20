@@ -9,6 +9,7 @@ namespace SkillMatrix.Model
     public class BusinessPartner
     {
         public int Id { get; set; }
+        public string AccountType { get; set; }
         public DateTime Date { get; set; }
         public string Comments { get; set; }
         public string Modified { get; set; }

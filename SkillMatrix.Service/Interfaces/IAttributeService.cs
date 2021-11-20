@@ -8,8 +8,9 @@ namespace SkillMatrix.Service
     public interface IAttributeService
     {
         Dictionary<string, string> mtdGetDepartments();
-        vwImportAndSaveQualityRating GetUploadedQualityRating(string fileName);        
-        void SaveQualityRatings(string fileName, string department, string recordDate);
+        Dictionary<string, string> mtdGetAccountTypes();
+        vwImportAndSaveQualityRating GetUploadedQualityRating(FileInput fileInput);        
+        void SaveQualityRatings(FileInput fileInput);
         vwImportAndSaveTicketingTool GetUploadedTicketingRecords(string fileName);
         void SaveTicketingRecords(string fileName, string recordDate);
         vwImportAndSaveBusinessPartner GetUploadedBusinessPartnerRecords(string fileName);

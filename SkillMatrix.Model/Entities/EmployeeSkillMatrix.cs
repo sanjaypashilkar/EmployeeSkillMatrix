@@ -7,6 +7,7 @@ namespace SkillMatrix.Model
     public class EmployeeSkillMatrix
     {
         public int Id { get; set; }
+        public string AccountType { get; set; }
         public int Year { get; set; }
         public int Quarter { get; set; }
         public string Team { get; set; }

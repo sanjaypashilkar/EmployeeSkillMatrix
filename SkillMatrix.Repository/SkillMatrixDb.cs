@@ -9,7 +9,7 @@ namespace SkillMatrix.Repository
         private static string _dbConnectionString;
 
         public DbSet<Employee> Employee { get; set; }
-        public DbSet<EmployeeSkillMatrix> EmployeeSkillMatrix { get; set; }
+        public DbSet<Model.EmployeeSkillMatrix> EmployeeSkillMatrix { get; set; }
         public DbSet<CategoryScoring> CategoryScoring { get; set; }
         public DbSet<CompetencyLevelScoring> CompetencyLevelScoring { get; set; }
         public DbSet<TenureLevel> TenureLevel { get; set; }

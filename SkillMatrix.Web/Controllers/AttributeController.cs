@@ -6,8 +6,7 @@ using SkillMatrix.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace SkillMatrix.Web.Controllers
 {
@@ -27,11 +26,13 @@ namespace SkillMatrix.Web.Controllers
         {
             vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
             qualityRating.lstDepartments = _attributeService.mtdGetDepartments();
+            qualityRating.lstAccountTypes = _attributeService.mtdGetAccountTypes();
             return View(qualityRating);
         }
 
         [HttpPost]
-        public IActionResult Quality(IFormFile file)
+        [Consumes("multipart/form-data")]
+        public IActionResult Quality(IFormFile file, FileInput input)
         {
             vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
             if (file != null)
@@ -44,6 +45,7 @@ namespace SkillMatrix.Web.Controllers
 
                 string fileName = Path.GetFileName(file.FileName);
                 string fullFilePath = Path.Combine(path, fileName);
+                input.FileName = fullFilePath;
                 if (System.IO.File.Exists(fullFilePath))
                 {
                     System.IO.File.Delete(fullFilePath);
@@ -54,22 +56,24 @@ namespace SkillMatrix.Web.Controllers
                     stream.Flush();
                     ViewBag.FileName += fileName;
                 }
-                qualityRating = _attributeService.GetUploadedQualityRating(fullFilePath);
+                qualityRating = _attributeService.GetUploadedQualityRating(input);
             }
             return View(qualityRating);
+            //return PartialView("_QualityTable2", qualityRating.QualityRatings2);
         }
 
         [HttpPost]
-        public IActionResult SaveQualityRating(string fileName, string department, string recordDate)
+        public IActionResult SaveQualityRating(FileInput fileInput)
         {
             Response response = new Response();
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileInput.FileName))
             {
                 string path = Path.Combine(this.Environment.WebRootPath, "Files");
-                string fullFilePath = Path.Combine(path, fileName);
-                _attributeService.SaveQualityRatings(fullFilePath, department, recordDate);
+                string fullFilePath = Path.Combine(path, fileInput.FileName);
+                fileInput.FileName = fullFilePath;
+                _attributeService.SaveQualityRatings(fileInput);
                 response.Success = true;
-                response.Message = $"Quality rating saved successfully for department {department}";
+                response.Message = $"Quality rating saved successfully for department {fileInput.Department}";
             }
             else
             {

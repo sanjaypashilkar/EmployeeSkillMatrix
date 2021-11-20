@@ -25,14 +25,22 @@ namespace SkillMatrix.Service
             return selectList;
         }
 
-        public vwImportAndSaveQualityRating GetUploadedQualityRating(string fileName)
+        public Dictionary<string, string> mtdGetAccountTypes()
+        {
+            var departments = Helper.GetEnumValuesAndDescriptions<AccountType>();
+            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
+        public vwImportAndSaveQualityRating GetUploadedQualityRating(FileInput fileInput)
         {
             vwImportAndSaveQualityRating importAndSaveQuality = new vwImportAndSaveQualityRating();
             importAndSaveQuality.lstDepartments = mtdGetDepartments();
+            importAndSaveQuality.lstAccountTypes = mtdGetAccountTypes();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if(fileName.ToLowerInvariant().Contains("compcopy") || fileName.ToLowerInvariant().Contains("order"))
+            if(fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
             {
-                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
                 {
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
@@ -115,7 +123,7 @@ namespace SkillMatrix.Service
             }
             else
             {
-                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
                 {
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
@@ -212,16 +220,16 @@ namespace SkillMatrix.Service
             return importAndSaveQuality;
         }
 
-        public void SaveQualityRatings(string fileName, string department, string recordDate)
+        public void SaveQualityRatings(FileInput fileInput)
         {
-            var importAndSave = GetUploadedQualityRating(fileName);
-            if (department == Department.CompCopy.ToString() || department == Department.OrderManagement.ToString())
+            var importAndSave = GetUploadedQualityRating(fileInput);
+            if (fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
             {
                 List<QualityRating2> qualityRatings = new List<QualityRating2>();
                 foreach (var qualityRating in importAndSave.QualityRatings2)
                 {
                     QualityRating2 rating = new QualityRating2();
-                    rating.Department = department;
+                    rating.Department = fileInput.Department;
                     rating.Name = qualityRating.Name;
                     rating.EmployeeId = qualityRating.EmployeeId;
                     rating.Group = qualityRating.Group;
@@ -254,7 +262,7 @@ namespace SkillMatrix.Service
                     rating.Counter = Convert.ToInt32(qualityRating.Counter);
                     rating.EmpIdDate = qualityRating.EmpIdDate;
                     rating.Date = qualityRating.Date;
-                    rating.RecordDate = Convert.ToDateTime(recordDate).Date;
+                    rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
                     rating.CreatedDate = DateTime.Now;
                     qualityRatings.Add(rating);
                 }
@@ -269,7 +277,7 @@ namespace SkillMatrix.Service
                 foreach (var qualityRating in importAndSave.QualityRatings)
                 {
                     QualityRating rating = new QualityRating();
-                    rating.Department = department;
+                    rating.Department = fileInput.Department;
                     rating.Team = qualityRating.Team;
                     rating.AgentName = qualityRating.AgentName;
                     rating.EmployeeId = qualityRating.EmployeeId;
@@ -291,7 +299,7 @@ namespace SkillMatrix.Service
                     rating.QTPEmployeeId = qualityRating.QTPEmployeeId;
                     rating.Variance = !string.IsNullOrEmpty(qualityRating.Variance) ? Convert.ToDouble(qualityRating.Variance) : 0;
                     rating.OverallExperience = qualityRating.OverallExperience;
-                    rating.RecordDate = Convert.ToDateTime(recordDate).Date;
+                    rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
                     rating.CreatedDate = DateTime.Now;
                     qualityRatings.Add(rating);
                 }

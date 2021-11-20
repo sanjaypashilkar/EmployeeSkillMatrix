@@ -5,6 +5,13 @@ using System.Text;
 
 namespace SkillMatrix.Model
 {
+    public enum AccountType
+    {
+        [Description("Springer Nature")]
+        SpringerNature = 1,
+        [Description("Elsevier")]
+        Elsevier = 2
+    }
     public enum Department
     {
         [Description("Customer Service")]
