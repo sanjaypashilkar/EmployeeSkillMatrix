@@ -100,7 +100,7 @@
                     Department: @Html.DropDownList("Department", new SelectList(Model.lstDepartments, "Key", "Value"), new { @Id = "Department", @Name = "Department", @class = "form-select" })
                 </div>
                 <div class="ml-sm-1"><span>Select File:</span></div>
-                <div class="ml-sm-1"><input type="file" id="file" name="file" size="30" /></div>
+                <div class="ml-sm-1"><input type="file" id="file" name="file" size="50" /></div>
                 <div class="ml-sm-1">
                     <input type="submit" class="btn btn-primary btn-sm" value="Import Quality" />
                     <button id="download" class="btn btn-secondary btn-sm" type="button" onclick="DownloadQualityTemplate()" title="Download Template for selected department">

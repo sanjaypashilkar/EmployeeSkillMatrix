@@ -358,6 +358,7 @@ namespace SkillMatrix.Service
             foreach (var ticketingRecord in importAndSave.TicketingTools)
             {
                 TicketingTool record = new TicketingTool();
+                record.AccountType = AccountType.SpringerNature.ToString();
                 record.Date = ticketingRecord.Date;
                 record.Status = ticketingRecord.Status;
                 record.TicketNumber = ticketingRecord.TicketNumber;
@@ -475,6 +476,7 @@ namespace SkillMatrix.Service
             foreach (var bpRecord in importAndSave.BusinessPartners)
             {
                 BusinessPartner record = new BusinessPartner();
+                record.AccountType = AccountType.SpringerNature.ToString();
                 record.Date = bpRecord.Date;
                 record.Comments = bpRecord.Comments;
                 record.Modified = bpRecord.Modified;
