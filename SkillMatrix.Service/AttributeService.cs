@@ -229,6 +229,7 @@ namespace SkillMatrix.Service
                 foreach (var qualityRating in importAndSave.QualityRatings2)
                 {
                     QualityRating2 rating = new QualityRating2();
+                    rating.AccountType = fileInput.AccountType;
                     rating.Department = fileInput.Department;
                     rating.Name = qualityRating.Name;
                     rating.EmployeeId = qualityRating.EmployeeId;
@@ -277,6 +278,7 @@ namespace SkillMatrix.Service
                 foreach (var qualityRating in importAndSave.QualityRatings)
                 {
                     QualityRating rating = new QualityRating();
+                    rating.AccountType = fileInput.AccountType;
                     rating.Department = fileInput.Department;
                     rating.Team = qualityRating.Team;
                     rating.AgentName = qualityRating.AgentName;
