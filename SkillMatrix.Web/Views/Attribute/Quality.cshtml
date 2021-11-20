@@ -11,6 +11,16 @@
             toastrOption();
         });
 
+        function SelectedIndexChanged() {
+            var account = $("#AccountType").val();
+            if (account == 'Elsevier') {
+                $("#divDepartment").hide();
+            }
+            else {
+                $("#divDepartment").show();
+            }
+        }
+
         function SaveQualityRating() {
 
             var fileName = $('#fileName').val()
@@ -84,9 +94,9 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="ml-sm-1">
-                    Account: @Html.DropDownList("AccountType", new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @Id = "AccountType", @Name = "AccountType", @class = "form-select" })
+                    Account: @Html.DropDownList("AccountType", new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @Id = "AccountType", @Name = "AccountType", @class = "form-select", @onchange = "SelectedIndexChanged()" })
                 </div>
-                <div class="ml-sm-1">
+                <div class="ml-sm-1" id="divDepartment">
                     Department: @Html.DropDownList("Department", new SelectList(Model.lstDepartments, "Key", "Value"), new { @Id = "Department", @Name = "Department", @class = "form-select" })
                 </div>
                 <div class="ml-sm-1"><span>Select File:</span></div>
