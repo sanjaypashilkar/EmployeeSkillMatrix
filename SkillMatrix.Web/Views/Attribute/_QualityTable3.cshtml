@@ -1,0 +1,254 @@
+﻿@model List<SkillMatrix.Model.vwQualityRating3>
+@{
+    var qualityRatings = Model;
+    var counter = 1;
+}
+
+@if (qualityRatings.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Month</th>
+                <th>Team Lead</th>
+                <th>Agent</th>
+                <th>Employee Id</th>
+                <th>CF1 Points Earned</th>
+                <th>CF1 Total</th>
+                <th>CF2 Points Earned</th>
+                <th>CF2 Total</th>
+                <th>CF3 Points Earned</th>
+                <th>CF3 Total</th>
+                <th>CF4 Points Earned</th>
+                <th>CF4 Total</th>
+                <th>SF1 Points Earned</th>
+                <th>SF1 Total</th>
+                <th>SF2 Points Earned</th>
+                <th>SF2 Total</th>
+                <th>SF3 Points Earned</th>
+                <th>SF3 Total</th>
+                <th>BP1 Points Earned</th>
+                <th>BP1 Total</th>
+                <th>BP2 Points Earned</th>
+                <th>BP2 Total</th>
+                <th>BP3 Points Earned</th>
+                <th>BP3 Total</th>
+                <th>IC1 Points Earned</th>
+                <th>IC1 Total</th>
+                <th>IC2 Points Earned</th>
+                <th>IC2 Total</th>
+                <th>IC3 Points Earned</th>
+                <th>IC3 Total</th>
+                <th>IC4 Points Earned</th>
+                <th>IC4 Total</th>
+                <th>Passive Survey</th>
+                <th>Individual CSAT Score</th>
+                <th>No. of People Opportunity</th>
+                <th>Remarks</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in qualityRatings)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Month</td>
+                    <td> @item.TeamLead</td>
+                    <td> @item.AgentName</td>
+                    <td> @item.EmployeeId</td>
+                    <td>
+                        @if(item.CF1_PointsEarned != 0)
+                        {
+                            @item.CF1_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF1_TotalPoints != 0)
+                        {
+                            @item.CF1_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF2_PointsEarned != 0)
+                        {
+                            @item.CF2_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF2_TotalPoints != 0)
+                        {
+                            @item.CF2_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF3_PointsEarned != 0)
+                        {
+                            @item.CF3_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF3_TotalPoints != 0)
+                        {
+                            @item.CF3_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF4_PointsEarned != 0)
+                        {
+                            @item.CF4_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.CF4_TotalPoints != 0)
+                        {
+                            @item.CF4_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF1_PointsEarned != 0)
+                        {
+                            @item.SF1_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF1_TotalPoints != 0)
+                        {
+                            @item.SF1_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF2_PointsEarned != 0)
+                        {
+                            @item.SF2_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF2_TotalPoints != 0)
+                        {
+                            @item.SF2_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF3_PointsEarned != 0)
+                        {
+                            @item.SF3_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.SF3_TotalPoints != 0)
+                        {
+                            @item.SF3_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP1_PointsEarned != 0)
+                        {
+                            @item.BP1_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP1_TotalPoints != 0)
+                        {
+                            @item.BP1_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP2_PointsEarned != 0)
+                        {
+                            @item.BP2_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP2_TotalPoints != 0)
+                        {
+                            @item.BP2_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP3_PointsEarned != 0)
+                        {
+                            @item.BP3_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.BP3_TotalPoints != 0)
+                        {
+                            @item.BP3_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC1_PointsEarned != 0)
+                        {
+                            @item.IC1_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC1_TotalPoints != 0)
+                        {
+                            @item.IC1_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC2_PointsEarned != 0)
+                        {
+                            @item.IC2_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC2_TotalPoints != 0)
+                        {
+                            @item.IC2_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC3_PointsEarned != 0)
+                        {
+                            @item.IC3_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC3_TotalPoints != 0)
+                        {
+                            @item.IC3_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC4_PointsEarned != 0)
+                        {
+                            @item.IC4_PointsEarned;
+                        }
+                    </td>
+                    <td>
+                        @if (item.IC4_TotalPoints != 0)
+                        {
+                            @item.IC4_TotalPoints;
+                        }
+                    </td>
+                    <td>
+                        @if (item.PassiveSurvey != 0)
+                        {
+                            @string.Format("{0}%", item.PassiveSurvey);
+                        }
+                    </td>
+                    <td>
+                        @if (item.CSATScore != 0)
+                        {
+                            @string.Format("{0}%", item.CSATScore);
+                        }
+                    </td>
+                    <td>
+                        @if (item.NoOfPplOpportunity != 0)
+                        {
+                            @item.NoOfPplOpportunity;
+                        }
+                    </td>
+                    <td> @item.Remarks</td>                
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

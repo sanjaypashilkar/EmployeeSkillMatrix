@@ -38,84 +38,183 @@ namespace SkillMatrix.Service
             importAndSaveQuality.lstDepartments = mtdGetDepartments();
             importAndSaveQuality.lstAccountTypes = mtdGetAccountTypes();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if(fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
+            if (fileInput.AccountType == AccountType.SpringerNature.ToString())
             {
-                using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
+                if (fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
                 {
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
                     {
-                        while (reader.Read())
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
                         {
-                            if (reader.Depth != 0)
+                            while (reader.Read())
                             {
-                                string name = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                                string employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
-                                if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(employeeId))
-                                    break;
-                                var group = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
-                                var teamLeader = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
-                                var taskCompletionDate = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
-                                var auditedDate = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
-                                var process = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
-                                var errorType = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
-                                var checkerRemark = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
-                                var modified = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
-                                var ticketNumber = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
-                                var shift = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
-                                var lines = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
-                                var issueType = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
-                                var tlAnalysis = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
-                                var level1Opportunity = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
-                                var level2Opportunity = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
-                                var rootCause = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
-                                var correctiveAction = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
-                                var preventiveAction = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
-                                var processChange = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
-                                var effectivenessVerification = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
-                                var auditResult = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
-                                var doiVerification = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
-                                var isCorrect = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
-                                var isError = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
-                                var weekRange = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
-                                var date = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
-                                var volume = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : string.Empty;
-                                var counter = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
-                                var empIdDate = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : string.Empty;                                
-
-                                importAndSaveQuality.QualityRatings2.Add(new vwQualityRating2
+                                if (reader.Depth != 0)
                                 {
-                                    Name = name,
-                                    EmployeeId = employeeId,
-                                    Group = group,
-                                    TeamLeader = teamLeader,
-                                    TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
-                                    AuditedDate = Convert.ToDateTime(auditedDate),
-                                    Process = process,
-                                    ErrorType = errorType,
-                                    CheckerRemarks = checkerRemark,
-                                    Modified = modified,
-                                    TicketNumber = ticketNumber,
-                                    Shift = shift,
-                                    Lines = lines,
-                                    IssueType = issueType,
-                                    TLAnalysis = tlAnalysis,
-                                    Level1Opportunity = level1Opportunity,
-                                    Level2Opportunity = level2Opportunity,
-                                    RootCause = rootCause,
-                                    CorrectiveAction = correctiveAction,
-                                    PreventiveAction = preventiveAction,
-                                    ProcessChange = processChange,
-                                    EffectivenessVerification = effectivenessVerification,
-                                    AuditResult = auditResult,
-                                    DOIVerification = doiVerification,
-                                    IsCorrect = isCorrect,
-                                    IsError = isError,
-                                    WeekRange = weekRange,
-                                    Date = date,
-                                    Volume = volume,
-                                    Counter = counter,
-                                    EmpIdDate = empIdDate
-                                });
+                                    string name = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                                    string employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                    if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(employeeId))
+                                        break;
+                                    var group = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                    var teamLeader = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                    var taskCompletionDate = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                                    var auditedDate = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                                    var process = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                                    var errorType = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                                    var checkerRemark = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+                                    var modified = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                                    var ticketNumber = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                                    var shift = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+                                    var lines = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
+                                    var issueType = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
+                                    var tlAnalysis = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
+                                    var level1Opportunity = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
+                                    var level2Opportunity = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
+                                    var rootCause = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
+                                    var correctiveAction = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
+                                    var preventiveAction = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
+                                    var processChange = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
+                                    var effectivenessVerification = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
+                                    var auditResult = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
+                                    var doiVerification = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
+                                    var isCorrect = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
+                                    var isError = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
+                                    var weekRange = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
+                                    var date = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
+                                    var volume = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : string.Empty;
+                                    var counter = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
+                                    var empIdDate = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : string.Empty;
+
+                                    importAndSaveQuality.QualityRatings2.Add(new vwQualityRating2
+                                    {
+                                        Name = name,
+                                        EmployeeId = employeeId,
+                                        Group = group,
+                                        TeamLeader = teamLeader,
+                                        TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
+                                        AuditedDate = Convert.ToDateTime(auditedDate),
+                                        Process = process,
+                                        ErrorType = errorType,
+                                        CheckerRemarks = checkerRemark,
+                                        Modified = modified,
+                                        TicketNumber = ticketNumber,
+                                        Shift = shift,
+                                        Lines = lines,
+                                        IssueType = issueType,
+                                        TLAnalysis = tlAnalysis,
+                                        Level1Opportunity = level1Opportunity,
+                                        Level2Opportunity = level2Opportunity,
+                                        RootCause = rootCause,
+                                        CorrectiveAction = correctiveAction,
+                                        PreventiveAction = preventiveAction,
+                                        ProcessChange = processChange,
+                                        EffectivenessVerification = effectivenessVerification,
+                                        AuditResult = auditResult,
+                                        DOIVerification = doiVerification,
+                                        IsCorrect = isCorrect,
+                                        IsError = isError,
+                                        WeekRange = weekRange,
+                                        Date = date,
+                                        Volume = volume,
+                                        Counter = counter,
+                                        EmpIdDate = empIdDate
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.Depth != 0)
+                                {
+                                    string agentName = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                                    string employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                    string taskCompletionDate = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                    if (string.IsNullOrEmpty(agentName) && string.IsNullOrEmpty(taskCompletionDate))
+                                        break;
+                                    var qaDate = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                    var region = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                                    var ticketNumber = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                                    var ticketStatus = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                                    var requestReason = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                                    var customerType = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+                                    var adherenceScore = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                                    var emailScore = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                                    var resolutionScore = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+                                    var toneScore = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
+                                    var remark = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
+                                    var totalScore = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
+                                    var QTPName = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
+                                    var QTPEmployeeId = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
+
+                                    var scncTeam = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
+                                    var QTPAdherence = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
+
+                                    var QTPVariance = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
+                                    var QTPOverallExp = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
+
+                                    importAndSaveQuality.QualityRatings.Add(new vwQualityRating
+                                    {
+                                        Team = TeamForReviews.Straive.ToString(),
+                                        AgentName = agentName,
+                                        EmployeeId = employeeId,
+                                        TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
+                                        QADate = Convert.ToDateTime(qaDate),
+                                        Region = region,
+                                        TicketNumber = ticketNumber,
+                                        TicketStatus = ticketStatus,
+                                        RequestReason = requestReason,
+                                        CustomerType = customerType,
+                                        ProcessAdheranceScore = adherenceScore,
+                                        EmailHandlingScore = emailScore,
+                                        ResolutionScore = resolutionScore,
+                                        ToneScore = toneScore,
+                                        StraiveTotalScore = totalScore,
+                                        Remarks = remark,
+                                        QTPName = QTPName,
+                                        QTPEmployeeId = QTPEmployeeId,
+                                        Variance = QTPVariance,
+                                        OverallExperience = QTPOverallExp
+                                    });
+
+                                    if (!string.IsNullOrEmpty(scncTeam) && !string.IsNullOrEmpty(QTPAdherence))
+                                    {
+                                        var QTPemailScore = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
+                                        var QTPResolutionScore = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
+                                        var QTPToneScore = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
+                                        var QTPRemarks = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
+                                        var QTPTotalScore = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
+
+                                        importAndSaveQuality.QualityRatings.Add(new vwQualityRating
+                                        {
+                                            Team = TeamForReviews.SpringerNature.ToString(),
+                                            AgentName = QTPName,
+                                            EmployeeId = QTPEmployeeId,
+                                            TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
+                                            QADate = Convert.ToDateTime(qaDate),
+                                            Region = region,
+                                            TicketNumber = ticketNumber,
+                                            TicketStatus = ticketStatus,
+                                            RequestReason = requestReason,
+                                            CustomerType = customerType,
+                                            ProcessAdheranceScore = QTPAdherence,
+                                            EmailHandlingScore = QTPemailScore,
+                                            ResolutionScore = QTPResolutionScore,
+                                            ToneScore = QTPToneScore,
+                                            StraiveTotalScore = totalScore,
+                                            Remarks = QTPRemarks,
+                                            QTPName = scncTeam,
+                                            Variance = QTPVariance,
+                                            OverallExperience = QTPOverallExp
+                                        });
+                                    }
+                                }
                             }
                         }
                     }
@@ -129,94 +228,146 @@ namespace SkillMatrix.Service
                     {
                         while (reader.Read())
                         {
-                            if (reader.Depth != 0)
+                            if (reader.Depth != 0 && reader.Depth != 1)
                             {
-                                string agentName = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                                string employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
-                                string taskCompletionDate = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
-                                if (string.IsNullOrEmpty(agentName) && string.IsNullOrEmpty(taskCompletionDate))
+                                string month = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                                string teamLead = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                var agent = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                var employeeId = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                if (string.IsNullOrEmpty(employeeId) || string.IsNullOrEmpty(agent))
                                     break;
-                                var qaDate = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
-                                var region = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
-                                var ticketNumber = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
-                                var ticketStatus = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
-                                var requestReason = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
-                                var customerType = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
-                                var adherenceScore = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
-                                var emailScore = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
-                                var resolutionScore = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
-                                var toneScore = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
-                                var remark = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
-                                var totalScore = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
-                                var QTPName = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
-                                var QTPEmployeeId = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
-
-                                var scncTeam = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
-                                var QTPAdherence = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
-
-                                var QTPVariance = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
-                                var QTPOverallExp = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
-
-                                importAndSaveQuality.QualityRatings.Add(new vwQualityRating
+                                var cf1_ptsEarned = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                                var cf1_totalEarned = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                                var cf2_ptsEarned = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                                var cf2_totalEarned = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                                var cf3_ptsEarned = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+                                var cf3_totalEarned = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                                var cf4_ptsEarned = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                                var cf4_totalEarned = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+                                var sf1_ptsEarned = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
+                                var sf1_totalEarned = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
+                                var sf2_ptsEarned = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
+                                var sf2_totalEarned = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
+                                var sf3_ptsEarned = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
+                                var sf3_totalEarned = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
+                                var bp1_ptsEarned = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
+                                var bp1_totalEarned = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
+                                var bp2_ptsEarned = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
+                                var bp2_totalEarned = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
+                                var bp3_ptsEarned = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
+                                var bp3_totalEarned = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
+                                var ic1_ptsEarned = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
+                                var ic1_totalEarned = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
+                                var ic2_ptsEarned = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
+                                var ic2_totalEarned = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
+                                var ic3_ptsEarned = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : string.Empty;
+                                var ic3_totalEarned = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
+                                var ic4_ptsEarned = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : string.Empty;
+                                var ic4_totalEarned = reader.GetValue(31) != null ? reader.GetValue(31).ToString().Trim() : string.Empty;
+                                var passiveSurvey = reader.GetValue(32) != null ? reader.GetValue(32).ToString().Trim() : string.Empty;
+                                if(passiveSurvey.ToUpper().Contains("N/A"))
                                 {
-                                    Team = TeamForReviews.Straive.ToString(),
-                                    AgentName = agentName,
-                                    EmployeeId = employeeId,
-                                    TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
-                                    QADate = Convert.ToDateTime(qaDate),
-                                    Region = region,
-                                    TicketNumber = ticketNumber,
-                                    TicketStatus = ticketStatus,
-                                    RequestReason = requestReason,
-                                    CustomerType = customerType,
-                                    ProcessAdheranceScore = adherenceScore,
-                                    EmailHandlingScore = emailScore,
-                                    ResolutionScore = resolutionScore,
-                                    ToneScore = toneScore,
-                                    StraiveTotalScore = totalScore,
-                                    Remarks = remark,
-                                    QTPName = QTPName,
-                                    QTPEmployeeId = QTPEmployeeId,
-                                    Variance = QTPVariance,
-                                    OverallExperience = QTPOverallExp
-                                });
-
-                                if (!string.IsNullOrEmpty(scncTeam) && !string.IsNullOrEmpty(QTPAdherence))
-                                {
-                                    var QTPemailScore = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
-                                    var QTPResolutionScore = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
-                                    var QTPToneScore = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
-                                    var QTPRemarks = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
-                                    var QTPTotalScore = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
-
-                                    importAndSaveQuality.QualityRatings.Add(new vwQualityRating
-                                    {
-                                        Team = TeamForReviews.SpringerNature.ToString(),
-                                        AgentName = QTPName,
-                                        EmployeeId = QTPEmployeeId,
-                                        TaskCompletionDate = Convert.ToDateTime(taskCompletionDate),
-                                        QADate = Convert.ToDateTime(qaDate),
-                                        Region = region,
-                                        TicketNumber = ticketNumber,
-                                        TicketStatus = ticketStatus,
-                                        RequestReason = requestReason,
-                                        CustomerType = customerType,
-                                        ProcessAdheranceScore = QTPAdherence,
-                                        EmailHandlingScore = QTPemailScore,
-                                        ResolutionScore = QTPResolutionScore,
-                                        ToneScore = QTPToneScore,
-                                        StraiveTotalScore = totalScore,
-                                        Remarks = QTPRemarks,
-                                        QTPName = scncTeam,
-                                        Variance = QTPVariance,
-                                        OverallExperience = QTPOverallExp
-                                    });
+                                    passiveSurvey = passiveSurvey.ToUpper().Replace("N/A", string.Empty).Trim();
                                 }
+                                if(passiveSurvey.ToUpper().Contains("%"))
+                                {
+                                    passiveSurvey = passiveSurvey.ToUpper().Replace("%", string.Empty).Trim();
+                                }
+                                var csatScore = reader.GetValue(33) != null ? reader.GetValue(33).ToString().Trim() : string.Empty;
+                                if (csatScore.ToUpper().Contains("N/A"))
+                                {
+                                    csatScore = csatScore.ToUpper().Replace("N/A", string.Empty).Trim();
+                                }
+                                if (csatScore.ToUpper().Contains("%"))
+                                {
+                                    csatScore = csatScore.ToUpper().Replace("%", string.Empty).Trim();
+                                }
+                                var noOfPplOpportunity = reader.GetValue(34) != null ? reader.GetValue(34).ToString().Trim() : string.Empty;
+                                var remarks = reader.GetValue(35) != null ? reader.GetValue(35).ToString().Trim() : string.Empty;
+                                double doubleValue = 0;
+                                int intValue = 0;
+
+                                string Month = month;
+                                string TeamLead = teamLead;
+                                string AgentName = agent;
+                                string EmployeeId = employeeId;
+                                int CF1_PointsEarned = Int32.TryParse(cf1_ptsEarned, out intValue) ? Convert.ToInt32(cf1_ptsEarned) : 0;
+                                int CF1_TotalPoints = Int32.TryParse(cf1_totalEarned, out intValue) ? Convert.ToInt32(cf1_totalEarned) : 0;
+                                int CF2_PointsEarned = Int32.TryParse(cf2_ptsEarned, out intValue) ? Convert.ToInt32(cf2_ptsEarned) : 0;
+                                int CF2_TotalPoints = Int32.TryParse(cf2_totalEarned, out intValue) ? Convert.ToInt32(cf2_totalEarned) : 0;
+                                int CF3_PointsEarned = Int32.TryParse(cf3_ptsEarned, out intValue) ? Convert.ToInt32(cf3_ptsEarned) : 0;
+                                int CF3_TotalPoints = Int32.TryParse(cf3_totalEarned, out intValue) ? Convert.ToInt32(cf3_totalEarned) : 0;
+                                int CF4_PointsEarned = Int32.TryParse(cf4_ptsEarned, out intValue) ? Convert.ToInt32(cf4_ptsEarned) : 0;
+                                int CF4_TotalPoints = Int32.TryParse(cf4_totalEarned, out intValue) ? Convert.ToInt32(cf4_totalEarned) : 0;
+                                int SF1_PointsEarned = Int32.TryParse(sf1_ptsEarned, out intValue) ? Convert.ToInt32(sf1_ptsEarned) : 0;
+                                int SF1_TotalPoints = Int32.TryParse(sf1_totalEarned, out intValue) ? Convert.ToInt32(sf1_totalEarned) : 0;
+                                int SF2_PointsEarned = Int32.TryParse(sf2_ptsEarned, out intValue) ? Convert.ToInt32(sf2_ptsEarned) : 0;
+                                int SF2_TotalPoints = Int32.TryParse(sf2_totalEarned, out intValue) ? Convert.ToInt32(sf2_totalEarned) : 0;
+                                int SF3_PointsEarned = Int32.TryParse(sf3_ptsEarned, out intValue) ? Convert.ToInt32(sf3_ptsEarned) : 0;
+                                int SF3_TotalPoints = Int32.TryParse(sf3_totalEarned, out intValue) ? Convert.ToInt32(sf3_totalEarned) : 0;
+                                int BP1_PointsEarned = Int32.TryParse(bp1_ptsEarned, out intValue) ? Convert.ToInt32(bp1_ptsEarned) : 0;
+                                int BP1_TotalPoints = Int32.TryParse(bp1_totalEarned, out intValue) ? Convert.ToInt32(bp1_totalEarned) : 0;
+                                int BP2_PointsEarned = Int32.TryParse(bp2_ptsEarned, out intValue) ? Convert.ToInt32(bp2_ptsEarned) : 0;
+                                int BP2_TotalPoints = Int32.TryParse(bp2_totalEarned, out intValue) ? Convert.ToInt32(bp2_totalEarned) : 0;
+                                int BP3_PointsEarned = Int32.TryParse(bp3_ptsEarned, out intValue) ? Convert.ToInt32(bp3_ptsEarned) : 0;
+                                int BP3_TotalPoints = Int32.TryParse(bp3_totalEarned, out intValue) ? Convert.ToInt32(bp3_totalEarned) : 0;
+                                int IC1_PointsEarned = Int32.TryParse(ic1_ptsEarned, out intValue) ? Convert.ToInt32(ic1_ptsEarned) : 0;
+                                int IC1_TotalPoints = Int32.TryParse(ic1_totalEarned, out intValue) ? Convert.ToInt32(ic1_totalEarned) : 0;
+                                int IC2_PointsEarned = Int32.TryParse(ic2_ptsEarned, out intValue) ? Convert.ToInt32(ic2_ptsEarned) : 0;
+                                int IC2_TotalPoints = Int32.TryParse(ic2_totalEarned, out intValue) ? Convert.ToInt32(ic2_totalEarned) : 0;
+                                int IC3_PointsEarned = Int32.TryParse(ic3_ptsEarned, out intValue) ? Convert.ToInt32(ic3_ptsEarned) : 0;
+                                int IC3_TotalPoints = Int32.TryParse(ic3_totalEarned, out intValue) ? Convert.ToInt32(ic3_totalEarned) : 0;
+                                int IC4_PointsEarned = Int32.TryParse(ic4_ptsEarned, out intValue) ? Convert.ToInt32(ic4_ptsEarned) : 0;
+                                int IC4_TotalPoints = Int32.TryParse(ic4_totalEarned, out intValue) ? Convert.ToInt32(ic4_totalEarned) : 0;
+                                double PassiveSurvey = Double.TryParse(passiveSurvey, out doubleValue) ? Convert.ToDouble(passiveSurvey) : 0;
+                                double CSATScore = Double.TryParse(csatScore, out doubleValue) ? Convert.ToDouble(csatScore) : 0;
+                                int NoOfPplOpportunity = Int32.TryParse(noOfPplOpportunity, out intValue) ? Convert.ToInt32(noOfPplOpportunity) : 0;
+                                string Remarks = remarks;
+
+                                importAndSaveQuality.QualityRatings3.Add(new vwQualityRating3
+                                {
+                                    Month = Month,
+                                    TeamLead = TeamLead,
+                                    AgentName = AgentName,
+                                    EmployeeId = EmployeeId,
+                                    CF1_PointsEarned = CF1_PointsEarned,
+                                    CF1_TotalPoints = CF1_TotalPoints,
+                                    CF2_PointsEarned = CF2_PointsEarned,
+                                    CF2_TotalPoints = CF2_TotalPoints,
+                                    CF3_PointsEarned = CF3_PointsEarned,
+                                    CF3_TotalPoints = CF3_TotalPoints,
+                                    CF4_PointsEarned = CF4_PointsEarned,
+                                    CF4_TotalPoints = CF4_TotalPoints,
+                                    SF1_PointsEarned = SF1_PointsEarned,
+                                    SF1_TotalPoints = SF1_TotalPoints,
+                                    SF2_PointsEarned = SF2_PointsEarned,
+                                    SF2_TotalPoints = SF2_TotalPoints,
+                                    SF3_PointsEarned = SF3_PointsEarned,
+                                    SF3_TotalPoints = SF3_TotalPoints,
+                                    BP1_PointsEarned = BP1_PointsEarned,
+                                    BP1_TotalPoints = BP1_TotalPoints,
+                                    BP2_PointsEarned = BP2_PointsEarned,
+                                    BP2_TotalPoints = BP2_TotalPoints,
+                                    BP3_PointsEarned = BP3_PointsEarned,
+                                    BP3_TotalPoints = BP3_TotalPoints,
+                                    IC1_PointsEarned = IC1_PointsEarned,
+                                    IC1_TotalPoints = IC1_TotalPoints,
+                                    IC2_PointsEarned = IC2_PointsEarned,
+                                    IC2_TotalPoints = IC2_TotalPoints,
+                                    IC3_PointsEarned = IC3_PointsEarned,
+                                    IC3_TotalPoints = IC3_TotalPoints,
+                                    IC4_PointsEarned = IC4_PointsEarned,
+                                    IC4_TotalPoints = IC4_TotalPoints,
+                                    PassiveSurvey = Math.Round((PassiveSurvey * 100),2),
+                                    CSATScore = Math.Round((CSATScore * 100),2),
+                                    NoOfPplOpportunity = NoOfPplOpportunity,
+                                    Remarks = Remarks
+                                });
                             }
                         }
                     }
                 }
-            }                        
+            }
             return importAndSaveQuality;
         }
 

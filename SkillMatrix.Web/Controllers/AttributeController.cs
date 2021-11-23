@@ -59,7 +59,6 @@ namespace SkillMatrix.Web.Controllers
                 qualityRating = _attributeService.GetUploadedQualityRating(input);
             }
             return View(qualityRating);
-            //return PartialView("_QualityTable2", qualityRating.QualityRatings2);
         }
 
         [HttpPost]

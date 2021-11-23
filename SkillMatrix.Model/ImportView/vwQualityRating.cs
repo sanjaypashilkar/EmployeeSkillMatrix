@@ -36,6 +36,7 @@ namespace SkillMatrix.Model
     {
         public virtual List<vwQualityRating> QualityRatings { get; set; }
         public virtual List<vwQualityRating2> QualityRatings2 { get; set; }
+        public virtual List<vwQualityRating3> QualityRatings3 { get; set; }
         public virtual Dictionary<string, string> lstAccountTypes { get; set; }
         public virtual Dictionary<string, string> lstDepartments { get; set; }
         public virtual QualityFilter QualityFilter { get; set; }
@@ -44,6 +45,7 @@ namespace SkillMatrix.Model
         {
             QualityRatings = new List<vwQualityRating>();
             QualityRatings2 = new List<vwQualityRating2>();
+            QualityRatings3 = new List<vwQualityRating3>();
             lstAccountTypes = new Dictionary<string, string>();
             lstDepartments = new Dictionary<string, string>();
             QualityFilter = new QualityFilter();
