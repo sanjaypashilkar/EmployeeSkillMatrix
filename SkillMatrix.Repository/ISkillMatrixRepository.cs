@@ -26,6 +26,7 @@ namespace SkillMatrix.Repository
         IQueryable<QualityRating2> GetQualityRatingByDate2(DateTime startDate, DateTime endDate);
         int SaveQualityRating(IEnumerable<QualityRating> qualityRating);
         int SaveQualityRating(IEnumerable<QualityRating2> qualityRating);
+        int SaveQualityRating(IEnumerable<QualityRating3> qualityRating);
 
         #endregion
 

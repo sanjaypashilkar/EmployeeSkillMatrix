@@ -374,84 +374,139 @@ namespace SkillMatrix.Service
         public void SaveQualityRatings(FileInput fileInput)
         {
             var importAndSave = GetUploadedQualityRating(fileInput);
-            if (fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
+            if (fileInput.AccountType == AccountType.SpringerNature.ToString())
             {
-                List<QualityRating2> qualityRatings = new List<QualityRating2>();
-                foreach (var qualityRating in importAndSave.QualityRatings2)
+                if (fileInput.Department == Department.CompCopy.ToString() || fileInput.Department == Department.OrderManagement.ToString())
                 {
-                    QualityRating2 rating = new QualityRating2();
-                    rating.AccountType = fileInput.AccountType;
-                    rating.Department = fileInput.Department;
-                    rating.Name = qualityRating.Name;
-                    rating.EmployeeId = qualityRating.EmployeeId;
-                    rating.Group = qualityRating.Group;
-                    rating.TeamLeader = qualityRating.TeamLeader;
-                    rating.TaskCompletionDate = qualityRating.TaskCompletionDate;
-                    rating.AuditedDate = qualityRating.AuditedDate;
-                    rating.Process = qualityRating.Process;
-                    rating.ErrorType = qualityRating.ErrorType;
-                    rating.CheckerRemarks = qualityRating.CheckerRemarks;
-                    rating.Modified = qualityRating.Modified;
-                    rating.TicketNumber = qualityRating.TicketNumber;
-                    rating.Shift = qualityRating.Shift;
-                    rating.Lines = Convert.ToInt32(qualityRating.Lines);
-                    rating.IssueType = qualityRating.IssueType;
-                    rating.TLAnalysis = qualityRating.TLAnalysis;
-                    rating.Level1Opportunity = qualityRating.Level1Opportunity;
-                    rating.Level2Opportunity = qualityRating.Level2Opportunity;
-                    rating.RootCause = qualityRating.RootCause;
-                    rating.CorrectiveAction = qualityRating.CorrectiveAction;
-                    rating.PreventiveAction = qualityRating.PreventiveAction;
-                    rating.ProcessChange = qualityRating.ProcessChange;
-                    rating.EffectivenessVerification = qualityRating.EffectivenessVerification;
-                    rating.AuditResult = qualityRating.AuditResult;
-                    rating.DOIVerification = qualityRating.DOIVerification;                    
-                    rating.IsCorrect = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsCorrect));
-                    rating.IsError = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsError));
-                    rating.WeekRange = qualityRating.WeekRange;
-                    rating.Date = qualityRating.Date;
-                    rating.Volume = string.IsNullOrEmpty(qualityRating.Volume)? 0 : Convert.ToDouble(qualityRating.Volume);
-                    rating.Counter = Convert.ToInt32(qualityRating.Counter);
-                    rating.EmpIdDate = qualityRating.EmpIdDate;
-                    rating.Date = qualityRating.Date;
-                    rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
-                    rating.CreatedDate = DateTime.Now;
-                    qualityRatings.Add(rating);
+                    List<QualityRating2> qualityRatings = new List<QualityRating2>();
+                    foreach (var qualityRating in importAndSave.QualityRatings2)
+                    {
+                        QualityRating2 rating = new QualityRating2();
+                        rating.AccountType = fileInput.AccountType;
+                        rating.Department = fileInput.Department;
+                        rating.Name = qualityRating.Name;
+                        rating.EmployeeId = qualityRating.EmployeeId;
+                        rating.Group = qualityRating.Group;
+                        rating.TeamLeader = qualityRating.TeamLeader;
+                        rating.TaskCompletionDate = qualityRating.TaskCompletionDate;
+                        rating.AuditedDate = qualityRating.AuditedDate;
+                        rating.Process = qualityRating.Process;
+                        rating.ErrorType = qualityRating.ErrorType;
+                        rating.CheckerRemarks = qualityRating.CheckerRemarks;
+                        rating.Modified = qualityRating.Modified;
+                        rating.TicketNumber = qualityRating.TicketNumber;
+                        rating.Shift = qualityRating.Shift;
+                        rating.Lines = Convert.ToInt32(qualityRating.Lines);
+                        rating.IssueType = qualityRating.IssueType;
+                        rating.TLAnalysis = qualityRating.TLAnalysis;
+                        rating.Level1Opportunity = qualityRating.Level1Opportunity;
+                        rating.Level2Opportunity = qualityRating.Level2Opportunity;
+                        rating.RootCause = qualityRating.RootCause;
+                        rating.CorrectiveAction = qualityRating.CorrectiveAction;
+                        rating.PreventiveAction = qualityRating.PreventiveAction;
+                        rating.ProcessChange = qualityRating.ProcessChange;
+                        rating.EffectivenessVerification = qualityRating.EffectivenessVerification;
+                        rating.AuditResult = qualityRating.AuditResult;
+                        rating.DOIVerification = qualityRating.DOIVerification;
+                        rating.IsCorrect = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsCorrect));
+                        rating.IsError = Convert.ToBoolean(Convert.ToInt32(qualityRating.IsError));
+                        rating.WeekRange = qualityRating.WeekRange;
+                        rating.Date = qualityRating.Date;
+                        rating.Volume = string.IsNullOrEmpty(qualityRating.Volume) ? 0 : Convert.ToDouble(qualityRating.Volume);
+                        rating.Counter = Convert.ToInt32(qualityRating.Counter);
+                        rating.EmpIdDate = qualityRating.EmpIdDate;
+                        rating.Date = qualityRating.Date;
+                        rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
+                        rating.CreatedDate = DateTime.Now;
+                        qualityRatings.Add(rating);
+                    }
+                    if (qualityRatings.Count > 0)
+                    {
+                        _skillMatrixRepository.SaveQualityRating(qualityRatings);
+                    }
                 }
-                if (qualityRatings.Count > 0)
+                else
                 {
-                    _skillMatrixRepository.SaveQualityRating(qualityRatings);
+                    List<QualityRating> qualityRatings = new List<QualityRating>();
+                    foreach (var qualityRating in importAndSave.QualityRatings)
+                    {
+                        QualityRating rating = new QualityRating();
+                        rating.AccountType = fileInput.AccountType;
+                        rating.Department = fileInput.Department;
+                        rating.Team = qualityRating.Team;
+                        rating.AgentName = qualityRating.AgentName;
+                        rating.EmployeeId = qualityRating.EmployeeId;
+                        rating.TaskCompletionDate = qualityRating.TaskCompletionDate;
+                        rating.QADate = qualityRating.QADate;
+                        rating.Region = qualityRating.Region;
+                        rating.TicketNumber = qualityRating.TicketNumber;
+                        rating.TicketStatus = qualityRating.TicketStatus;
+                        rating.RequestReason = qualityRating.RequestReason;
+                        rating.CustomerType = qualityRating.CustomerType;
+                        rating.ProcessAdheranceScore = Convert.ToDouble(qualityRating.ProcessAdheranceScore);
+                        rating.EmailHandlingScore = Convert.ToDouble(qualityRating.EmailHandlingScore);
+                        rating.ResolutionScore = Convert.ToDouble(qualityRating.ResolutionScore);
+                        rating.ToneScore = Convert.ToDouble(qualityRating.ToneScore);
+                        rating.Remarks = qualityRating.Remarks;
+                        rating.TotalScore = (rating.ProcessAdheranceScore + rating.EmailHandlingScore + rating.ResolutionScore + rating.ToneScore);
+                        rating.StraiveTotalScore = Convert.ToDouble(qualityRating.StraiveTotalScore);
+                        rating.QTPName = qualityRating.QTPName;
+                        rating.QTPEmployeeId = qualityRating.QTPEmployeeId;
+                        rating.Variance = !string.IsNullOrEmpty(qualityRating.Variance) ? Convert.ToDouble(qualityRating.Variance) : 0;
+                        rating.OverallExperience = qualityRating.OverallExperience;
+                        rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
+                        rating.CreatedDate = DateTime.Now;
+                        qualityRatings.Add(rating);
+                    }
+                    if (qualityRatings.Count > 0)
+                    {
+                        _skillMatrixRepository.SaveQualityRating(qualityRatings);
+                    }
                 }
             }
             else
             {
-                List<QualityRating> qualityRatings = new List<QualityRating>();
-                foreach (var qualityRating in importAndSave.QualityRatings)
+                List<QualityRating3> qualityRatings = new List<QualityRating3>();
+                foreach (var qualityRating in importAndSave.QualityRatings3)
                 {
-                    QualityRating rating = new QualityRating();
+                    QualityRating3 rating = new QualityRating3();
                     rating.AccountType = fileInput.AccountType;
-                    rating.Department = fileInput.Department;
-                    rating.Team = qualityRating.Team;
+                    rating.Month = qualityRating.Month;
+                    rating.TeamLead = qualityRating.TeamLead;
                     rating.AgentName = qualityRating.AgentName;
                     rating.EmployeeId = qualityRating.EmployeeId;
-                    rating.TaskCompletionDate = qualityRating.TaskCompletionDate;
-                    rating.QADate = qualityRating.QADate;
-                    rating.Region = qualityRating.Region;
-                    rating.TicketNumber = qualityRating.TicketNumber;
-                    rating.TicketStatus = qualityRating.TicketStatus;
-                    rating.RequestReason = qualityRating.RequestReason;
-                    rating.CustomerType = qualityRating.CustomerType;
-                    rating.ProcessAdheranceScore = Convert.ToDouble(qualityRating.ProcessAdheranceScore);
-                    rating.EmailHandlingScore = Convert.ToDouble(qualityRating.EmailHandlingScore);
-                    rating.ResolutionScore = Convert.ToDouble(qualityRating.ResolutionScore);
-                    rating.ToneScore = Convert.ToDouble(qualityRating.ToneScore);
-                    rating.Remarks = qualityRating.Remarks;
-                    rating.TotalScore = (rating.ProcessAdheranceScore + rating.EmailHandlingScore + rating.ResolutionScore + rating.ToneScore);
-                    rating.StraiveTotalScore = Convert.ToDouble(qualityRating.StraiveTotalScore);
-                    rating.QTPName = qualityRating.QTPName;
-                    rating.QTPEmployeeId = qualityRating.QTPEmployeeId;
-                    rating.Variance = !string.IsNullOrEmpty(qualityRating.Variance) ? Convert.ToDouble(qualityRating.Variance) : 0;
-                    rating.OverallExperience = qualityRating.OverallExperience;
+                    rating.CF1_PointsEarned = qualityRating.CF1_PointsEarned;
+                    rating.CF1_TotalPoints = qualityRating.CF1_TotalPoints;
+                    rating.CF2_PointsEarned = qualityRating.CF2_PointsEarned;
+                    rating.CF2_TotalPoints = qualityRating.CF2_TotalPoints;
+                    rating.CF3_PointsEarned = qualityRating.CF3_PointsEarned;
+                    rating.CF3_TotalPoints = qualityRating.CF3_TotalPoints;
+                    rating.CF4_PointsEarned = qualityRating.CF4_PointsEarned;
+                    rating.CF4_TotalPoints = qualityRating.CF4_TotalPoints;
+                    rating.SF1_PointsEarned = qualityRating.SF1_PointsEarned;
+                    rating.SF1_TotalPoints = qualityRating.SF1_TotalPoints;
+                    rating.SF2_PointsEarned = qualityRating.SF2_PointsEarned;
+                    rating.SF2_TotalPoints = qualityRating.SF2_TotalPoints;
+                    rating.SF3_PointsEarned = qualityRating.SF3_PointsEarned;
+                    rating.SF3_TotalPoints = qualityRating.SF3_TotalPoints;
+                    rating.BP1_PointsEarned = qualityRating.BP1_PointsEarned;
+                    rating.BP1_TotalPoints = qualityRating.BP1_TotalPoints;
+                    rating.BP2_PointsEarned = qualityRating.BP2_PointsEarned;
+                    rating.BP2_TotalPoints = qualityRating.BP2_TotalPoints;
+                    rating.BP3_PointsEarned = qualityRating.BP3_PointsEarned;
+                    rating.BP3_TotalPoints = qualityRating.BP3_TotalPoints;
+                    rating.IC1_PointsEarned = qualityRating.IC1_PointsEarned;
+                    rating.IC1_TotalPoints = qualityRating.IC1_TotalPoints;
+                    rating.IC2_PointsEarned = qualityRating.IC2_PointsEarned;
+                    rating.IC2_TotalPoints = qualityRating.IC2_TotalPoints;
+                    rating.IC3_PointsEarned = qualityRating.IC3_PointsEarned;
+                    rating.IC3_TotalPoints = qualityRating.IC3_TotalPoints;
+                    rating.IC4_PointsEarned = qualityRating.IC4_PointsEarned;
+                    rating.IC4_TotalPoints = qualityRating.IC4_TotalPoints;
+                    rating.PassiveSurvey = qualityRating.PassiveSurvey;
+                    rating.CSATScore = qualityRating.CSATScore;
+                    rating.NoOfPplOpportunity = qualityRating.NoOfPplOpportunity;
+                    rating.Remarks = qualityRating.Remarks;                    
                     rating.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
                     rating.CreatedDate = DateTime.Now;
                     qualityRatings.Add(rating);

@@ -15,6 +15,7 @@ namespace SkillMatrix.Repository
         public DbSet<TenureLevel> TenureLevel { get; set; }
         public DbSet<QualityRating> QualityRating { get; set; }
         public DbSet<QualityRating2> QualityRating2 { get; set; }
+        public DbSet<QualityRating3> QualityRating3 { get; set; }
         public DbSet<TicketingTool> TicketingTool { get; set; }
         public DbSet<BusinessPartner> BusinessPartner { get; set; }
         public SkillMatrixDb()
@@ -47,6 +48,9 @@ namespace SkillMatrix.Repository
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<QualityRating2>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<QualityRating3>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<TicketingTool>()
