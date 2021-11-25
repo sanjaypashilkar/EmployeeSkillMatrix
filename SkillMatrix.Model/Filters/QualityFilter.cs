@@ -12,6 +12,7 @@ namespace SkillMatrix.Model
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int TargetScore { get; set; }
+        public int PassingScore { get; set; }
         public int PageNumber { get; set; }
     }
 }

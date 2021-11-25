@@ -24,6 +24,7 @@ namespace SkillMatrix.Repository
         IQueryable<QualityRating> GetQualityRating();
         IQueryable<QualityRating> GetQualityRatingByDate(DateTime startDate, DateTime endDate);
         IQueryable<QualityRating2> GetQualityRatingByDate2(DateTime startDate, DateTime endDate);
+        IQueryable<QualityRating3> GetQualityRatingByDate3(DateTime startDate, DateTime endDate);
         int SaveQualityRating(IEnumerable<QualityRating> qualityRating);
         int SaveQualityRating(IEnumerable<QualityRating2> qualityRating);
         int SaveQualityRating(IEnumerable<QualityRating3> qualityRating);

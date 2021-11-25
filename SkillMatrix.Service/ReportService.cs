@@ -103,6 +103,13 @@ namespace SkillMatrix.Service
             return selectList;
         }
 
+        public Dictionary<string, string> mtdGetAccountTypes()
+        {
+            var departments = Helper.GetEnumValuesAndDescriptions<AccountType>();
+            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
         public Dictionary<string, string> mtdGetDepartments()
         {
             var departments = Helper.GetEnumValuesAndDescriptions<Department>();
@@ -120,6 +127,13 @@ namespace SkillMatrix.Service
         public Dictionary<string, string> mtdGetQCReportTypes2()
         {
             var reportTypes = Helper.GetEnumValuesAndDescriptions<QCReportType2>();
+            var selectList = reportTypes.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
+        public Dictionary<string, string> mtdGetQCReportTypes3()
+        {
+            var reportTypes = Helper.GetEnumValuesAndDescriptions<QCReportType3>();
             var selectList = reportTypes.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
             return selectList;
         }
@@ -142,17 +156,21 @@ namespace SkillMatrix.Service
                 filter.EndDate = DateTime.Today.Date;
                 //filter.StartDate = new DateTime(2021, 08, 02).Date;
                 //filter.EndDate = new DateTime(2021, 09, 05).Date;
+                filter.AccountType = AccountType.SpringerNature.ToString();
                 filter.Department = Department.CustomerService.ToString();
                 filter.ReportType = QCReportType1.External.ToString();
                 filter.TargetScore = 85;
+                filter.PassingScore = 92;
                 filter.PageNumber = 1;
             }
 
             vwQualityReport report = new vwQualityReport();
             report.QualityFilter = filter;
+            report.lstAccountTypes = mtdGetAccountTypes();
             report.lstDepartments = mtdGetDepartments();            
             report.lstReportType1 = mtdGetQCReportTypes1();
             report.lstReportType2 = mtdGetQCReportTypes2();
+            report.lstReportType3 = mtdGetQCReportTypes3();
 
             var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate(filter.StartDate, filter.EndDate).ToList();            
             if (!string.IsNullOrEmpty(filter.Department))
@@ -203,6 +221,7 @@ namespace SkillMatrix.Service
                 filter.EndDate = DateTime.Today.Date;
                 //filter.StartDate = new DateTime(2021, 08, 02).Date;
                 //filter.EndDate = new DateTime(2021, 09, 05).Date;
+                filter.AccountType = AccountType.SpringerNature.ToString();
                 filter.Department = Department.OrderManagement.ToString();
                 filter.ReportType = QCReportType2.WeeklyLevelSummary.ToString();
                 filter.TargetScore = 85;
@@ -214,6 +233,7 @@ namespace SkillMatrix.Service
             report.lstDepartments = mtdGetDepartments();
             report.lstReportType1 = mtdGetQCReportTypes1();
             report.lstReportType2 = mtdGetQCReportTypes2();
+            report.lstReportType3 = mtdGetQCReportTypes3();
 
             var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate2(filter.StartDate, filter.EndDate).ToList();            
             qualityRatings = qualityRatings.Where(s => s.Department.ToLower() == filter.Department.ToLower()).ToList();            
@@ -267,6 +287,55 @@ namespace SkillMatrix.Service
                     report.PaginatedDailyReport = paginatedData;
                     report.DailyQualityReport = sortedList;
                 }
+            }
+            return report;
+        }
+
+        public vwQualityReport GetQualityReport3(QualityFilter filter = null)
+        {
+            if (filter == null)
+            {
+                filter = new QualityFilter();
+                filter.AccountType = AccountType.Elsevier.ToString();
+                filter.StartDate = DateTime.Today.AddDays(-7).Date;
+                filter.EndDate = DateTime.Today.Date;
+                filter.ReportType = QCReportType3.CategorySummary.ToString();
+                filter.PassingScore = 92;
+                filter.PageNumber = 1;
+            }
+
+            vwQualityReport report = new vwQualityReport();
+            report.QualityFilter = filter;
+            report.lstDepartments = mtdGetDepartments();
+            report.lstReportType1 = mtdGetQCReportTypes1();
+            report.lstReportType2 = mtdGetQCReportTypes2();
+            report.lstReportType3 = mtdGetQCReportTypes3();
+
+            var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate3(filter.StartDate, filter.EndDate).ToList();
+            if (qualityRatings.Count > 0)
+            {
+                var categorySummaryELSV = new List<vwQualityReportSummaryELSV>();
+                if(filter.ReportType == QCReportType3.CategorySummary.ToString())
+                {
+                    categorySummaryELSV = GetCategorySummaryReportELSV(qualityRatings);
+                }
+                else
+                {
+                    categorySummaryELSV = GetCodeSummaryReportELSV(qualityRatings);
+                }
+                
+                var sortedList = categorySummaryELSV.ToList();
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = sortedList.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedCategorySummaryELSV = paginatedData;
+                report.CategorySummaryELSV = sortedList;
             }
             return report;
         }
@@ -582,6 +651,307 @@ namespace SkillMatrix.Service
             }
             return teamleadSamplingReport;
         }
+        private List<vwQualityReportSummaryELSV> GetCategorySummaryReportELSV(List<QualityRating3> qualityRatings)
+        {
+            List<vwQualityReportSummaryELSV> reportSummaries = new List<vwQualityReportSummaryELSV>();
+            var cf1_PointsEarned = qualityRatings.Sum(q => q.CF1_PointsEarned);
+            var cf2_PointsEarned = qualityRatings.Sum(q => q.CF2_PointsEarned);
+            var cf3_PointsEarned = qualityRatings.Sum(q => q.CF3_PointsEarned);
+            var cf4_PointsEarned = qualityRatings.Sum(q => q.CF4_PointsEarned);
+
+            var customerFocus_PointsEarned = (cf1_PointsEarned + cf2_PointsEarned + cf3_PointsEarned + cf4_PointsEarned);
+
+            var cf1_TotalPoints = qualityRatings.Sum(q => q.CF1_TotalPoints);
+            var cf2_TotalPoints = qualityRatings.Sum(q => q.CF2_TotalPoints);
+            var cf3_TotalPoints = qualityRatings.Sum(q => q.CF3_TotalPoints);
+            var cf4_TotalPoints = qualityRatings.Sum(q => q.CF4_TotalPoints);
+
+            var customerFocus_TotalPoints = (cf1_TotalPoints + cf2_TotalPoints + cf3_TotalPoints + cf4_TotalPoints);
+
+            double customerFocus_Percent = Math.Round(((double)customerFocus_PointsEarned / customerFocus_TotalPoints) * 100,2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV {
+                Category = "Customer Focus",
+                PointsEarned = customerFocus_PointsEarned,
+                TotalPoints = customerFocus_TotalPoints,
+                ScorePercentage = customerFocus_Percent,
+            });
+
+            var sf1_PointsEarned = qualityRatings.Sum(q => q.SF1_PointsEarned);
+            var sf2_PointsEarned = qualityRatings.Sum(q => q.SF2_PointsEarned);
+            var sf3_PointsEarned = qualityRatings.Sum(q => q.SF3_PointsEarned);
+
+            var systemFocus_PointsEarned = (sf1_PointsEarned + sf2_PointsEarned + sf3_PointsEarned);
+
+            var sf1_TotalPoints = qualityRatings.Sum(q => q.SF1_TotalPoints);
+            var sf2_TotalPoints = qualityRatings.Sum(q => q.SF2_TotalPoints);
+            var sf3_TotalPoints = qualityRatings.Sum(q => q.SF3_TotalPoints);
+
+            var systemFocus_TotalPoints = (sf1_TotalPoints + sf2_TotalPoints + sf3_TotalPoints);
+
+            double systemFocus_Percent = Math.Round(((double)systemFocus_PointsEarned / systemFocus_TotalPoints) * 100,2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "System Focus",
+                PointsEarned = systemFocus_PointsEarned,
+                TotalPoints = systemFocus_TotalPoints,
+                ScorePercentage = systemFocus_Percent,
+            });
+
+            var bp1_PointsEarned = qualityRatings.Sum(q => q.BP1_PointsEarned);
+            var bp2_PointsEarned = qualityRatings.Sum(q => q.BP2_PointsEarned);
+            var bp3_PointsEarned = qualityRatings.Sum(q => q.BP3_PointsEarned);
+
+            var businessProcess_PointsEarned = (bp1_PointsEarned + bp2_PointsEarned + bp3_PointsEarned);
+
+            var bp1_TotalPoints = qualityRatings.Sum(q => q.BP1_TotalPoints);
+            var bp2_TotalPoints = qualityRatings.Sum(q => q.BP2_TotalPoints);
+            var bp3_TotalPoints = qualityRatings.Sum(q => q.BP3_TotalPoints);
+
+            var businessProcess_TotalPoints = (bp1_TotalPoints + bp2_TotalPoints + bp3_TotalPoints);
+
+            double businessProcess_Percent = Math.Round(((double)businessProcess_PointsEarned / businessProcess_TotalPoints) * 100,2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "Business Process Focus",
+                PointsEarned = businessProcess_PointsEarned,
+                TotalPoints = businessProcess_TotalPoints,
+                ScorePercentage = businessProcess_Percent,
+            });
+
+            var ic1_PointsEarned = qualityRatings.Sum(q => q.IC1_PointsEarned);
+            var ic2_PointsEarned = qualityRatings.Sum(q => q.IC2_PointsEarned);
+            var ic3_PointsEarned = qualityRatings.Sum(q => q.IC3_PointsEarned);
+            var ic4_PointsEarned = qualityRatings.Sum(q => q.IC4_PointsEarned);
+
+            var languageFocus_PointsEarned = (ic1_PointsEarned + ic2_PointsEarned + ic3_PointsEarned + ic4_PointsEarned);
+
+            var ic1_TotalPoints = qualityRatings.Sum(q => q.IC1_TotalPoints);
+            var ic2_TotalPoints = qualityRatings.Sum(q => q.IC2_TotalPoints);
+            var ic3_TotalPoints = qualityRatings.Sum(q => q.IC3_TotalPoints);
+            var ic4_TotalPoints = qualityRatings.Sum(q => q.IC4_TotalPoints);
+
+            var languageFocus_TotalPoints = (ic1_TotalPoints + ic2_TotalPoints + ic3_TotalPoints + ic4_TotalPoints);
+
+            double languageFocus_Percent = Math.Round(((double)languageFocus_PointsEarned / languageFocus_TotalPoints) * 100,2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "Language Focus",
+                PointsEarned = languageFocus_PointsEarned,
+                TotalPoints = languageFocus_TotalPoints,
+                ScorePercentage = languageFocus_Percent,
+            });
+
+            var totalPointsEarned = (customerFocus_PointsEarned + systemFocus_PointsEarned + businessProcess_PointsEarned + languageFocus_PointsEarned);
+            var totalPoints = (customerFocus_TotalPoints + systemFocus_TotalPoints + businessProcess_TotalPoints + languageFocus_TotalPoints);
+
+            double percent = Math.Round(((double)totalPointsEarned / totalPoints) * 100,2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "Total",
+                PointsEarned = totalPointsEarned,
+                TotalPoints = totalPoints,
+                ScorePercentage = percent,
+            });
+
+            return reportSummaries;
+        }
+
+        private List<vwQualityReportSummaryELSV> GetCodeSummaryReportELSV(List<QualityRating3> qualityRatings)
+        {
+            List<vwQualityReportSummaryELSV> reportSummaries = new List<vwQualityReportSummaryELSV>();
+            var cf1_PointsEarned = qualityRatings.Sum(q => q.CF1_PointsEarned);
+            var cf2_PointsEarned = qualityRatings.Sum(q => q.CF2_PointsEarned);
+            var cf3_PointsEarned = qualityRatings.Sum(q => q.CF3_PointsEarned);
+            var cf4_PointsEarned = qualityRatings.Sum(q => q.CF4_PointsEarned);
+
+            var customerFocus_PointsEarned = (cf1_PointsEarned + cf2_PointsEarned + cf3_PointsEarned + cf4_PointsEarned);
+
+            var cf1_TotalPoints = qualityRatings.Sum(q => q.CF1_TotalPoints);
+            var cf2_TotalPoints = qualityRatings.Sum(q => q.CF2_TotalPoints);
+            var cf3_TotalPoints = qualityRatings.Sum(q => q.CF3_TotalPoints);
+            var cf4_TotalPoints = qualityRatings.Sum(q => q.CF4_TotalPoints);
+
+            var customerFocus_TotalPoints = (cf1_TotalPoints + cf2_TotalPoints + cf3_TotalPoints + cf4_TotalPoints);
+
+            double customerFocus_Percent = Math.Round(((double)customerFocus_PointsEarned / customerFocus_TotalPoints) * 100, 2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "CF1",
+                PointsEarned = cf1_PointsEarned,
+                TotalPoints = cf1_TotalPoints,
+                ScorePercentage = Math.Round(((double)cf1_PointsEarned / cf1_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "CF2",
+                PointsEarned = cf2_PointsEarned,
+                TotalPoints = cf2_TotalPoints,
+                ScorePercentage = Math.Round(((double)cf2_PointsEarned / cf2_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "CF3",
+                PointsEarned = cf3_PointsEarned,
+                TotalPoints = cf3_TotalPoints,
+                ScorePercentage = Math.Round(((double)cf3_PointsEarned / cf3_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "CF4",
+                PointsEarned = cf4_PointsEarned,
+                TotalPoints = cf4_TotalPoints,
+                ScorePercentage = Math.Round(((double)cf4_PointsEarned / cf4_TotalPoints) * 100, 2),
+            });
+
+            var sf1_PointsEarned = qualityRatings.Sum(q => q.SF1_PointsEarned);
+            var sf2_PointsEarned = qualityRatings.Sum(q => q.SF2_PointsEarned);
+            var sf3_PointsEarned = qualityRatings.Sum(q => q.SF3_PointsEarned);
+
+            var systemFocus_PointsEarned = (sf1_PointsEarned + sf2_PointsEarned + sf3_PointsEarned);
+
+            var sf1_TotalPoints = qualityRatings.Sum(q => q.SF1_TotalPoints);
+            var sf2_TotalPoints = qualityRatings.Sum(q => q.SF2_TotalPoints);
+            var sf3_TotalPoints = qualityRatings.Sum(q => q.SF3_TotalPoints);
+
+            var systemFocus_TotalPoints = (sf1_TotalPoints + sf2_TotalPoints + sf3_TotalPoints);
+
+            double systemFocus_Percent = Math.Round(((double)systemFocus_PointsEarned / systemFocus_TotalPoints) * 100, 2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "SF1",
+                PointsEarned = sf1_PointsEarned,
+                TotalPoints = sf1_TotalPoints,
+                ScorePercentage = Math.Round(((double)sf1_PointsEarned / sf1_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "SF2",
+                PointsEarned = sf2_PointsEarned,
+                TotalPoints = sf2_TotalPoints,
+                ScorePercentage = Math.Round(((double)sf2_PointsEarned / sf2_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "SF3",
+                PointsEarned = sf3_PointsEarned,
+                TotalPoints = sf3_TotalPoints,
+                ScorePercentage = Math.Round(((double)sf3_PointsEarned / sf3_TotalPoints) * 100, 2),
+            });
+
+            var bp1_PointsEarned = qualityRatings.Sum(q => q.BP1_PointsEarned);
+            var bp2_PointsEarned = qualityRatings.Sum(q => q.BP2_PointsEarned);
+            var bp3_PointsEarned = qualityRatings.Sum(q => q.BP3_PointsEarned);
+
+            var businessProcess_PointsEarned = (bp1_PointsEarned + bp2_PointsEarned + bp3_PointsEarned);
+
+            var bp1_TotalPoints = qualityRatings.Sum(q => q.BP1_TotalPoints);
+            var bp2_TotalPoints = qualityRatings.Sum(q => q.BP2_TotalPoints);
+            var bp3_TotalPoints = qualityRatings.Sum(q => q.BP3_TotalPoints);
+
+            var businessProcess_TotalPoints = (bp1_TotalPoints + bp2_TotalPoints + bp3_TotalPoints);
+
+            double businessProcess_Percent = Math.Round(((double)businessProcess_PointsEarned / businessProcess_TotalPoints) * 100, 2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "BP1",
+                PointsEarned = bp1_PointsEarned,
+                TotalPoints = bp1_TotalPoints,
+                ScorePercentage = Math.Round(((double)bp1_PointsEarned / bp1_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "BP2",
+                PointsEarned = bp2_PointsEarned,
+                TotalPoints = bp2_TotalPoints,
+                ScorePercentage = Math.Round(((double)bp2_PointsEarned / bp2_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "BP3",
+                PointsEarned = bp3_PointsEarned,
+                TotalPoints = bp3_TotalPoints,
+                ScorePercentage = Math.Round(((double)bp3_PointsEarned / bp3_TotalPoints) * 100, 2),
+            });
+
+            var ic1_PointsEarned = qualityRatings.Sum(q => q.IC1_PointsEarned);
+            var ic2_PointsEarned = qualityRatings.Sum(q => q.IC2_PointsEarned);
+            var ic3_PointsEarned = qualityRatings.Sum(q => q.IC3_PointsEarned);
+            var ic4_PointsEarned = qualityRatings.Sum(q => q.IC4_PointsEarned);
+
+            var languageFocus_PointsEarned = (ic1_PointsEarned + ic2_PointsEarned + ic3_PointsEarned + ic4_PointsEarned);
+
+            var ic1_TotalPoints = qualityRatings.Sum(q => q.IC1_TotalPoints);
+            var ic2_TotalPoints = qualityRatings.Sum(q => q.IC2_TotalPoints);
+            var ic3_TotalPoints = qualityRatings.Sum(q => q.IC3_TotalPoints);
+            var ic4_TotalPoints = qualityRatings.Sum(q => q.IC4_TotalPoints);
+
+            var languageFocus_TotalPoints = (ic1_TotalPoints + ic2_TotalPoints + ic3_TotalPoints + ic4_TotalPoints);
+
+            double languageFocus_Percent = Math.Round(((double)languageFocus_PointsEarned / languageFocus_TotalPoints) * 100, 2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "IC1",
+                PointsEarned = ic1_PointsEarned,
+                TotalPoints = ic1_TotalPoints,
+                ScorePercentage = Math.Round(((double)ic1_PointsEarned / ic1_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "IC2",
+                PointsEarned = ic2_PointsEarned,
+                TotalPoints = ic2_TotalPoints,
+                ScorePercentage = Math.Round(((double)ic2_PointsEarned / ic2_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "IC3",
+                PointsEarned = ic3_PointsEarned,
+                TotalPoints = ic3_TotalPoints,
+                ScorePercentage = Math.Round(((double)ic3_PointsEarned / ic3_TotalPoints) * 100, 2),
+            });
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "IC4",
+                PointsEarned = ic4_PointsEarned,
+                TotalPoints = ic4_TotalPoints,
+                ScorePercentage = Math.Round(((double)ic4_PointsEarned / ic4_TotalPoints) * 100, 2),
+            });
+
+            var totalPointsEarned = (customerFocus_PointsEarned + systemFocus_PointsEarned + businessProcess_PointsEarned + languageFocus_PointsEarned);
+            var totalPoints = (customerFocus_TotalPoints + systemFocus_TotalPoints + businessProcess_TotalPoints + languageFocus_TotalPoints);
+
+            double percent = Math.Round(((double)totalPointsEarned / totalPoints) * 100, 2);
+
+            reportSummaries.Add(new vwQualityReportSummaryELSV
+            {
+                Category = "Total",
+                PointsEarned = totalPointsEarned,
+                TotalPoints = totalPoints,
+                ScorePercentage = percent,
+            });
+
+            return reportSummaries;
+        }
+
         private List<WeeklyAccuracy> GetWeekRanges (DateTime startDate, DateTime endDate)
         {
             List<WeeklyAccuracy> weekRanges = new List<WeeklyAccuracy>();

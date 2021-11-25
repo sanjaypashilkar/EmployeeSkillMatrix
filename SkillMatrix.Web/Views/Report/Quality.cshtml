@@ -19,10 +19,13 @@
             </div>
             <br />
             <div class="d-flex justify-content-center">
-                <div class="ml-sm-3">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select", @onchange = "SelectedIndexChanged()" })</div>
+                <div class="ml-sm-3">Account: @Html.DropDownListFor(x => x.QualityFilter.AccountType, new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @id = "AccountType", @class = "form-select", @onchange = "SelectedIndexChanged_Account()" })</div>
+                <div class="ml-sm-3" id="divDepartment">Department: @Html.DropDownListFor(x => x.QualityFilter.Department, new SelectList(Model.lstDepartments, "Key", "Value"), new { @id = "Department", @class = "form-select", @onchange = "SelectedIndexChanged()" })</div>
                 <div class="ml-sm-3" id="divReportType1">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType1, "Key", "Value"), new { @id = "ReportType1", @class = "form-select" })</div>
                 <div class="ml-sm-3" id="divReportType2">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType2, "Key", "Value"), new { @id = "ReportType2", @class = "form-select" })</div>
+                <div class="ml-sm-3" id="divReportType3">ReportType: @Html.DropDownListFor(x => x.QualityFilter.ReportType, new SelectList(Model.lstReportType3, "Key", "Value"), new { @id = "ReportType3", @class = "form-select" })</div>
                 <div class="ml-sm-3" id="divTargetScore">Target Score: <input type="text" id="TargetScore" value="@Model.QualityFilter.TargetScore"></div>
+                <div class="ml-sm-3" id="divPassingScore">Passing Score: <input type="text" id="PassingScore" value="@Model.QualityFilter.PassingScore"></div>
             </div>
             <br />
             <div>
@@ -40,24 +43,51 @@
 @section Scripts
 {
     <script type="text/javascript">
+        $(document).ready(function () {
+            toastrOption();            
+            $("#divReportType2").hide();
+            $("#divReportType3").hide();
+            $("#divPassingScore").hide();
+        });
+
         function Show() {
-            var dept = $("#Department").val();
-            var reportType = "";
-            if (dept == 'OrderManagement' || dept == 'CompCopy') {
-                reportType = $("#ReportType2").val();
+            var filter = {
+            };
+            var account = $("#AccountType").val();
+            if (account == 'SpringerNature') {
+                var dept = $("#Department").val();
+                var reportType = "";
+                if (dept == 'OrderManagement' || dept == 'CompCopy') {
+                    reportType = $("#ReportType2").val();
+                }
+                else {
+                    reportType = $("#ReportType1").val();
+                }
+
+                var targetScore = $("#TargetScore").val();
+                filter = {
+                    AccountType : account,
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    Department: dept,
+                    ReportType: reportType,
+                    TargetScore: targetScore,
+                    PageNumber: 1
+                }
             }
             else {
-                reportType = $("#ReportType1").val();
+                var reportType = $("#ReportType3").val();
+                var passingScore = $("#PassingScore").val();
+                filter = {
+                    AccountType: account,
+                    ReportType: reportType,
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    PassingScore: passingScore,
+                    PageNumber: 1
+                }
             }
             
-            var filter = {
-                StartDate: $("#minDate").val(),
-                EndDate: $("#maxDate").val(),
-                Department: dept,
-                ReportType: reportType,                
-                TargetScore: $("#TargetScore").val(),
-                PageNumber: 1
-            }
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
@@ -74,22 +104,60 @@
         }
 
         function Paginate(pageNo) {
-            var dept = $("#Department").val();
-            var reportType = "";
-            if (dept == 'OrderManagement' || dept == 'CompCopy') {
-                reportType = $("#ReportType2").val();
+            //var dept = $("#Department").val();
+            //var reportType = "";
+            //if (dept == 'OrderManagement' || dept == 'CompCopy') {
+            //    reportType = $("#ReportType2").val();
+            //}
+            //else {
+            //    reportType = $("#ReportType1").val();
+            //}
+            //var filter = {
+            //    StartDate: $("#minDate").val(),
+            //    EndDate: $("#maxDate").val(),
+            //    Department: dept,
+            //    ReportType: reportType,
+            //    TargetScore: $("#TargetScore").val(),
+            //    PageNumber: pageNo
+            //}
+
+            var filter = {
+            };
+            var account = $("#AccountType").val();
+            if (account == 'SpringerNature') {
+                var dept = $("#Department").val();
+                var reportType = "";
+                if (dept == 'OrderManagement' || dept == 'CompCopy') {
+                    reportType = $("#ReportType2").val();
+                }
+                else {
+                    reportType = $("#ReportType1").val();
+                }
+
+                var targetScore = $("#TargetScore").val();
+                filter = {
+                    AccountType: account,
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    Department: dept,
+                    ReportType: reportType,
+                    TargetScore: targetScore,
+                    PageNumber: pageNo
+                }
             }
             else {
-                reportType = $("#ReportType1").val();
+                var reportType = $("#ReportType3").val();
+                var passingScore = $("#PassingScore").val();
+                filter = {
+                    AccountType: account,
+                    ReportType: reportType,
+                    StartDate: $("#minDate").val(),
+                    EndDate: $("#maxDate").val(),
+                    PassingScore: passingScore,
+                    PageNumber: pageNo
+                }
             }
-            var filter = {
-                StartDate: $("#minDate").val(),
-                EndDate: $("#maxDate").val(),
-                Department: dept,
-                ReportType: reportType,
-                TargetScore: $("#TargetScore").val(),
-                PageNumber: pageNo
-            }
+
             $.ajax({
                 type: 'POST',
                 dataType: 'html',
@@ -158,6 +226,26 @@
                 }, 200);
             }
 
+        function SelectedIndexChanged_Account() {
+            var account = $("#AccountType").val();
+            if (account == 'SpringerNature') {
+                $("#divDepartment").show();
+                $("#divReportType1").show();
+                $("#divReportType2").hide();
+                $("#divReportType3").hide();
+                $("#divTargetScore").show();
+                $("#divPassingScore").hide();
+            }
+            else {
+                $("#divDepartment").hide();
+                $("#divReportType1").hide();
+                $("#divReportType2").hide();
+                $("#divTargetScore").hide();
+                $("#divReportType3").show();
+                $("#divPassingScore").show();
+            }
+        }
+
             function SelectedIndexChanged() {
                 var dept = $("#Department").val();
                 if (dept == 'OrderManagement' || dept == 'CompCopy') {
@@ -192,9 +280,6 @@
             }
         }
 
-        $(document).ready(function () {
-            toastrOption();
-            $("#divReportType2").hide();
-        });
+        
     </script>
 }

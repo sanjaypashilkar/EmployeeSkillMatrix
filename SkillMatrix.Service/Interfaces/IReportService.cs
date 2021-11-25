@@ -20,6 +20,7 @@ namespace SkillMatrix.Service
         Dictionary<string, string> mtdGetQCReportTypes2();
         vwQualityReport GetQualityReport(QualityFilter filter);
         vwQualityReport GetQualityReport2(QualityFilter filter);
+        vwQualityReport GetQualityReport3(QualityFilter filter);
         vwTicketingToolReport GetTicketingToolReport(TicketingToolFilter filter);
         vwBusinessPartnerReport GetBusinessPartnerReport(BusinessPartnerFilter filter);
     }

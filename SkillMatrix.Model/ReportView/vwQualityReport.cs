@@ -15,9 +15,14 @@ namespace SkillMatrix.Model
         public virtual List<vwQualityReportDaily> DailyQualityReport { get; set; }
         public virtual List<vwQualityReportDaily> PaginatedDailyReport { get; set; }
 
+        public virtual List<vwQualityReportSummaryELSV> CategorySummaryELSV { get; set; }
+        public virtual List<vwQualityReportSummaryELSV> PaginatedCategorySummaryELSV { get; set; }
+
+        public virtual Dictionary<string, string> lstAccountTypes { get; set; }
         public virtual Dictionary<string, string> lstDepartments { get; set; }
         public virtual Dictionary<string, string> lstReportType1 { get; set; }
         public virtual Dictionary<string, string> lstReportType2 { get; set; }
+        public virtual Dictionary<string, string> lstReportType3 { get; set; }
         public virtual QualityFilter QualityFilter { get; set; }
         public virtual Pager Pager { get; set; }
 
@@ -32,9 +37,14 @@ namespace SkillMatrix.Model
             DailyQualityReport = new List<vwQualityReportDaily>();
             PaginatedDailyReport = new List<vwQualityReportDaily>();
 
+            CategorySummaryELSV = new List<vwQualityReportSummaryELSV>();
+            PaginatedCategorySummaryELSV = new List<vwQualityReportSummaryELSV>();
+
+            lstAccountTypes = new Dictionary<string, string>();
             lstDepartments = new Dictionary<string, string>();
             lstReportType1 = new Dictionary<string, string>();
             lstReportType2 = new Dictionary<string, string>();
+            lstReportType3 = new Dictionary<string, string>();
             QualityFilter = new QualityFilter();
             Pager = new Pager();
         }
@@ -75,5 +85,13 @@ namespace SkillMatrix.Model
         {
             DailySampling = new List<DailySampling>();
         }
+    }
+
+    public class vwQualityReportSummaryELSV
+    {
+        public string Category { get; set; }
+        public int PointsEarned { get; set; }
+        public int TotalPoints { get; set; }
+        public double ScorePercentage { get; set; }
     }
 }

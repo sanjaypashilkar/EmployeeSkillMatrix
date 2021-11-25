@@ -9,6 +9,7 @@ namespace SkillMatrix.Model
         public int Id { get; set; }
         public string AccountType { get; set; }
         public string Month { get; set; }
+        public DateTime Date { get; set; }
         public string TeamLead { get; set; }
         public string AgentName { get; set; }
         public string EmployeeId { get; set; }

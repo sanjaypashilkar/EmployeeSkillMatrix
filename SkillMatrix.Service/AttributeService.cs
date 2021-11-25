@@ -231,40 +231,41 @@ namespace SkillMatrix.Service
                             if (reader.Depth != 0 && reader.Depth != 1)
                             {
                                 string month = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                                string teamLead = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
-                                var agent = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
-                                var employeeId = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                string date = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                string teamLead = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                var agent = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                var employeeId = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
                                 if (string.IsNullOrEmpty(employeeId) || string.IsNullOrEmpty(agent))
                                     break;
-                                var cf1_ptsEarned = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
-                                var cf1_totalEarned = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
-                                var cf2_ptsEarned = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
-                                var cf2_totalEarned = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
-                                var cf3_ptsEarned = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
-                                var cf3_totalEarned = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
-                                var cf4_ptsEarned = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
-                                var cf4_totalEarned = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
-                                var sf1_ptsEarned = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
-                                var sf1_totalEarned = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
-                                var sf2_ptsEarned = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
-                                var sf2_totalEarned = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
-                                var sf3_ptsEarned = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
-                                var sf3_totalEarned = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
-                                var bp1_ptsEarned = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
-                                var bp1_totalEarned = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
-                                var bp2_ptsEarned = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
-                                var bp2_totalEarned = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
-                                var bp3_ptsEarned = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
-                                var bp3_totalEarned = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
-                                var ic1_ptsEarned = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
-                                var ic1_totalEarned = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
-                                var ic2_ptsEarned = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
-                                var ic2_totalEarned = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
-                                var ic3_ptsEarned = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : string.Empty;
-                                var ic3_totalEarned = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
-                                var ic4_ptsEarned = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : string.Empty;
-                                var ic4_totalEarned = reader.GetValue(31) != null ? reader.GetValue(31).ToString().Trim() : string.Empty;
-                                var passiveSurvey = reader.GetValue(32) != null ? reader.GetValue(32).ToString().Trim() : string.Empty;
+                                var cf1_ptsEarned = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                                var cf1_totalEarned = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                                var cf2_ptsEarned = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                                var cf2_totalEarned = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+                                var cf3_ptsEarned = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                                var cf3_totalEarned = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                                var cf4_ptsEarned = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+                                var cf4_totalEarned = reader.GetValue(12) != null ? reader.GetValue(12).ToString().Trim() : string.Empty;
+                                var sf1_ptsEarned = reader.GetValue(13) != null ? reader.GetValue(13).ToString().Trim() : string.Empty;
+                                var sf1_totalEarned = reader.GetValue(14) != null ? reader.GetValue(14).ToString().Trim() : string.Empty;
+                                var sf2_ptsEarned = reader.GetValue(15) != null ? reader.GetValue(15).ToString().Trim() : string.Empty;
+                                var sf2_totalEarned = reader.GetValue(16) != null ? reader.GetValue(16).ToString().Trim() : string.Empty;
+                                var sf3_ptsEarned = reader.GetValue(17) != null ? reader.GetValue(17).ToString().Trim() : string.Empty;
+                                var sf3_totalEarned = reader.GetValue(18) != null ? reader.GetValue(18).ToString().Trim() : string.Empty;
+                                var bp1_ptsEarned = reader.GetValue(19) != null ? reader.GetValue(19).ToString().Trim() : string.Empty;
+                                var bp1_totalEarned = reader.GetValue(20) != null ? reader.GetValue(20).ToString().Trim() : string.Empty;
+                                var bp2_ptsEarned = reader.GetValue(21) != null ? reader.GetValue(21).ToString().Trim() : string.Empty;
+                                var bp2_totalEarned = reader.GetValue(22) != null ? reader.GetValue(22).ToString().Trim() : string.Empty;
+                                var bp3_ptsEarned = reader.GetValue(23) != null ? reader.GetValue(23).ToString().Trim() : string.Empty;
+                                var bp3_totalEarned = reader.GetValue(24) != null ? reader.GetValue(24).ToString().Trim() : string.Empty;
+                                var ic1_ptsEarned = reader.GetValue(25) != null ? reader.GetValue(25).ToString().Trim() : string.Empty;
+                                var ic1_totalEarned = reader.GetValue(26) != null ? reader.GetValue(26).ToString().Trim() : string.Empty;
+                                var ic2_ptsEarned = reader.GetValue(27) != null ? reader.GetValue(27).ToString().Trim() : string.Empty;
+                                var ic2_totalEarned = reader.GetValue(28) != null ? reader.GetValue(28).ToString().Trim() : string.Empty;
+                                var ic3_ptsEarned = reader.GetValue(29) != null ? reader.GetValue(29).ToString().Trim() : string.Empty;
+                                var ic3_totalEarned = reader.GetValue(30) != null ? reader.GetValue(30).ToString().Trim() : string.Empty;
+                                var ic4_ptsEarned = reader.GetValue(31) != null ? reader.GetValue(31).ToString().Trim() : string.Empty;
+                                var ic4_totalEarned = reader.GetValue(32) != null ? reader.GetValue(32).ToString().Trim() : string.Empty;
+                                var passiveSurvey = reader.GetValue(33) != null ? reader.GetValue(33).ToString().Trim() : string.Empty;
                                 if(passiveSurvey.ToUpper().Contains("N/A"))
                                 {
                                     passiveSurvey = passiveSurvey.ToUpper().Replace("N/A", string.Empty).Trim();
@@ -273,7 +274,7 @@ namespace SkillMatrix.Service
                                 {
                                     passiveSurvey = passiveSurvey.ToUpper().Replace("%", string.Empty).Trim();
                                 }
-                                var csatScore = reader.GetValue(33) != null ? reader.GetValue(33).ToString().Trim() : string.Empty;
+                                var csatScore = reader.GetValue(34) != null ? reader.GetValue(34).ToString().Trim() : string.Empty;
                                 if (csatScore.ToUpper().Contains("N/A"))
                                 {
                                     csatScore = csatScore.ToUpper().Replace("N/A", string.Empty).Trim();
@@ -282,12 +283,13 @@ namespace SkillMatrix.Service
                                 {
                                     csatScore = csatScore.ToUpper().Replace("%", string.Empty).Trim();
                                 }
-                                var noOfPplOpportunity = reader.GetValue(34) != null ? reader.GetValue(34).ToString().Trim() : string.Empty;
-                                var remarks = reader.GetValue(35) != null ? reader.GetValue(35).ToString().Trim() : string.Empty;
+                                var noOfPplOpportunity = reader.GetValue(35) != null ? reader.GetValue(35).ToString().Trim() : string.Empty;
+                                var remarks = reader.GetValue(36) != null ? reader.GetValue(36).ToString().Trim() : string.Empty;
                                 double doubleValue = 0;
                                 int intValue = 0;
 
                                 string Month = month;
+                                DateTime Date = Convert.ToDateTime(date);
                                 string TeamLead = teamLead;
                                 string AgentName = agent;
                                 string EmployeeId = employeeId;
@@ -327,6 +329,7 @@ namespace SkillMatrix.Service
                                 importAndSaveQuality.QualityRatings3.Add(new vwQualityRating3
                                 {
                                     Month = Month,
+                                    Date = Date,
                                     TeamLead = TeamLead,
                                     AgentName = AgentName,
                                     EmployeeId = EmployeeId,
@@ -471,6 +474,7 @@ namespace SkillMatrix.Service
                 {
                     QualityRating3 rating = new QualityRating3();
                     rating.AccountType = fileInput.AccountType;
+                    rating.Date = qualityRating.Date;
                     rating.Month = qualityRating.Month;
                     rating.TeamLead = qualityRating.TeamLead;
                     rating.AgentName = qualityRating.AgentName;

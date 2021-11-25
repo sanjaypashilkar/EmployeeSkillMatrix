@@ -7,6 +7,7 @@ namespace SkillMatrix.Model
     public class vwQualityRating3
     {
         public virtual string Month { get; set; }
+        public virtual DateTime Date { get; set; }
         public virtual string TeamLead { get; set; }
         public virtual string AgentName { get; set; }
         public virtual string EmployeeId { get; set; }

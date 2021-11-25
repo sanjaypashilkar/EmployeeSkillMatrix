@@ -62,6 +62,14 @@ namespace SkillMatrix.Model
         TeamLeadSampling = 3
     }
 
+    public enum QCReportType3
+    {
+        [Description("Category Summary")]
+        CategorySummary = 1,
+        [Description("Codewise Summary")]
+        CodewiseSummary = 2,        
+    }
+
     public enum ReportType
     {
         [Description("Daily")]
