@@ -83,13 +83,21 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadQualityTemplate(string department)
+        public IActionResult DownloadQualityTemplate(string accountType, string department)
         {
-            string fileName = "Template_QualityChecks.xlsx";
-            if (department.ToLowerInvariant() == Department.CompCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
+            string fileName = string.Empty;
+            if (accountType == AccountType.Elsevier.ToString())
             {
-                fileName = "Template_QualityForms.xlsx";
+                fileName = "Template_Quality_Elsevier.xlsx";
             }
+            else
+            {
+                fileName = "Template_QualityChecks.xlsx";
+                if (department.ToLowerInvariant() == Department.CompCopy.ToString().ToLowerInvariant() || department.ToLowerInvariant() == Department.OrderManagement.ToString().ToLowerInvariant())
+                {
+                    fileName = "Template_QualityForms.xlsx";
+                }
+            }            
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);

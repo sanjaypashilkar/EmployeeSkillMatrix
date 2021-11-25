@@ -60,10 +60,11 @@
         }
 
         function DownloadQualityTemplate() {
+            var account = $('#AccountType').val()
             var department = $('#Department').val()
-            window.location = '/Attribute/DownloadQualityTemplate?department=' + department;
+            window.location = '/Attribute/DownloadQualityTemplate?accountType=' + account + '&department=' + department;
             setTimeout(function () {
-                toastr.success("Template downloaded successfully for quality checks");
+                toastr.success("Template downloaded successfully for quality");
             }, 200);
         }
 
