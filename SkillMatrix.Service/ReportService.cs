@@ -760,9 +760,9 @@ namespace SkillMatrix.Service
 
             return reportSummaries;
         }
-
         private List<vwQualityReportSummaryELSV> GetCodeSummaryReportELSV(List<QualityRating3> qualityRatings)
         {
+            var codeDefinations = GetElsvCodeDefinations();
             List<vwQualityReportSummaryELSV> reportSummaries = new List<vwQualityReportSummaryELSV>();
             var cf1_PointsEarned = qualityRatings.Sum(q => q.CF1_PointsEarned);
             var cf2_PointsEarned = qualityRatings.Sum(q => q.CF2_PointsEarned);
@@ -780,36 +780,48 @@ namespace SkillMatrix.Service
 
             double customerFocus_Percent = Math.Round(((double)customerFocus_PointsEarned / customerFocus_TotalPoints) * 100, 2);
 
+            var cf1Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "CF1").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "CF1",
                 PointsEarned = cf1_PointsEarned,
                 TotalPoints = cf1_TotalPoints,
                 ScorePercentage = Math.Round(((double)cf1_PointsEarned / cf1_TotalPoints) * 100, 2),
+                Details = cf1Tuple.Item2,
+                Defination = cf1Tuple.Item3,
             });
 
+            var cf2Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "CF2").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "CF2",
                 PointsEarned = cf2_PointsEarned,
                 TotalPoints = cf2_TotalPoints,
                 ScorePercentage = Math.Round(((double)cf2_PointsEarned / cf2_TotalPoints) * 100, 2),
+                Details = cf2Tuple.Item2,
+                Defination = cf2Tuple.Item3,
             });
 
+            var cf3Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "CF3").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "CF3",
                 PointsEarned = cf3_PointsEarned,
                 TotalPoints = cf3_TotalPoints,
                 ScorePercentage = Math.Round(((double)cf3_PointsEarned / cf3_TotalPoints) * 100, 2),
+                Details = cf3Tuple.Item2,
+                Defination = cf3Tuple.Item3,
             });
 
+            var cf4Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "CF4").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "CF4",
                 PointsEarned = cf4_PointsEarned,
                 TotalPoints = cf4_TotalPoints,
                 ScorePercentage = Math.Round(((double)cf4_PointsEarned / cf4_TotalPoints) * 100, 2),
+                Details = cf4Tuple.Item2,
+                Defination = cf4Tuple.Item3,
             });
 
             var sf1_PointsEarned = qualityRatings.Sum(q => q.SF1_PointsEarned);
@@ -826,28 +838,37 @@ namespace SkillMatrix.Service
 
             double systemFocus_Percent = Math.Round(((double)systemFocus_PointsEarned / systemFocus_TotalPoints) * 100, 2);
 
+            var sf1Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "SF1").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "SF1",
                 PointsEarned = sf1_PointsEarned,
                 TotalPoints = sf1_TotalPoints,
                 ScorePercentage = Math.Round(((double)sf1_PointsEarned / sf1_TotalPoints) * 100, 2),
+                Details = sf1Tuple.Item2,
+                Defination = sf1Tuple.Item3,
             });
 
+            var sf2Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "SF2").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "SF2",
                 PointsEarned = sf2_PointsEarned,
                 TotalPoints = sf2_TotalPoints,
                 ScorePercentage = Math.Round(((double)sf2_PointsEarned / sf2_TotalPoints) * 100, 2),
+                Details = sf2Tuple.Item2,
+                Defination = sf2Tuple.Item3,
             });
 
+            var sf3Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "SF3").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "SF3",
                 PointsEarned = sf3_PointsEarned,
                 TotalPoints = sf3_TotalPoints,
                 ScorePercentage = Math.Round(((double)sf3_PointsEarned / sf3_TotalPoints) * 100, 2),
+                Details = sf3Tuple.Item2,
+                Defination = sf3Tuple.Item3,
             });
 
             var bp1_PointsEarned = qualityRatings.Sum(q => q.BP1_PointsEarned);
@@ -864,28 +885,37 @@ namespace SkillMatrix.Service
 
             double businessProcess_Percent = Math.Round(((double)businessProcess_PointsEarned / businessProcess_TotalPoints) * 100, 2);
 
+            var bp1Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "BP1").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "BP1",
                 PointsEarned = bp1_PointsEarned,
                 TotalPoints = bp1_TotalPoints,
                 ScorePercentage = Math.Round(((double)bp1_PointsEarned / bp1_TotalPoints) * 100, 2),
+                Details = bp1Tuple.Item2,
+                Defination = bp1Tuple.Item3,
             });
 
+            var bp2Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "BP2").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "BP2",
                 PointsEarned = bp2_PointsEarned,
                 TotalPoints = bp2_TotalPoints,
                 ScorePercentage = Math.Round(((double)bp2_PointsEarned / bp2_TotalPoints) * 100, 2),
+                Details = bp2Tuple.Item2,
+                Defination = bp2Tuple.Item3,
             });
 
+            var bp3Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "BP3").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "BP3",
                 PointsEarned = bp3_PointsEarned,
                 TotalPoints = bp3_TotalPoints,
                 ScorePercentage = Math.Round(((double)bp3_PointsEarned / bp3_TotalPoints) * 100, 2),
+                Details = bp3Tuple.Item2,
+                Defination = bp3Tuple.Item3,
             });
 
             var ic1_PointsEarned = qualityRatings.Sum(q => q.IC1_PointsEarned);
@@ -904,36 +934,48 @@ namespace SkillMatrix.Service
 
             double languageFocus_Percent = Math.Round(((double)languageFocus_PointsEarned / languageFocus_TotalPoints) * 100, 2);
 
+            var ic1Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "IC1").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "IC1",
                 PointsEarned = ic1_PointsEarned,
                 TotalPoints = ic1_TotalPoints,
                 ScorePercentage = Math.Round(((double)ic1_PointsEarned / ic1_TotalPoints) * 100, 2),
+                Details = ic1Tuple.Item2,
+                Defination = ic1Tuple.Item3,
             });
 
+            var ic2Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "IC2").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "IC2",
                 PointsEarned = ic2_PointsEarned,
                 TotalPoints = ic2_TotalPoints,
                 ScorePercentage = Math.Round(((double)ic2_PointsEarned / ic2_TotalPoints) * 100, 2),
+                Details = ic2Tuple.Item2,
+                Defination = ic2Tuple.Item3,
             });
 
+            var ic3Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "IC3").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "IC3",
                 PointsEarned = ic3_PointsEarned,
                 TotalPoints = ic3_TotalPoints,
                 ScorePercentage = Math.Round(((double)ic3_PointsEarned / ic3_TotalPoints) * 100, 2),
+                Details = ic3Tuple.Item2,
+                Defination = ic3Tuple.Item3,
             });
 
+            var ic4Tuple = codeDefinations.Where(t => t.Item1.ToUpper() == "IC4").FirstOrDefault();
             reportSummaries.Add(new vwQualityReportSummaryELSV
             {
                 Category = "IC4",
                 PointsEarned = ic4_PointsEarned,
                 TotalPoints = ic4_TotalPoints,
                 ScorePercentage = Math.Round(((double)ic4_PointsEarned / ic4_TotalPoints) * 100, 2),
+                Details = ic4Tuple.Item2,
+                Defination = ic4Tuple.Item3,
             });
 
             var totalPointsEarned = (customerFocus_PointsEarned + systemFocus_PointsEarned + businessProcess_PointsEarned + languageFocus_PointsEarned);
@@ -994,6 +1036,30 @@ namespace SkillMatrix.Service
         {
             int diff = (7 + (endOfWeek - dt.DayOfWeek)) % 7;
             return dt.AddDays(diff).Date;
+        }
+        public List<Tuple<string, string, string>> GetElsvCodeDefinations()
+        {
+            List<Tuple<string, string, string>> codeDefinations = new List<Tuple<string, string, string>>();
+
+            codeDefinations.Add(new Tuple<string, string, string>("CF1", "Welcomed customer correctly and demonstrated understanding of customer's issue?", "Asked the right questions, gathered the right information & showed understanding of the query."));
+            codeDefinations.Add(new Tuple<string, string, string>("CF2", "Explained to the customer why the issue is happening? (where applicable)", "Ability to provide additional information where required to explain the back ground of the situation."));
+            codeDefinations.Add(new Tuple<string, string, string>("CF3", "Correct and complete solution offered where guidance was required?", "Where a customer was asking for advice on process or procedure was the correct advise provided"));
+            codeDefinations.Add(new Tuple<string, string, string>("CF4", "Was a recap or follow up met after? (if applicable)", "Query was followed up as required to build trust/relationships with the customer."));
+
+            codeDefinations.Add(new Tuple<string, string, string>("SF1", "Has OSvC best practice been followed?. (Forward & Tracked / Collaborated / Tasked appropriately and correctly, OSvC incident thread is complete and legible)", "Followed correct procedure in OSVC ie,adding private note,  query sent to the right recipient in a timely manner for the right reason if necessary, If another colleague was to pick this up would they have the full story in the thread"));
+            codeDefinations.Add(new Tuple<string, string, string>("SF2", "Supporting Tools", "Utilize and correctly use Supporting tools; ie, EM, PTS, Delta, CHIEF, Salesforce, R12"));
+            codeDefinations.Add(new Tuple<string, string, string>("SF3", "Was new/correct template have been used?", "Utilize and correctly use Supporting tools; ie, EM, PTS, Delta, CHIEF, Salesforce, R12"));
+
+            codeDefinations.Add(new Tuple<string, string, string>("BP1", "Pointed customer to suitable self-help on website?", "Links or knowledge base answers were offered to easily assist the customer on how to self-navigate."));
+            codeDefinations.Add(new Tuple<string, string, string>("BP2", "OSvC Admin part 1: Selected the appropriate queue and mailbox, customer classification and added product.", "When creating a new incident or received collaboration to make sure the correct fields are chosen during and before solving/closing an incident."));
+            codeDefinations.Add(new Tuple<string, string, string>("BP3", "OSvC Admin part 2: Selected the appropriate contact reason, resolution code, root cause", "Based on the customers query, did they match what the customers email was about. The root cause and JIRA ticket also added when applicable."));
+
+            codeDefinations.Add(new Tuple<string, string, string>("IC1", "Demonstrated positivity", "Supported the customer in a positive manner, used good phrasing"));
+            codeDefinations.Add(new Tuple<string, string, string>("IC2", "Reassured the customer", "Informed the customer why the issue was happening and what they could do to solve it for good"));
+            codeDefinations.Add(new Tuple<string, string, string>("IC3", "Ended on a positive peak", "Checked the customer was happy with the solution/ understood any additional timelines or actions to be completed"));
+            codeDefinations.Add(new Tuple<string, string, string>("IC4", "Aimed to surprise/ delight customer", "Did they go out of their way to support/ take additional steps . Did the customer express their satisfaction/ happiness at the end of the interaction"));
+
+            return codeDefinations;
         }
 
         #endregion

@@ -93,5 +93,7 @@ namespace SkillMatrix.Model
         public int PointsEarned { get; set; }
         public int TotalPoints { get; set; }
         public double ScorePercentage { get; set; }
+        public string Details { get; set; }
+        public string Defination { get; set; }
     }
 }

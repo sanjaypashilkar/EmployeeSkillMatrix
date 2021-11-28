@@ -35,19 +35,19 @@
             <thead class="thead-light">
                 <tr>
                     <th>Sr.No</th>
-                    @*@if (Model.QualityFilter.ReportType == QCReportType1.Internal.ToString() || Model.QualityFilter.ReportType == QCReportType1.External.ToString())
+                    @if (Model.QualityFilter.ReportType == QCReportType3.CategorySummary.ToString())
                     {
-                        <th></th>
-                    }
-                    else if (Model.QualityFilter.ReportType == QCReportType1.TicketStatus.ToString())
-                    {
-                        <th>Ticket Status</th>
+                        <th>Category</th>
                     }
                     else
                     {
-                        <th>Team Location</th>
-                    }*@
-                    <th>Category</th>
+                        <th>Code</th>
+                    }
+                    @if (Model.QualityFilter.ReportType == QCReportType3.CodewiseSummary.ToString())
+                    {
+                        <th>Details</th>
+                        <th>Defination</th>
+                    }
                     <th>Points Earned</th>
                     <th>Total Points</th>
                     <th>Percentage Score</th>
@@ -56,46 +56,52 @@
             <tbody>
                 @foreach (var item in qualitySummary)
                 {
-                    @*if (item.Category == QCReportType1.Internal.ToString() || item.Category == QCReportType1.External.ToString())
+                    @if (Model.QualityFilter.ReportType == QCReportType3.CodewiseSummary.ToString())
                     {
                         <tr>
-                            <th> @counter</th>
-                            <th> @item.Category</th>
-                            <th> @item.TicketsChecked</th>
-                            <th> @string.Format("{0}%", item.TicketsPassed)</th>
-                            <th> @string.Format("{0}%", item.AvgSPIScore)</th>
-                            <th> @string.Format("{0}%", item.AvgSNCSScore)</th>
+                            @if (item.Category == "Total")
+                            {
+                                <td> </td>
+                                <th> @item.Category</th>
+                                <td> @item.Details</td>
+                                <td> @item.Defination</td>
+                                <th> @item.PointsEarned</th>
+                                <th> @item.TotalPoints</th>
+                                <th> @string.Format("{0}%", item.ScorePercentage)</th>
+                            }
+                            else
+                            {
+                                <td> @counter</td>
+                                <td> @item.Category</td>
+                                <td> @item.Details</td>
+                                <td> @item.Defination</td>
+                                <td> @item.PointsEarned</td>
+                                <td> @item.TotalPoints</td>
+                                <td> @string.Format("{0}%", item.ScorePercentage)</td>
+                            }
                         </tr>
                     }
                     else
                     {
                         <tr>
-                            <td> @counter</td>
-                            <td> @item.Category</td>
-                            <td> @item.TicketsChecked</td>
-                            <td> @string.Format("{0}%", item.TicketsPassed)</td>
-                            <td> @string.Format("{0}%", item.AvgSPIScore)</td>
-                            <td> @string.Format("{0}%", item.AvgSNCSScore)</td>
+                            @if (item.Category == "Total")
+                            {
+                                <td> </td>
+                                <th> @item.Category</th>
+                                <th> @item.PointsEarned</th>
+                                <th> @item.TotalPoints</th>
+                                <th> @string.Format("{0}%", item.ScorePercentage)</th>
+                            }
+                            else
+                            {
+                                <td> @counter</td>
+                                <td> @item.Category</td>
+                                <td> @item.PointsEarned</td>
+                                <td> @item.TotalPoints</td>
+                                <td> @string.Format("{0}%", item.ScorePercentage)</td>
+                            }
                         </tr>
-                    }*@
-                    <tr>
-                        @if(item.Category == "Total")
-                        {
-                            <td> </td>
-                            <th> @item.Category</th>
-                            <th> @item.PointsEarned</th>
-                            <th> @item.TotalPoints</th>
-                            <th> @string.Format("{0}%", item.ScorePercentage)</th>
-                        }
-                        else
-                        {
-                            <td> @counter</td>
-                            <td> @item.Category</td>
-                            <td> @item.PointsEarned</td>
-                            <td> @item.TotalPoints</td>
-                            <td> @string.Format("{0}%", item.ScorePercentage)</td>
-                        }                        
-                    </tr>
+                    }
                     counter++;
                 }
             </tbody>

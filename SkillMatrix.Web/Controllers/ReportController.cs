@@ -904,29 +904,45 @@ namespace SkillMatrix.Web.Controllers
                 worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 1).Style.Font.FontSize = 12;
 
-                worksheet.Cell(currentRow, 2).Value = "Category";
+                if(reportType == QCReportType3.CategorySummary.ToString())
+                {
+                    worksheet.Cell(currentRow, 2).Value = "Category";
+                }
+                else
+                {
+                    worksheet.Cell(currentRow, 2).Value = "Code";
+                }
+                
                 worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 2).Style.Font.FontSize = 12;
 
-                worksheet.Cell(currentRow, 3).Value = "Points Earned";
+                worksheet.Cell(currentRow, 3).Value = "Details";
                 worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 3).Style.Font.FontSize = 12;
 
-                worksheet.Cell(currentRow, 4).Value = "Total Points";
+                worksheet.Cell(currentRow, 4).Value = "Defination";
                 worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 4).Style.Font.FontSize = 12;
 
-                worksheet.Cell(currentRow, 5).Value = "Percentage";
+                worksheet.Cell(currentRow, 5).Value = "Points Earned";
                 worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 5).Style.Font.FontSize = 12;
+
+                worksheet.Cell(currentRow, 6).Value = "Total Points";
+                worksheet.Cell(currentRow, 6).Style.Font.Bold = true;
+                worksheet.Cell(currentRow, 6).Style.Font.FontSize = 12;
+
+                worksheet.Cell(currentRow, 7).Value = "Percentage";
+                worksheet.Cell(currentRow, 7).Style.Font.Bold = true;
+                worksheet.Cell(currentRow, 7).Style.Font.FontSize = 12;
 
                 worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 1).Style.Font.FontSize = 12;
                 worksheet.Cell(currentRow, 1).Style.Font.SetFontColor(XLColor.DarkRed);
 
-                IXLRange range1_5 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address);
-                range1_5.Style.Fill.SetBackgroundColor(XLColor.FromArgb(64, 64, 64));
-                range1_5.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                IXLRange range1_7 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 7).Address);
+                range1_7.Style.Fill.SetBackgroundColor(XLColor.FromArgb(64, 64, 64));
+                range1_7.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
 
                 IXLBorder border_1 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address).Style.Border;
                 border_1.BottomBorder = border_1.TopBorder = border_1.LeftBorder = border_1.RightBorder = XLBorderStyleValues.Thin;
@@ -943,33 +959,49 @@ namespace SkillMatrix.Web.Controllers
                     {
                         worksheet.Cell(currentRow, 1).Value = currentRow - 1;
                         worksheet.Cell(currentRow, 2).Value = summary.Category;
-                        worksheet.Cell(currentRow, 3).Value = summary.PointsEarned;
-                        worksheet.Cell(currentRow, 4).Value = summary.TotalPoints;
-                        worksheet.Cell(currentRow, 5).Value = $"{summary.ScorePercentage}%";
+                        worksheet.Cell(currentRow, 3).Value = summary.Details;
+                        worksheet.Cell(currentRow, 4).Value = summary.Defination;
+                        worksheet.Cell(currentRow, 5).Value = summary.PointsEarned;
+                        worksheet.Cell(currentRow, 6).Value = summary.TotalPoints;
+                        worksheet.Cell(currentRow, 7).Value = $"{summary.ScorePercentage}%";
                     }
                     else
                     {
                         worksheet.Cell(currentRow, 2).Value = summary.Category;
                         worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, 3).Value = summary.PointsEarned;
+                        worksheet.Cell(currentRow, 3).Value = summary.Details;
                         worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, 4).Value = summary.TotalPoints;
+                        worksheet.Cell(currentRow, 4).Value = summary.Defination;
                         worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, 5).Value = $"{summary.ScorePercentage}%";
+                        worksheet.Cell(currentRow, 5).Value = summary.PointsEarned;
                         worksheet.Cell(currentRow, 5).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 6).Value = summary.TotalPoints;
+                        worksheet.Cell(currentRow, 6).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 7).Value = $"{summary.ScorePercentage}%";
+                        worksheet.Cell(currentRow, 7).Style.Font.Bold = true;
                     }
 
-                    worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "0.00%";
-                    worksheet.Cell(currentRow, 5).DataType = XLDataType.Number;
-                    worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 7).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 7).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
-                    IXLBorder border_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 5).Address).Style.Border;
+                    IXLBorder border_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 7).Address).Style.Border;
                     border_1_n.BottomBorder = border_1_n.TopBorder = border_1_n.LeftBorder = border_1_n.RightBorder = XLBorderStyleValues.Thin;
 
                     currentRow++;
                 }
 
-                worksheet.Columns().AdjustToContents();
+                if(reportType == QCReportType3.CategorySummary.ToString())
+                {
+                    worksheet.Column(3).Hide();
+                    worksheet.Column(4).Hide();
+                }
+
+                worksheet.Column(1).AdjustToContents();
+                worksheet.Column(2).AdjustToContents();
+                worksheet.Column(5).AdjustToContents();
+                worksheet.Column(6).AdjustToContents();
+                worksheet.Column(7).AdjustToContents();
 
                 #endregion
 
