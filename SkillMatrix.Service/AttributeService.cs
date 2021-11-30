@@ -231,7 +231,7 @@ namespace SkillMatrix.Service
                             if (reader.Depth != 0 && reader.Depth != 1)
                             {
                                 string month = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                                string date = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                string yearStr = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
                                 string teamLead = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
                                 var agent = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
                                 var employeeId = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
@@ -289,7 +289,8 @@ namespace SkillMatrix.Service
                                 int intValue = 0;
 
                                 string Month = month;
-                                DateTime Date = Convert.ToDateTime(date);
+                                int year = Int32.TryParse(yearStr, out intValue) ? Convert.ToInt32(yearStr) : DateTime.Now.Year;
+                                var Date = Helper.GetDateFromMonthString(month, year);
                                 string TeamLead = teamLead;
                                 string AgentName = agent;
                                 string EmployeeId = employeeId;
@@ -329,6 +330,7 @@ namespace SkillMatrix.Service
                                 importAndSaveQuality.QualityRatings3.Add(new vwQualityRating3
                                 {
                                     Month = Month,
+                                    Year = year,
                                     Date = Date,
                                     TeamLead = TeamLead,
                                     AgentName = AgentName,
