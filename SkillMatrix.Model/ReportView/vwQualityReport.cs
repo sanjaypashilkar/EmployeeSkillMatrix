@@ -18,6 +18,9 @@ namespace SkillMatrix.Model
         public virtual List<vwQualityReportSummaryELSV> CategorySummaryELSV { get; set; }
         public virtual List<vwQualityReportSummaryELSV> PaginatedCategorySummaryELSV { get; set; }
 
+        public virtual List<vwQualityReportAgentSummaryELSV> AgentSummaryELSV { get; set; }
+        public virtual List<vwQualityReportAgentSummaryELSV> PaginatedAgentSummaryELSV { get; set; }
+
         public virtual Dictionary<string, string> lstAccountTypes { get; set; }
         public virtual Dictionary<string, string> lstDepartments { get; set; }
         public virtual Dictionary<string, string> lstReportType1 { get; set; }
@@ -39,6 +42,9 @@ namespace SkillMatrix.Model
 
             CategorySummaryELSV = new List<vwQualityReportSummaryELSV>();
             PaginatedCategorySummaryELSV = new List<vwQualityReportSummaryELSV>();
+
+            AgentSummaryELSV = new List<vwQualityReportAgentSummaryELSV>();
+            PaginatedAgentSummaryELSV = new List<vwQualityReportAgentSummaryELSV>();
 
             lstAccountTypes = new Dictionary<string, string>();
             lstDepartments = new Dictionary<string, string>();
@@ -95,5 +101,77 @@ namespace SkillMatrix.Model
         public double ScorePercentage { get; set; }
         public string Details { get; set; }
         public string Defination { get; set; }
+    }
+
+    public class vwQualityReportAgentSummaryELSV
+    {
+        public string Month { get; set; }
+        public int Year { get; set; }
+        public DateTime Date { get; set; }
+        public string TeamLead { get; set; }
+        public string AgentName { get; set; }
+        public string EmployeeId { get; set; }
+        public int CF1_PointsEarned { get; set; }
+        public int CF1_TotalPoints { get; set; }
+        public double CF1_Percent { get; set; }
+        public int CF2_PointsEarned { get; set; }
+        public int CF2_TotalPoints { get; set; }
+        public double CF2_Percent { get; set; }
+        public int CF3_PointsEarned { get; set; }
+        public int CF3_TotalPoints { get; set; }
+        public double CF3_Percent { get; set; }
+        public int CF4_PointsEarned { get; set; }
+        public int CF4_TotalPoints { get; set; }
+        public double CF4_Percent { get; set; }
+        public int CF_PointsEarned { get; set; }
+        public int CF_TotalPoints { get; set; }
+        public int SF1_PointsEarned { get; set; }
+        public int SF1_TotalPoints { get; set; }
+        public double SF1_Percent { get; set; }
+        public int SF2_PointsEarned { get; set; }
+        public int SF2_TotalPoints { get; set; }
+        public double SF2_Percent { get; set; }
+        public int SF3_PointsEarned { get; set; }
+        public int SF3_TotalPoints { get; set; }
+        public double SF3_Percent { get; set; }
+        public int SF_PointsEarned { get; set; }
+        public int SF_TotalPoints { get; set; }
+        public int BP1_PointsEarned { get; set; }
+        public int BP1_TotalPoints { get; set; }
+        public double BP1_Percent { get; set; }
+        public int BP2_PointsEarned { get; set; }
+        public int BP2_TotalPoints { get; set; }
+        public double BP2_Percent { get; set; }
+        public int BP3_PointsEarned { get; set; }
+        public int BP3_TotalPoints { get; set; }
+        public double BP3_Percent { get; set; }
+        public int BP_PointsEarned { get; set; }
+        public int BP_TotalPoints { get; set; }
+        public int IC1_PointsEarned { get; set; }
+        public int IC1_TotalPoints { get; set; }
+        public double IC1_Percent { get; set; }
+        public int IC2_PointsEarned { get; set; }
+        public int IC2_TotalPoints { get; set; }
+        public double IC2_Percent { get; set; }
+        public int IC3_PointsEarned { get; set; }
+        public int IC3_TotalPoints { get; set; }
+        public double IC3_Percent { get; set; }
+        public int IC4_PointsEarned { get; set; }
+        public int IC4_TotalPoints { get; set; }
+        public double IC4_Percent { get; set; }
+        public int IC_PointsEarned { get; set; }
+        public int IC_TotalPoints { get; set; }
+        public int Overall_PointsEarned { get; set; }
+        public int Overall_TotalPoints { get; set; }
+        public double Overall_QCScore { get; set; }
+        public string PassedOrFailed { get; set; }
+        public double PassiveSurvey { get; set; }
+        public double CSATScore { get; set; }
+        public int NoOfPplOpportunity { get; set; }
+        public string QCType { get; set; }
+        public int NoOfSamples { get; set; }
+        public string Remarks { get; set; }
+        public DateTime RecordDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

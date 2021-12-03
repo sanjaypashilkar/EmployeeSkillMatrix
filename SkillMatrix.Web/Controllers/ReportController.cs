@@ -291,8 +291,16 @@ namespace SkillMatrix.Web.Controllers
             vwQualityReport report = new vwQualityReport();
             if(filter.AccountType == AccountType.Elsevier.ToString())
             {
-                report = _reportService.GetQualityReport3(filter);
-                return PartialView("_QualityTable4", report);
+                if(filter.ReportType == QCReportType3.AgentSummary.ToString())
+                {
+                    report = _reportService.GetQualityReport3(filter);
+                    return PartialView("_QualityTable5", report);
+                }
+                else
+                {
+                    report = _reportService.GetQualityReport3(filter);
+                    return PartialView("_QualityTable4", report);
+                }                
             }
             if(filter.Department == Department.CompCopy.ToString() || filter.Department == Department.OrderManagement.ToString())
             {

@@ -314,28 +314,48 @@ namespace SkillMatrix.Service
             var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate3(filter.StartDate, filter.EndDate).ToList();
             if (qualityRatings.Count > 0)
             {
-                var categorySummaryELSV = new List<vwQualityReportSummaryELSV>();
-                if(filter.ReportType == QCReportType3.CategorySummary.ToString())
+                if(filter.ReportType == QCReportType3.AgentSummary.ToString())
                 {
-                    categorySummaryELSV = GetCategorySummaryReportELSV(qualityRatings);
+                    var agentSummaryELSV = new List<vwQualityReportAgentSummaryELSV>();
+                    agentSummaryELSV = GetAgentSummaryReportELSV(qualityRatings, filter.PassingScore);
+                    var sortedList = agentSummaryELSV.OrderBy(s => s.TeamLead).ThenBy(s=>s.AgentName).ToList();
+                    if (filter.PageNumber < 1)
+                        filter.PageNumber = 1;
+
+                    int rescCount = sortedList.Count();
+                    int recSkip = (filter.PageNumber - 1) * pageSize;
+                    var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                    report.Pager = pager;
+
+                    var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                    report.PaginatedAgentSummaryELSV = paginatedData;
+                    report.AgentSummaryELSV = sortedList;
                 }
                 else
                 {
-                    categorySummaryELSV = GetCodeSummaryReportELSV(qualityRatings);
-                }
-                
-                var sortedList = categorySummaryELSV.ToList();
-                if (filter.PageNumber < 1)
-                    filter.PageNumber = 1;
+                    var categorySummaryELSV = new List<vwQualityReportSummaryELSV>();
+                    if (filter.ReportType == QCReportType3.CategorySummary.ToString())
+                    {
+                        categorySummaryELSV = GetCategorySummaryReportELSV(qualityRatings);
+                    }
+                    else if (filter.ReportType == QCReportType3.CodewiseSummary.ToString())
+                    {
+                        categorySummaryELSV = GetCodeSummaryReportELSV(qualityRatings);
+                    }
 
-                int rescCount = sortedList.Count();
-                int recSkip = (filter.PageNumber - 1) * pageSize;
-                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
-                report.Pager = pager;
+                    var sortedList = categorySummaryELSV.ToList();
+                    if (filter.PageNumber < 1)
+                        filter.PageNumber = 1;
 
-                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
-                report.PaginatedCategorySummaryELSV = paginatedData;
-                report.CategorySummaryELSV = sortedList;
+                    int rescCount = sortedList.Count();
+                    int recSkip = (filter.PageNumber - 1) * pageSize;
+                    var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                    report.Pager = pager;
+
+                    var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                    report.PaginatedCategorySummaryELSV = paginatedData;
+                    report.CategorySummaryELSV = sortedList;
+                }                
             }
             return report;
         }
@@ -993,7 +1013,125 @@ namespace SkillMatrix.Service
 
             return reportSummaries;
         }
+        private List<vwQualityReportAgentSummaryELSV> GetAgentSummaryReportELSV(List<QualityRating3> qualityRatings, int passingScore)
+        {
+            List<vwQualityReportAgentSummaryELSV> agentSummaries = new List<vwQualityReportAgentSummaryELSV>();
+            foreach(var quality in qualityRatings)
+            {
+                vwQualityReportAgentSummaryELSV agentInfo = new vwQualityReportAgentSummaryELSV();
+                agentInfo.Month = quality.Month;
+                agentInfo.Year = quality.Date.Year;
+                agentInfo.Date = quality.Date;
+                agentInfo.TeamLead = quality.TeamLead;
+                agentInfo.AgentName = quality.AgentName;
+                agentInfo.EmployeeId = quality.EmployeeId;
+                agentInfo.CF1_PointsEarned = quality.CF1_PointsEarned;
+                agentInfo.CF1_TotalPoints = quality.CF1_TotalPoints;
+                agentInfo.CF1_Percent = Math.Round(((double)quality.CF1_PointsEarned / quality.CF1_TotalPoints) * 100, 2);
 
+                agentInfo.CF2_PointsEarned = quality.CF2_PointsEarned;
+                agentInfo.CF2_TotalPoints = quality.CF2_TotalPoints;
+                agentInfo.CF2_Percent = Math.Round(((double)quality.CF2_PointsEarned / quality.CF2_TotalPoints) * 100, 2);
+
+                agentInfo.CF3_PointsEarned = quality.CF3_PointsEarned;
+                agentInfo.CF3_TotalPoints = quality.CF3_TotalPoints;
+                agentInfo.CF3_Percent = Math.Round(((double)quality.CF3_PointsEarned / quality.CF3_TotalPoints) * 100, 2);
+
+                agentInfo.CF4_PointsEarned = quality.CF4_PointsEarned;
+                agentInfo.CF4_TotalPoints = quality.CF4_TotalPoints;
+                agentInfo.CF4_Percent = Math.Round(((double)quality.CF4_PointsEarned / quality.CF4_TotalPoints) * 100, 2);
+
+                agentInfo.CF_PointsEarned = (quality.CF1_PointsEarned + quality.CF2_PointsEarned + quality.CF3_PointsEarned + quality.CF4_PointsEarned);
+                agentInfo.CF_TotalPoints = (quality.CF1_TotalPoints + quality.CF2_TotalPoints + quality.CF3_TotalPoints + quality.CF4_TotalPoints);
+
+                agentInfo.SF1_PointsEarned = quality.SF1_PointsEarned;
+                agentInfo.SF1_TotalPoints = quality.SF1_TotalPoints;
+                agentInfo.SF1_Percent = Math.Round(((double)quality.SF1_PointsEarned / quality.SF1_TotalPoints) * 100, 2);
+
+                agentInfo.SF2_PointsEarned = quality.SF2_PointsEarned;
+                agentInfo.SF2_TotalPoints = quality.SF2_TotalPoints;
+                agentInfo.SF2_Percent = Math.Round(((double)quality.SF2_PointsEarned / quality.SF2_TotalPoints) * 100, 2);
+
+                agentInfo.SF3_PointsEarned = quality.SF3_PointsEarned;
+                agentInfo.SF3_TotalPoints = quality.SF3_TotalPoints;
+                agentInfo.SF3_Percent = Math.Round(((double)quality.SF3_PointsEarned / quality.SF3_TotalPoints) * 100, 2);
+
+                agentInfo.SF_PointsEarned = (quality.SF1_PointsEarned + quality.SF2_PointsEarned + quality.SF3_PointsEarned);
+                agentInfo.SF_TotalPoints = (quality.SF1_TotalPoints + quality.SF2_TotalPoints + quality.SF3_TotalPoints);
+
+                agentInfo.BP1_PointsEarned = quality.BP1_PointsEarned;
+                agentInfo.BP1_TotalPoints = quality.BP1_TotalPoints;
+                agentInfo.BP1_Percent = Math.Round(((double)quality.BP1_PointsEarned / quality.BP1_TotalPoints) * 100, 2);
+
+                agentInfo.BP2_PointsEarned = quality.BP2_PointsEarned;
+                agentInfo.BP2_TotalPoints = quality.BP2_TotalPoints;
+                agentInfo.BP2_Percent = Math.Round(((double)quality.BP2_PointsEarned / quality.BP2_TotalPoints) * 100, 2);
+
+                agentInfo.BP3_PointsEarned = quality.BP3_PointsEarned;
+                agentInfo.BP3_TotalPoints = quality.BP3_TotalPoints;
+                agentInfo.BP3_Percent = Math.Round(((double)quality.BP3_PointsEarned / quality.BP3_TotalPoints) * 100, 2);
+
+                agentInfo.BP_PointsEarned = (quality.BP1_PointsEarned + quality.BP2_PointsEarned + quality.BP3_PointsEarned);
+                agentInfo.BP_TotalPoints = (quality.BP1_TotalPoints + quality.BP2_TotalPoints + quality.BP3_TotalPoints);
+
+                agentInfo.IC1_PointsEarned = quality.IC1_PointsEarned;
+                agentInfo.IC1_TotalPoints = quality.IC1_TotalPoints;
+                agentInfo.IC1_Percent = Math.Round(((double)quality.IC1_PointsEarned / quality.IC1_TotalPoints) * 100, 2);
+
+                agentInfo.IC2_PointsEarned = quality.IC2_PointsEarned;
+                agentInfo.IC2_TotalPoints = quality.IC2_TotalPoints;
+                agentInfo.IC2_Percent = Math.Round(((double)quality.IC2_PointsEarned / quality.IC2_TotalPoints) * 100, 2);
+
+                agentInfo.IC3_PointsEarned = quality.IC3_PointsEarned;
+                agentInfo.IC3_TotalPoints = quality.IC3_TotalPoints;
+                agentInfo.IC3_Percent = Math.Round(((double)quality.IC3_PointsEarned / quality.IC3_TotalPoints) * 100, 2);
+
+                agentInfo.IC4_PointsEarned = quality.IC4_PointsEarned;
+                agentInfo.IC4_TotalPoints = quality.IC4_TotalPoints;
+                agentInfo.IC4_Percent = Math.Round(((double)quality.IC4_PointsEarned / quality.IC4_TotalPoints) * 100, 2);
+
+                agentInfo.IC_PointsEarned = (quality.IC1_PointsEarned + quality.IC2_PointsEarned + quality.IC3_PointsEarned + quality.IC4_PointsEarned);
+                agentInfo.IC_TotalPoints = (quality.IC1_TotalPoints + quality.IC2_TotalPoints + quality.IC3_TotalPoints + quality.IC4_TotalPoints);
+
+                agentInfo.Overall_PointsEarned = (agentInfo.CF_PointsEarned + agentInfo.SF_PointsEarned + agentInfo.BP_PointsEarned + agentInfo.IC_PointsEarned);
+                agentInfo.Overall_TotalPoints = (agentInfo.CF_TotalPoints + agentInfo.SF_TotalPoints + agentInfo.BP_TotalPoints + agentInfo.IC_TotalPoints);
+                agentInfo.Overall_QCScore = Math.Round(((double)agentInfo.Overall_PointsEarned / agentInfo.Overall_TotalPoints) * 100, 2);
+                agentInfo.PassedOrFailed = (agentInfo.Overall_QCScore >= passingScore) ? "Passed" : "ForCoaching";
+                agentInfo.PassiveSurvey = quality.PassiveSurvey;
+                agentInfo.CSATScore = quality.CSATScore;
+                agentInfo.NoOfPplOpportunity = quality.NoOfPplOpportunity;
+                if(agentInfo.Overall_QCScore>91.99 && agentInfo.PassiveSurvey>91.99 && agentInfo.CSATScore>91.99 && agentInfo.NoOfPplOpportunity<=1)
+                {
+                    agentInfo.QCType = "Reduced";
+                }
+                else if(agentInfo.Overall_QCScore > 91.99 && agentInfo.NoOfPplOpportunity <= 2)
+                {
+                    agentInfo.QCType = "Regular";
+                }
+                else if (agentInfo.Overall_QCScore < 92 || agentInfo.NoOfPplOpportunity >= 3)
+                {
+                    agentInfo.QCType = "Tightened";
+                }
+
+                if(agentInfo.QCType == "Reduced")
+                {
+                    agentInfo.NoOfSamples = 4;
+                }
+                else if (agentInfo.QCType == "Regular")
+                {
+                    agentInfo.NoOfSamples = 8;
+                }
+                else if (agentInfo.QCType == "Tightened")
+                {
+                    agentInfo.NoOfSamples = 20;
+                }
+                agentInfo.Remarks = "Per Month";
+                agentInfo.CreatedDate = quality.CreatedDate;
+
+                agentSummaries.Add(agentInfo);
+            }            
+            return agentSummaries;
+        }
         private List<WeeklyAccuracy> GetWeekRanges (DateTime startDate, DateTime endDate)
         {
             List<WeeklyAccuracy> weekRanges = new List<WeeklyAccuracy>();

@@ -67,7 +67,9 @@ namespace SkillMatrix.Model
         [Description("Category Summary")]
         CategorySummary = 1,
         [Description("Codewise Summary")]
-        CodewiseSummary = 2,        
+        CodewiseSummary = 2,
+        [Description("Agent Summary")]
+        AgentSummary = 3,
     }
 
     public enum ReportType
