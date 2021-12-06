@@ -1,0 +1,51 @@
+﻿@model List<SkillMatrix.Model.vwCSAT>
+@{
+    var csatRecords = Model;
+    var counter = 1;
+}
+
+@if (csatRecords.Count > 0)
+{
+    <hr />
+    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Month</th>
+                <th>Year</th>
+                <th>Agent</th>
+                <th>Employee ID</th>
+                <th>CSAT</th>
+                <th>Effort</th>
+                <th>FTR</th>
+                <th>Comprehensive and Accurate</th>
+                <th>Professional and Help</th>
+                <th>Timely</th>
+                <th># Red Flags</th>
+                <th># Surveys</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in csatRecords)
+            {
+                <tr>
+                    <td> @counter</td>
+                    <td> @item.Month</td>
+                    <td> @item.Year</td>
+                    <td> @item.AgentName</td>
+                    <td> @item.EmployeeId</td>
+                    <td> @item.CSATScore</td>
+                    <td> @item.Effort</td>
+                    <td> @item.FTR</td>
+                    <td> @item.ComprNAccurate</td>
+                    <td> @item.ProfessionalNHelpful</td>
+                    <td> @item.Timely</td>
+                    <td> @item.NoOfRedFlags</td>
+                    <td> @item.NoOfSurveys</td>                    
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <hr />
+}

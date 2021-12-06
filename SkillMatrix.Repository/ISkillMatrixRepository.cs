@@ -41,6 +41,10 @@ namespace SkillMatrix.Repository
         int SaveBusinessPartnersRecords(IEnumerable<BusinessPartner> businessPartnersRecords);
         #endregion
 
+        #region CSAT
+        int SaveCSATRecords(IEnumerable<CSAT> csatRecords);
+        #endregion
+
         #region COMMON METHODS
 
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;

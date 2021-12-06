@@ -258,5 +258,77 @@ namespace SkillMatrix.Web.Controllers
         }
 
         #endregion
+
+        #region CSAT
+        public IActionResult CSAT()
+        {
+            vwImportAndSaveCSAT csat = new vwImportAndSaveCSAT();
+            return View(csat);
+        }
+
+        [HttpPost]
+        public IActionResult CSAT(IFormFile file)
+        {
+            vwImportAndSaveCSAT csatRecords = new vwImportAndSaveCSAT();
+            if (file != null)
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                string fileName = Path.GetFileName(file.FileName);
+                string fullFilePath = Path.Combine(path, fileName);
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
+                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                    stream.Flush();
+                    ViewBag.FileName += fileName;
+                }
+                csatRecords = _attributeService.GetUploadedCSATRecords(fullFilePath);
+            }
+            return View(csatRecords);
+        }
+
+        [HttpPost]
+        public IActionResult SaveCSATRecords(string fileName, string recordDate)
+        {
+            Response response = new Response();
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string fullFilePath = Path.Combine(path, fileName);
+                _attributeService.SaveCSATRecords(fullFilePath, recordDate);
+                response.Success = true;
+                response.Message = $"CSAT records saved successfully";
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = $"Please select file to import";
+            }
+            return Json(response);
+        }
+
+        [HttpGet]
+        public IActionResult DownloadCSATTemplate()
+        {
+            string fileName = "Template_BusinessPartner.xlsx";
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path1 = Path.Combine(path, "Templates");
+            string fullFilePath = Path.Combine(path, fileName);
+            byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
+            return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                    );
+        }
+        #endregion
     }
 }

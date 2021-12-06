@@ -149,6 +149,11 @@ namespace SkillMatrix.Repository
             businessPartnersRecords.ToList().ForEach(e => _context.BusinessPartner.Add(e));
             return _context.SaveChanges();
         }
+        public int SaveCSATRecords(IEnumerable<CSAT> csatRecords)
+        {
+            csatRecords.ToList().ForEach(e => _context.CSAT.Add(e));
+            return _context.SaveChanges();
+        }
         public async Task<int> AddEntryAsync<TEntity>(TEntity entry) where TEntity : class
         {
             await _context.Set<TEntity>().AddAsync(entry);

@@ -15,5 +15,7 @@ namespace SkillMatrix.Service
         void SaveTicketingRecords(string fileName, string recordDate);
         vwImportAndSaveBusinessPartner GetUploadedBusinessPartnerRecords(string fileName);
         void SaveBusinessPartnerRecords(string fileName, string recordDate);
+        vwImportAndSaveCSAT GetUploadedCSATRecords(string fileName);
+        void SaveCSATRecords(string fileName, string recordDate);
     }
 }

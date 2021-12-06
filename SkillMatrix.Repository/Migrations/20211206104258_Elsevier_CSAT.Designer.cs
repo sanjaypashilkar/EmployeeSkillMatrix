@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillMatrix.Repository;
 
 namespace SkillMatrix.Repository.Migrations
 {
     [DbContext(typeof(SkillMatrixDb))]
-    partial class SkillMatrixDbModelSnapshot : ModelSnapshot
+    [Migration("20211206104258_Elsevier_CSAT")]
+    partial class Elsevier_CSAT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -18,6 +18,7 @@ namespace SkillMatrix.Repository
         public DbSet<QualityRating3> QualityRating3 { get; set; }
         public DbSet<TicketingTool> TicketingTool { get; set; }
         public DbSet<BusinessPartner> BusinessPartner { get; set; }
+        public DbSet<CSAT> CSAT { get; set; }
         public SkillMatrixDb()
         { }
 
@@ -57,6 +58,9 @@ namespace SkillMatrix.Repository
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<BusinessPartner>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<CSAT>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 

@@ -733,5 +733,102 @@ namespace SkillMatrix.Service
                 _skillMatrixRepository.SaveBusinessPartnersRecords(businessPartnerRecords);
             }
         }
+
+        public vwImportAndSaveCSAT GetUploadedCSATRecords(string fileName)
+        {
+            vwImportAndSaveCSAT importAndSaveCSATRecords = new vwImportAndSaveCSAT();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.Depth != 0)
+                        {
+                            string month = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                            string yearStr = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                            var agent = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                            var employeeId = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                            if (string.IsNullOrEmpty(employeeId) || string.IsNullOrEmpty(agent))
+                                break;
+                            var csatScore = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                            var effort = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
+                            var ftr = reader.GetValue(6) != null ? reader.GetValue(6).ToString().Trim() : string.Empty;
+                            var comprNAccurate = reader.GetValue(7) != null ? reader.GetValue(7).ToString().Trim() : string.Empty;
+                            var professionalNHelp = reader.GetValue(8) != null ? reader.GetValue(8).ToString().Trim() : string.Empty;
+                            var timely = reader.GetValue(9) != null ? reader.GetValue(9).ToString().Trim() : string.Empty;
+                            var noOfRedFlags = reader.GetValue(10) != null ? reader.GetValue(10).ToString().Trim() : string.Empty;
+                            var noOfSurveys = reader.GetValue(11) != null ? reader.GetValue(11).ToString().Trim() : string.Empty;
+
+                            double doubleValue = 0;
+                            int intValue = 0;
+                            string Month = month;
+                            int year = Int32.TryParse(yearStr, out intValue) ? Convert.ToInt32(yearStr) : DateTime.Now.Year;
+                            var date = Helper.GetDateFromMonthString(month, year);
+                            string AgentName = agent;
+                            string EmployeeId = employeeId;
+                            double csatVal = Double.TryParse(csatScore, out doubleValue) ? Convert.ToDouble(csatScore) : 0;
+                            double effortVal = Double.TryParse(effort, out doubleValue) ? Convert.ToDouble(effort) : 0;
+                            double ftrVal = Double.TryParse(ftr, out doubleValue) ? Convert.ToDouble(ftr) : 0;                            
+                            double comprNAccurateVal = Double.TryParse(comprNAccurate, out doubleValue) ? Convert.ToDouble(comprNAccurate) : 0;
+                            double professionalNHelpVal = Double.TryParse(professionalNHelp, out doubleValue) ? Convert.ToDouble(professionalNHelp) : 0;
+                            double timelyVal = Double.TryParse(timely, out doubleValue) ? Convert.ToDouble(timely) : 0;
+                            int noOfRedFlagsVal = Int32.TryParse(noOfRedFlags, out intValue) ? Convert.ToInt32(noOfRedFlags) : 0;
+                            int noOfSurveysVal = Int32.TryParse(noOfSurveys, out intValue) ? Convert.ToInt32(noOfSurveys) : 0;
+                            
+                            importAndSaveCSATRecords.CSATs.Add(new vwCSAT
+                            {
+                                Month = month,
+                                Year = year,
+                                Date = date,
+                                AgentName = AgentName,
+                                EmployeeId = EmployeeId,
+                                CSATScore = Math.Round((csatVal*100),2),
+                                Effort = Math.Round((effortVal*100),2),
+                                FTR = Math.Round((ftrVal*100),2),
+                                ComprNAccurate = Math.Round((comprNAccurateVal*100),2),
+                                ProfessionalNHelpful = Math.Round((professionalNHelpVal*100),2),
+                                Timely = Math.Round((timelyVal*100),2),
+                                NoOfRedFlags = noOfRedFlagsVal,
+                                NoOfSurveys = noOfSurveysVal                                
+                            });
+                        }
+                    }
+                }
+            }
+            return importAndSaveCSATRecords;
+        }
+
+        public void SaveCSATRecords(string fileName, string recordDate)
+        {
+            var importAndSave = GetUploadedCSATRecords(fileName);
+            List<CSAT> csatRecords = new List<CSAT>();
+            foreach (var csatRecord in importAndSave.CSATs)
+            {
+                CSAT record = new CSAT();
+                record.AccountType = AccountType.Elsevier.ToString();
+                record.Month = csatRecord.Month;
+                record.Date = csatRecord.Date;
+                record.AgentName = csatRecord.AgentName;
+                record.EmployeeId = csatRecord.EmployeeId;
+                record.CSATScore = csatRecord.CSATScore;
+                record.Effort = csatRecord.Effort;
+                record.FTR = csatRecord.FTR;
+                record.ComprNAccurate = csatRecord.ComprNAccurate;
+                record.ProfessionalNHelpful = csatRecord.ProfessionalNHelpful;
+                record.Timely = csatRecord.Timely;
+                record.NoOfRedFlags = csatRecord.NoOfRedFlags;
+                record.NoOfSurveys = csatRecord.NoOfSurveys;
+                
+                record.RecordDate = Convert.ToDateTime(recordDate).Date;
+                record.CreatedDate = DateTime.Now;
+                csatRecords.Add(record);
+            }
+            if (csatRecords.Count > 0)
+            {
+                _skillMatrixRepository.SaveCSATRecords(csatRecords);
+            }
+        }
     }
 }
