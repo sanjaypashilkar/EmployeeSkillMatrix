@@ -221,6 +221,19 @@
             }, 200);
         }
 
+        function Excel5() {
+            var filter = {
+                StartDate: $("#minDate").val(),
+                EndDate: $("#maxDate").val(),
+                ReportType: $("#ReportType3").val(),
+                PassingScore: $("#PassingScore").val(),
+            }
+            window.location = '/Report/QualityExcel5?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&reportType=' + filter.ReportType + '&passingScore=' + filter.PassingScore;
+            setTimeout(function () {
+                toastr.success("Summary report downloaded successfully");
+            }, 200);
+        }
+
         function SelectedIndexChanged_Account() {
             var account = $("#AccountType").val();
             if (account == 'SpringerNature') {

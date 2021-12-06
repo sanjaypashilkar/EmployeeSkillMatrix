@@ -1027,75 +1027,75 @@ namespace SkillMatrix.Service
                 agentInfo.EmployeeId = quality.EmployeeId;
                 agentInfo.CF1_PointsEarned = quality.CF1_PointsEarned;
                 agentInfo.CF1_TotalPoints = quality.CF1_TotalPoints;
-                agentInfo.CF1_Percent = Math.Round(((double)quality.CF1_PointsEarned / quality.CF1_TotalPoints) * 100, 2);
+                agentInfo.CF1_Percent = (quality.CF1_PointsEarned>0 && quality.CF1_TotalPoints>0)? Math.Round(((double)quality.CF1_PointsEarned / quality.CF1_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.CF2_PointsEarned = quality.CF2_PointsEarned;
                 agentInfo.CF2_TotalPoints = quality.CF2_TotalPoints;
-                agentInfo.CF2_Percent = Math.Round(((double)quality.CF2_PointsEarned / quality.CF2_TotalPoints) * 100, 2);
+                agentInfo.CF2_Percent = (quality.CF2_PointsEarned > 0 && quality.CF2_TotalPoints > 0) ? Math.Round(((double)quality.CF2_PointsEarned / quality.CF2_TotalPoints) * 100, 2):0;
 
                 agentInfo.CF3_PointsEarned = quality.CF3_PointsEarned;
                 agentInfo.CF3_TotalPoints = quality.CF3_TotalPoints;
-                agentInfo.CF3_Percent = Math.Round(((double)quality.CF3_PointsEarned / quality.CF3_TotalPoints) * 100, 2);
+                agentInfo.CF3_Percent = (quality.CF3_PointsEarned > 0 && quality.CF3_TotalPoints > 0) ? Math.Round(((double)quality.CF3_PointsEarned / quality.CF3_TotalPoints) * 100, 2):0;
 
                 agentInfo.CF4_PointsEarned = quality.CF4_PointsEarned;
                 agentInfo.CF4_TotalPoints = quality.CF4_TotalPoints;
-                agentInfo.CF4_Percent = Math.Round(((double)quality.CF4_PointsEarned / quality.CF4_TotalPoints) * 100, 2);
+                agentInfo.CF4_Percent = (quality.CF4_PointsEarned > 0 && quality.CF4_TotalPoints > 0) ? Math.Round(((double)quality.CF4_PointsEarned / quality.CF4_TotalPoints) * 100, 2):0;
 
                 agentInfo.CF_PointsEarned = (quality.CF1_PointsEarned + quality.CF2_PointsEarned + quality.CF3_PointsEarned + quality.CF4_PointsEarned);
                 agentInfo.CF_TotalPoints = (quality.CF1_TotalPoints + quality.CF2_TotalPoints + quality.CF3_TotalPoints + quality.CF4_TotalPoints);
 
                 agentInfo.SF1_PointsEarned = quality.SF1_PointsEarned;
                 agentInfo.SF1_TotalPoints = quality.SF1_TotalPoints;
-                agentInfo.SF1_Percent = Math.Round(((double)quality.SF1_PointsEarned / quality.SF1_TotalPoints) * 100, 2);
+                agentInfo.SF1_Percent = (quality.SF1_PointsEarned > 0 && quality.SF1_TotalPoints > 0) ? Math.Round(((double)quality.SF1_PointsEarned / quality.SF1_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.SF2_PointsEarned = quality.SF2_PointsEarned;
                 agentInfo.SF2_TotalPoints = quality.SF2_TotalPoints;
-                agentInfo.SF2_Percent = Math.Round(((double)quality.SF2_PointsEarned / quality.SF2_TotalPoints) * 100, 2);
+                agentInfo.SF2_Percent = (quality.SF2_PointsEarned > 0 && quality.SF2_TotalPoints > 0) ? Math.Round(((double)quality.SF2_PointsEarned / quality.SF2_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.SF3_PointsEarned = quality.SF3_PointsEarned;
                 agentInfo.SF3_TotalPoints = quality.SF3_TotalPoints;
-                agentInfo.SF3_Percent = Math.Round(((double)quality.SF3_PointsEarned / quality.SF3_TotalPoints) * 100, 2);
+                agentInfo.SF3_Percent = (quality.SF3_PointsEarned > 0 && quality.SF3_TotalPoints > 0) ? Math.Round(((double)quality.SF3_PointsEarned / quality.SF3_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.SF_PointsEarned = (quality.SF1_PointsEarned + quality.SF2_PointsEarned + quality.SF3_PointsEarned);
                 agentInfo.SF_TotalPoints = (quality.SF1_TotalPoints + quality.SF2_TotalPoints + quality.SF3_TotalPoints);
 
                 agentInfo.BP1_PointsEarned = quality.BP1_PointsEarned;
                 agentInfo.BP1_TotalPoints = quality.BP1_TotalPoints;
-                agentInfo.BP1_Percent = Math.Round(((double)quality.BP1_PointsEarned / quality.BP1_TotalPoints) * 100, 2);
+                agentInfo.BP1_Percent = (quality.BP1_PointsEarned > 0 && quality.BP1_TotalPoints > 0) ? Math.Round(((double)quality.BP1_PointsEarned / quality.BP1_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.BP2_PointsEarned = quality.BP2_PointsEarned;
                 agentInfo.BP2_TotalPoints = quality.BP2_TotalPoints;
-                agentInfo.BP2_Percent = Math.Round(((double)quality.BP2_PointsEarned / quality.BP2_TotalPoints) * 100, 2);
+                agentInfo.BP2_Percent = (quality.BP2_PointsEarned > 0 && quality.BP2_TotalPoints > 0) ? Math.Round(((double)quality.BP2_PointsEarned / quality.BP2_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.BP3_PointsEarned = quality.BP3_PointsEarned;
                 agentInfo.BP3_TotalPoints = quality.BP3_TotalPoints;
-                agentInfo.BP3_Percent = Math.Round(((double)quality.BP3_PointsEarned / quality.BP3_TotalPoints) * 100, 2);
+                agentInfo.BP3_Percent = (quality.BP3_PointsEarned > 0 && quality.BP3_TotalPoints > 0) ? Math.Round(((double)quality.BP3_PointsEarned / quality.BP3_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.BP_PointsEarned = (quality.BP1_PointsEarned + quality.BP2_PointsEarned + quality.BP3_PointsEarned);
                 agentInfo.BP_TotalPoints = (quality.BP1_TotalPoints + quality.BP2_TotalPoints + quality.BP3_TotalPoints);
 
                 agentInfo.IC1_PointsEarned = quality.IC1_PointsEarned;
                 agentInfo.IC1_TotalPoints = quality.IC1_TotalPoints;
-                agentInfo.IC1_Percent = Math.Round(((double)quality.IC1_PointsEarned / quality.IC1_TotalPoints) * 100, 2);
+                agentInfo.IC1_Percent = (quality.IC1_PointsEarned > 0 && quality.IC1_TotalPoints > 0) ? Math.Round(((double)quality.IC1_PointsEarned / quality.IC1_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.IC2_PointsEarned = quality.IC2_PointsEarned;
                 agentInfo.IC2_TotalPoints = quality.IC2_TotalPoints;
-                agentInfo.IC2_Percent = Math.Round(((double)quality.IC2_PointsEarned / quality.IC2_TotalPoints) * 100, 2);
+                agentInfo.IC2_Percent = (quality.IC2_PointsEarned > 0 && quality.IC2_TotalPoints > 0) ? Math.Round(((double)quality.IC2_PointsEarned / quality.IC2_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.IC3_PointsEarned = quality.IC3_PointsEarned;
                 agentInfo.IC3_TotalPoints = quality.IC3_TotalPoints;
-                agentInfo.IC3_Percent = Math.Round(((double)quality.IC3_PointsEarned / quality.IC3_TotalPoints) * 100, 2);
+                agentInfo.IC3_Percent = (quality.IC3_PointsEarned > 0 && quality.IC3_TotalPoints > 0) ? Math.Round(((double)quality.IC3_PointsEarned / quality.IC3_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.IC4_PointsEarned = quality.IC4_PointsEarned;
                 agentInfo.IC4_TotalPoints = quality.IC4_TotalPoints;
-                agentInfo.IC4_Percent = Math.Round(((double)quality.IC4_PointsEarned / quality.IC4_TotalPoints) * 100, 2);
+                agentInfo.IC4_Percent = (quality.IC4_PointsEarned > 0 && quality.IC4_TotalPoints > 0) ? Math.Round(((double)quality.IC4_PointsEarned / quality.IC4_TotalPoints) * 100, 2) : 0;
 
                 agentInfo.IC_PointsEarned = (quality.IC1_PointsEarned + quality.IC2_PointsEarned + quality.IC3_PointsEarned + quality.IC4_PointsEarned);
                 agentInfo.IC_TotalPoints = (quality.IC1_TotalPoints + quality.IC2_TotalPoints + quality.IC3_TotalPoints + quality.IC4_TotalPoints);
 
                 agentInfo.Overall_PointsEarned = (agentInfo.CF_PointsEarned + agentInfo.SF_PointsEarned + agentInfo.BP_PointsEarned + agentInfo.IC_PointsEarned);
                 agentInfo.Overall_TotalPoints = (agentInfo.CF_TotalPoints + agentInfo.SF_TotalPoints + agentInfo.BP_TotalPoints + agentInfo.IC_TotalPoints);
-                agentInfo.Overall_QCScore = Math.Round(((double)agentInfo.Overall_PointsEarned / agentInfo.Overall_TotalPoints) * 100, 2);
+                agentInfo.Overall_QCScore = (agentInfo.Overall_PointsEarned > 0 && agentInfo.Overall_TotalPoints > 0) ? Math.Round(((double)agentInfo.Overall_PointsEarned / agentInfo.Overall_TotalPoints) * 100, 2) : 0;
                 agentInfo.PassedOrFailed = (agentInfo.Overall_QCScore >= passingScore) ? "Passed" : "ForCoaching";
                 agentInfo.PassiveSurvey = quality.PassiveSurvey;
                 agentInfo.CSATScore = quality.CSATScore;

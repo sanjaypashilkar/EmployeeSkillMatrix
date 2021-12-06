@@ -1031,6 +1031,360 @@ namespace SkillMatrix.Web.Controllers
 
         }
 
+        public IActionResult QualityExcel5(DateTime minDate, DateTime maxDate, string reportType, int passingScore)
+        {
+            var filter = new QualityFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate,
+                ReportType = reportType,
+                PassingScore = passingScore
+            };
+
+            var qualityReport = _reportService.GetQualityReport3(filter);
+
+            #region Workbook
+
+            using (var workbook = new XLWorkbook())
+            {
+                var tab = $"Summary";
+                var worksheet = workbook.Worksheets.Add(tab);
+                worksheet.Style.Font.SetFontName("Calibri");
+                var currentRow = 1;
+
+                #region Header
+
+                worksheet.Cell(currentRow, 7).Value = "CF1";
+                worksheet.Cell(currentRow, 10).Value = "CF2";
+                worksheet.Cell(currentRow, 13).Value = "CF3";
+                worksheet.Cell(currentRow, 16).Value = "CF4";
+                worksheet.Cell(currentRow, 19).Value = "Customer Focus";
+                worksheet.Cell(currentRow, 21).Value = "SF1";
+                worksheet.Cell(currentRow, 24).Value = "SF2";
+                worksheet.Cell(currentRow, 27).Value = "SF3";
+                worksheet.Cell(currentRow, 30).Value = "System Focus";
+                worksheet.Cell(currentRow, 32).Value = "BP1";
+                worksheet.Cell(currentRow, 35).Value = "BP2";
+                worksheet.Cell(currentRow, 38).Value = "BP3";
+                worksheet.Cell(currentRow, 41).Value = "Business Focus";
+                worksheet.Cell(currentRow, 43).Value = "IC11";
+                worksheet.Cell(currentRow, 46).Value = "IC2";
+                worksheet.Cell(currentRow, 49).Value = "IC3";
+                worksheet.Cell(currentRow, 52).Value = "IC4";
+                worksheet.Cell(currentRow, 55).Value = "Intuitive Customer";
+
+                IXLRange range1_7_9 = worksheet.Range(worksheet.Cell(currentRow, 7).Address, worksheet.Cell(currentRow, 9).Address);
+                range1_7_9.Merge();
+                range1_7_9.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_10_12 = worksheet.Range(worksheet.Cell(currentRow, 10).Address, worksheet.Cell(currentRow, 12).Address);
+                range1_10_12.Merge();
+                range1_10_12.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_13_15 = worksheet.Range(worksheet.Cell(currentRow, 13).Address, worksheet.Cell(currentRow, 15).Address);
+                range1_13_15.Merge();
+                range1_13_15.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_16_18 = worksheet.Range(worksheet.Cell(currentRow, 16).Address, worksheet.Cell(currentRow, 18).Address);
+                range1_16_18.Merge();
+                range1_16_18.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_19_20 = worksheet.Range(worksheet.Cell(currentRow, 19).Address, worksheet.Cell(currentRow, 20).Address);
+                range1_19_20.Merge();
+                range1_19_20.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                IXLRange range1_21_23 = worksheet.Range(worksheet.Cell(currentRow, 21).Address, worksheet.Cell(currentRow, 23).Address);
+                range1_21_23.Merge();
+                range1_21_23.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_24_26 = worksheet.Range(worksheet.Cell(currentRow, 24).Address, worksheet.Cell(currentRow, 26).Address);
+                range1_24_26.Merge();
+                range1_24_26.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_27_29 = worksheet.Range(worksheet.Cell(currentRow, 27).Address, worksheet.Cell(currentRow, 29).Address);
+                range1_27_29.Merge();
+                range1_27_29.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_30_31 = worksheet.Range(worksheet.Cell(currentRow, 30).Address, worksheet.Cell(currentRow, 31).Address);
+                range1_30_31.Merge();
+                range1_30_31.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                IXLRange range1_32_34 = worksheet.Range(worksheet.Cell(currentRow, 32).Address, worksheet.Cell(currentRow, 34).Address);
+                range1_32_34.Merge();
+                range1_32_34.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_35_37 = worksheet.Range(worksheet.Cell(currentRow, 35).Address, worksheet.Cell(currentRow, 37).Address);
+                range1_35_37.Merge();
+                range1_35_37.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_38_40 = worksheet.Range(worksheet.Cell(currentRow, 38).Address, worksheet.Cell(currentRow, 40).Address);
+                range1_38_40.Merge();
+                range1_38_40.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_41_42 = worksheet.Range(worksheet.Cell(currentRow, 41).Address, worksheet.Cell(currentRow, 42).Address);
+                range1_41_42.Merge();
+                range1_41_42.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                IXLRange range1_43_45 = worksheet.Range(worksheet.Cell(currentRow, 43).Address, worksheet.Cell(currentRow, 45).Address);
+                range1_43_45.Merge();
+                range1_43_45.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_46_48 = worksheet.Range(worksheet.Cell(currentRow, 46).Address, worksheet.Cell(currentRow, 48).Address);
+                range1_46_48.Merge();
+                range1_46_48.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_49_51 = worksheet.Range(worksheet.Cell(currentRow, 49).Address, worksheet.Cell(currentRow, 51).Address);
+                range1_49_51.Merge();
+                range1_49_51.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_52_54 = worksheet.Range(worksheet.Cell(currentRow, 52).Address, worksheet.Cell(currentRow, 54).Address);
+                range1_52_54.Merge();
+                range1_52_54.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                IXLRange range1_55_56 = worksheet.Range(worksheet.Cell(currentRow, 55).Address, worksheet.Cell(currentRow, 56).Address);
+                range1_55_56.Merge();
+                range1_55_56.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                IXLRange range1 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 66).Address);
+                range1.Style.Fill.SetBackgroundColor(XLColor.FromArgb(146, 208, 80));
+                range1.Style.Font.SetFontColor(XLColor.FromArgb(0, 0, 0));
+                range1.Style.Font.Bold = true;
+
+                IXLBorder border_1 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 66).Address).Style.Border;
+                border_1.BottomBorder = border_1.TopBorder = border_1.LeftBorder = border_1.RightBorder = XLBorderStyleValues.Thin;
+
+                currentRow++;
+
+                worksheet.Cell(currentRow, 1).Value = "#";
+                worksheet.Cell(currentRow, 2).Value = "Month";                
+                worksheet.Cell(currentRow, 3).Value = "Year";                
+                worksheet.Cell(currentRow, 4).Value = "TL";
+                worksheet.Cell(currentRow, 5).Value = "Agent";
+                worksheet.Cell(currentRow, 6).Value = "Employee ID";
+                worksheet.Cell(currentRow, 7).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 8).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 9).Value = "%";
+                worksheet.Cell(currentRow, 10).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 11).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 12).Value = "%";
+                worksheet.Cell(currentRow, 13).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 14).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 15).Value = "%";
+                worksheet.Cell(currentRow, 16).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 17).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 18).Value = "%";
+                worksheet.Cell(currentRow, 19).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 20).Value = "TotalPoints";
+
+                worksheet.Cell(currentRow, 21).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 22).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 23).Value = "%";
+                worksheet.Cell(currentRow, 24).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 25).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 26).Value = "%";
+                worksheet.Cell(currentRow, 27).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 28).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 29).Value = "%";                
+                worksheet.Cell(currentRow, 30).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 31).Value = "TotalPoints";
+
+                worksheet.Cell(currentRow, 32).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 33).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 34).Value = "%";
+                worksheet.Cell(currentRow, 35).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 36).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 37).Value = "%";
+                worksheet.Cell(currentRow, 38).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 39).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 40).Value = "%";
+                worksheet.Cell(currentRow, 41).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 42).Value = "TotalPoints";
+
+                worksheet.Cell(currentRow, 43).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 44).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 45).Value = "%";
+                worksheet.Cell(currentRow, 46).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 47).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 48).Value = "%";
+                worksheet.Cell(currentRow, 49).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 50).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 51).Value = "%";
+                worksheet.Cell(currentRow, 52).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 53).Value = "TotalPoints";
+                worksheet.Cell(currentRow, 54).Value = "%";
+                worksheet.Cell(currentRow, 55).Value = "PointsEarned";
+                worksheet.Cell(currentRow, 56).Value = "TotalPoints";
+
+                worksheet.Cell(currentRow, 57).Value = "Overall Points";
+                worksheet.Cell(currentRow, 58).Value = "Overall";
+                worksheet.Cell(currentRow, 59).Value = "Overall QC Score";
+
+                worksheet.Cell(currentRow, 60).Value = "Passed/Failed";
+                worksheet.Cell(currentRow, 61).Value = "Passive Survey";
+                worksheet.Cell(currentRow, 62).Value = "Individial CSAT";
+                worksheet.Cell(currentRow, 63).Value = "No. Of People";
+                worksheet.Cell(currentRow, 64).Value = "Flexible QC Type";
+                worksheet.Cell(currentRow, 65).Value = "No. Of Samples";
+                worksheet.Cell(currentRow, 66).Value = "Remarks";
+
+                IXLRange range1_66 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 66).Address);
+                range1_66.Style.Fill.SetBackgroundColor(XLColor.FromArgb(146, 208, 80));
+                range1_66.Style.Font.SetFontColor(XLColor.FromArgb(0, 0, 0));
+                range1_66.Style.Font.Bold = true;
+
+                IXLBorder border_1_66 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 66).Address).Style.Border;
+                border_1_66.BottomBorder = border_1_66.TopBorder = border_1_66.LeftBorder = border_1_66.RightBorder = XLBorderStyleValues.Thin;
+
+                #endregion
+
+                #region Body
+
+                currentRow++;
+
+                foreach (var summary in qualityReport.AgentSummaryELSV)
+                {
+                    worksheet.Cell(currentRow, 1).Value = currentRow - 2;
+                    worksheet.Cell(currentRow, 2).Value = summary.Month;
+                    worksheet.Cell(currentRow, 3).Value = summary.Year;
+                    worksheet.Cell(currentRow, 4).Value = summary.TeamLead;
+                    worksheet.Cell(currentRow, 5).Value = summary.AgentName;
+                    worksheet.Cell(currentRow, 6).Value = summary.EmployeeId;
+
+                    worksheet.Cell(currentRow, 7).Value = summary.CF1_PointsEarned;
+                    worksheet.Cell(currentRow, 8).Value = summary.CF1_TotalPoints;
+                    worksheet.Cell(currentRow, 9).Value = $"{summary.CF1_Percent}%";
+                    worksheet.Cell(currentRow, 9).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 9).Style.NumberFormat.Format = "0.00%";
+                    
+                    worksheet.Cell(currentRow, 10).Value = summary.CF2_PointsEarned;
+                    worksheet.Cell(currentRow, 11).Value = summary.CF2_TotalPoints;
+                    worksheet.Cell(currentRow, 12).Value = $"{summary.CF2_Percent}%";
+                    worksheet.Cell(currentRow, 12).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 12).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 13).Value = summary.CF3_PointsEarned;
+                    worksheet.Cell(currentRow, 14).Value = summary.CF3_TotalPoints;
+                    worksheet.Cell(currentRow, 15).Value = $"{summary.CF3_Percent}%";
+                    worksheet.Cell(currentRow, 15).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 15).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 16).Value = summary.CF4_PointsEarned;
+                    worksheet.Cell(currentRow, 17).Value = summary.CF4_TotalPoints;
+                    worksheet.Cell(currentRow, 18).Value = $"{summary.CF4_Percent}%";
+                    worksheet.Cell(currentRow, 18).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 18).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 19).Value = summary.CF_PointsEarned;
+                    worksheet.Cell(currentRow, 20).Value = summary.CF_TotalPoints;
+
+                    worksheet.Cell(currentRow, 21).Value = summary.SF1_PointsEarned;
+                    worksheet.Cell(currentRow, 22).Value = summary.SF1_TotalPoints;
+                    worksheet.Cell(currentRow, 23).Value = $"{summary.SF1_Percent}%";
+                    worksheet.Cell(currentRow, 23).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 23).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 24).Value = summary.SF2_PointsEarned;
+                    worksheet.Cell(currentRow, 25).Value = summary.SF2_TotalPoints;
+                    worksheet.Cell(currentRow, 26).Value = $"{summary.SF2_Percent}%";
+                    worksheet.Cell(currentRow, 26).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 26).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 27).Value = summary.SF3_PointsEarned;
+                    worksheet.Cell(currentRow, 28).Value = summary.SF3_TotalPoints;
+                    worksheet.Cell(currentRow, 29).Value = $"{summary.SF3_Percent}%";
+                    worksheet.Cell(currentRow, 29).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 29).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 30).Value = summary.SF_PointsEarned;
+                    worksheet.Cell(currentRow, 31).Value = summary.SF_TotalPoints;
+
+                    worksheet.Cell(currentRow, 32).Value = summary.BP1_PointsEarned;
+                    worksheet.Cell(currentRow, 33).Value = summary.BP1_TotalPoints;
+                    worksheet.Cell(currentRow, 34).Value = $"{summary.BP1_Percent}%";
+                    worksheet.Cell(currentRow, 34).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 34).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 35).Value = summary.BP2_PointsEarned;
+                    worksheet.Cell(currentRow, 36).Value = summary.BP2_TotalPoints;
+                    worksheet.Cell(currentRow, 37).Value = $"{summary.BP2_Percent}%";
+                    worksheet.Cell(currentRow, 37).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 37).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 38).Value = summary.BP3_PointsEarned;
+                    worksheet.Cell(currentRow, 39).Value = summary.BP3_TotalPoints;
+                    worksheet.Cell(currentRow, 40).Value = $"{summary.BP3_Percent}%";
+                    worksheet.Cell(currentRow, 40).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 40).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 41).Value = summary.BP_PointsEarned;
+                    worksheet.Cell(currentRow, 42).Value = summary.BP_TotalPoints;
+
+                    worksheet.Cell(currentRow, 43).Value = summary.IC1_PointsEarned;
+                    worksheet.Cell(currentRow, 44).Value = summary.IC1_TotalPoints;
+                    worksheet.Cell(currentRow, 45).Value = $"{summary.IC1_Percent}%";
+                    worksheet.Cell(currentRow, 45).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 45).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 46).Value = summary.IC2_PointsEarned;
+                    worksheet.Cell(currentRow, 47).Value = summary.IC2_TotalPoints;
+                    worksheet.Cell(currentRow, 48).Value = $"{summary.IC2_Percent}%";
+                    worksheet.Cell(currentRow, 48).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 48).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 49).Value = summary.IC3_PointsEarned;
+                    worksheet.Cell(currentRow, 50).Value = summary.IC3_TotalPoints;
+                    worksheet.Cell(currentRow, 51).Value = $"{summary.IC3_Percent}%";
+                    worksheet.Cell(currentRow, 51).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 51).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 52).Value = summary.IC4_PointsEarned;
+                    worksheet.Cell(currentRow, 53).Value = summary.IC4_TotalPoints;
+                    worksheet.Cell(currentRow, 54).Value = $"{summary.IC4_Percent}%";
+                    worksheet.Cell(currentRow, 54).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 54).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 55).Value = summary.IC_PointsEarned;
+                    worksheet.Cell(currentRow, 56).Value = summary.IC_TotalPoints;
+
+                    worksheet.Cell(currentRow, 57).Value = summary.Overall_PointsEarned;
+                    worksheet.Cell(currentRow, 58).Value = summary.Overall_TotalPoints;
+                    worksheet.Cell(currentRow, 59).Value = $"{summary.Overall_QCScore}%";
+                    worksheet.Cell(currentRow, 59).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 59).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 60).Value = summary.PassedOrFailed;
+                    worksheet.Cell(currentRow, 61).Value = $"{summary.PassiveSurvey}%";
+                    worksheet.Cell(currentRow, 61).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 61).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 62).Value = $"{summary.CSATScore}%";
+                    worksheet.Cell(currentRow, 62).DataType = XLDataType.Number;
+                    worksheet.Cell(currentRow, 62).Style.NumberFormat.Format = "0.00%";
+
+                    worksheet.Cell(currentRow, 63).Value = summary.NoOfPplOpportunity;
+                    worksheet.Cell(currentRow, 64).Value = summary.QCType;
+                    worksheet.Cell(currentRow, 65).Value = summary.NoOfSamples;
+                    worksheet.Cell(currentRow, 66).Value = summary.Remarks;
+
+
+
+                    //worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "0.00%";
+                    //worksheet.Cell(currentRow, 7).DataType = XLDataType.Number;
+                    //worksheet.Cell(currentRow, 7).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    IXLBorder border_1_n = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 66).Address).Style.Border;
+                    border_1_n.BottomBorder = border_1_n.TopBorder = border_1_n.LeftBorder = border_1_n.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+                }
+
+                worksheet.Columns().AdjustToContents();                
+
+                #endregion
+
+                var fileName = $"QualitySummary_{filter.ReportType}.xlsx";
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        fileName
+                        );
+                }
+            }
+
+            #endregion
+
+        }
+
         #endregion
 
         #region TICKETING TOOL
