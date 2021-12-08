@@ -8,7 +8,8 @@ namespace SkillMatrix.Service
     public interface IEmployeeService
     {
         vwEmployee GetEmployees(int pg=0);
-        List<Employee> GetEmployees(string fileName);
-        void SaveEmployees(string fileName);
+        List<Employee> GetEmployees(string fileName, string accountType);
+        void SaveEmployees(string fileName, string accountType);
+        Dictionary<string, string> mtdGetAccountTypes();
     }
 }

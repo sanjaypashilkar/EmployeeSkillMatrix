@@ -39,9 +39,6 @@ namespace SkillMatrix.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>()
-                .Property(u => u.Id)
-                .ValueGeneratedOnAdd();
             modelBuilder.Entity<EmployeeSkillMatrix>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
@@ -61,6 +58,9 @@ namespace SkillMatrix.Repository
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<CSAT>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Employee>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 

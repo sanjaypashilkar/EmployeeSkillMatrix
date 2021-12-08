@@ -19,11 +19,11 @@ namespace SkillMatrix.Service
             _skillMatrixRepository = skillMatrixRepository;
         }
 
-        public vwEmployee GetEmployees(int pg =0)
+        public vwEmployee GetEmployees(int pg = 0)
         {
             vwEmployee employees = new vwEmployee();
             var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
-            if(entEmployees.Count>0)
+            if (entEmployees.Count > 0)
             {
                 var sortedList = entEmployees.OrderBy(s => s.Name).ToList();
                 if (pg < 1)
@@ -41,7 +41,7 @@ namespace SkillMatrix.Service
             return employees;
         }
 
-        public List<Employee> GetEmployees(string fileName)
+        public List<Employee> GetEmployees(string fileName, string accountType)
         {
             List<Employee> employees = new List<Employee>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -65,6 +65,7 @@ namespace SkillMatrix.Service
                                 var createdDate = DateTime.Now.Date;
                                 employees.Add(new Employee
                                 {
+                                    AccountType = accountType,
                                     SAPUserName = sapUserName.ToUpper(),
                                     SPIEmployeeNo = spiEmployeeNo.ToUpper(),
                                     Name = employeeName,
@@ -81,18 +82,25 @@ namespace SkillMatrix.Service
             return employees;
         }
 
-        public void SaveEmployees(string fileName)
+        public void SaveEmployees(string fileName, string accountType)
         {
-            var employees = GetEmployees(fileName);
-            if (employees.Count>0)
+            var employees = GetEmployees(fileName, accountType);
+            if (employees.Count > 0)
             {
                 var entEmployees = _skillMatrixRepository.GetEmployees().ToList();
-                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.SAPUserName.ToUpper() == x.SAPUserName.ToLower())).OrderByDescending(o=>o.DateHired);
-                if(newEmployees.Count()>0)
+                var newEmployees = employees.Where(x => !entEmployees.Any(e => e.SPIEmployeeNo.ToUpper() == x.SPIEmployeeNo.ToLower())).OrderByDescending(o => o.DateHired);
+                if (newEmployees.Count() > 0)
                 {
                     _skillMatrixRepository.SaveEmployees(newEmployees);
                 }
             }
+        }
+
+        public Dictionary<string, string> mtdGetAccountTypes()
+        {
+            var departments = Helper.GetEnumValuesAndDescriptions<AccountType>();
+            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
         }
     }
 }

@@ -125,11 +125,45 @@ namespace SkillMatrix.Repository.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "CSAT",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AccountType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Month = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    AgentName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmployeeId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CSATScore = table.Column<double>(type: "double", nullable: false),
+                    Effort = table.Column<double>(type: "double", nullable: false),
+                    FTR = table.Column<double>(type: "double", nullable: false),
+                    ComprNAccurate = table.Column<double>(type: "double", nullable: false),
+                    ProfessionalNHelpful = table.Column<double>(type: "double", nullable: false),
+                    Timely = table.Column<double>(type: "double", nullable: false),
+                    NoOfRedFlags = table.Column<int>(type: "int", nullable: false),
+                    NoOfSurveys = table.Column<int>(type: "int", nullable: false),
+                    RecordDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CSAT", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Employee",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AccountType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     SAPUserName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SPIEmployeeNo = table.Column<string>(type: "longtext", nullable: true)
@@ -331,6 +365,65 @@ namespace SkillMatrix.Repository.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "QualityRating3",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AccountType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Month = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TeamLead = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AgentName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmployeeId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CF1_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    CF1_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    CF2_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    CF2_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    CF3_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    CF3_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    CF4_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    CF4_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    SF1_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    SF1_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    SF2_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    SF2_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    SF3_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    SF3_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    BP1_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    BP1_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    BP2_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    BP2_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    BP3_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    BP3_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    IC1_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    IC1_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    IC2_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    IC2_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    IC3_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    IC3_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    IC4_PointsEarned = table.Column<int>(type: "int", nullable: false),
+                    IC4_TotalPoints = table.Column<int>(type: "int", nullable: false),
+                    PassiveSurvey = table.Column<double>(type: "double", nullable: false),
+                    CSATScore = table.Column<double>(type: "double", nullable: false),
+                    NoOfPplOpportunity = table.Column<int>(type: "int", nullable: false),
+                    Remarks = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RecordDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QualityRating3", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "TenureLevel",
                 columns: table => new
                 {
@@ -385,12 +478,12 @@ namespace SkillMatrix.Repository.Migrations
                 columns: new[] { "Id", "CreatedDate", "LowerScore", "Score", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 0, 0.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 1 },
-                    { 2, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 1, 1.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 85 },
-                    { 3, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 85, 2.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 92 },
-                    { 4, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 92, 3.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 94 },
-                    { 5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 94, 4.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 99 },
-                    { 6, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 99, 5.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 10000 }
+                    { 1, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 0, 0.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 1 },
+                    { 2, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 1, 1.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 85 },
+                    { 3, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 85, 2.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 92 },
+                    { 4, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 92, 3.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 94 },
+                    { 5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 94, 4.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 99 },
+                    { 6, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 99, 5.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 10000 }
                 });
 
             migrationBuilder.InsertData(
@@ -398,11 +491,11 @@ namespace SkillMatrix.Repository.Migrations
                 columns: new[] { "Id", "CreatedDate", "Level", "LowerScore", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 0.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 2.4900000000000002 },
-                    { 2, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 2.5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 3.4900000000000002 },
-                    { 3, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 3.5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 3.9900000000000002 },
-                    { 4, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 4.0, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 4.4900000000000002 },
-                    { 5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 4.5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 5.0 }
+                    { 1, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 0.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 2.4900000000000002 },
+                    { 2, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 2.5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 3.4900000000000002 },
+                    { 3, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 3.5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 3.9900000000000002 },
+                    { 4, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 4.0, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 4.4900000000000002 },
+                    { 5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 4.5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 5.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -410,11 +503,11 @@ namespace SkillMatrix.Repository.Migrations
                 columns: new[] { "Id", "CreatedDate", "Level", "LowerScore", "UpdatedDate", "UpperScore" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 6, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 9 },
-                    { 2, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 10, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 12 },
-                    { 3, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 13, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
-                    { 4, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 13, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
-                    { 5, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 13, new DateTime(2021, 11, 19, 0, 0, 0, 0, DateTimeKind.Local), 1000 }
+                    { 1, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Novice", 6, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 9 },
+                    { 2, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Advanced Beginner", 10, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 12 },
+                    { 3, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Competent", 13, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
+                    { 4, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Proficient", 13, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 1000 },
+                    { 5, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Expert", 13, new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), 1000 }
                 });
         }
 
@@ -430,6 +523,9 @@ namespace SkillMatrix.Repository.Migrations
                 name: "CompetencyLevelScoring");
 
             migrationBuilder.DropTable(
+                name: "CSAT");
+
+            migrationBuilder.DropTable(
                 name: "Employee");
 
             migrationBuilder.DropTable(
@@ -440,6 +536,9 @@ namespace SkillMatrix.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "QualityRating2");
+
+            migrationBuilder.DropTable(
+                name: "QualityRating3");
 
             migrationBuilder.DropTable(
                 name: "TenureLevel");

@@ -318,7 +318,7 @@ namespace SkillMatrix.Web.Controllers
         [HttpGet]
         public IActionResult DownloadCSATTemplate()
         {
-            string fileName = "Template_BusinessPartner.xlsx";
+            string fileName = "Template_CSAT.xlsx";
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);

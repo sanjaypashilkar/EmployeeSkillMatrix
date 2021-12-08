@@ -26,11 +26,13 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult Index()
         {
             var employees = new vwEmployee();
+            var accountTypes = _employeeService.mtdGetAccountTypes();
+            employees.lstAccountTypes = accountTypes;
             return View(employees);
         }
 
         [HttpPost]
-        public IActionResult Index(IFormFile file)
+        public IActionResult Index(IFormFile file, string AccountType )
         {
             vwEmployee employeesView = new vwEmployee();
             if (file != null)
@@ -53,14 +55,16 @@ namespace SkillMatrix.Web.Controllers
                     stream.Flush();
                     ViewBag.FileName += fileName;
                 }
-                var employees = _employeeService.GetEmployees(fullFilePath);
+                var employees = _employeeService.GetEmployees(fullFilePath, AccountType);
                 employeesView.Employees = employees;
+                var accountTypes = _employeeService.mtdGetAccountTypes();
+                employeesView.lstAccountTypes = accountTypes;
             }
             return View(employeesView);
         }
 
         [HttpPost]
-        public IActionResult SaveEmployees(string fileName)
+        public IActionResult SaveEmployees(string fileName, string accountType)
         {
             Response response = new Response();
             List<vwEmployee> employees = new List<vwEmployee>();
@@ -68,7 +72,7 @@ namespace SkillMatrix.Web.Controllers
             {
                 string path = Path.Combine(this.Environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
-                _employeeService.SaveEmployees(fullFilePath);
+                _employeeService.SaveEmployees(fullFilePath, accountType);
                 response.Success = true;
                 response.Message = $"Employees saved successfully";
             }

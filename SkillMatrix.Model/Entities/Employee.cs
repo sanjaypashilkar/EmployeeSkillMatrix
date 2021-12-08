@@ -9,6 +9,7 @@ namespace SkillMatrix.Model
     public class Employee
     {
         public int Id { get; set; }
+        public string AccountType { get; set; }
         public string SAPUserName { get; set; }
         public string SPIEmployeeNo { get; set; }
         public string Name { get; set; }
