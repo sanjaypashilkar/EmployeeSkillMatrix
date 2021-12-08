@@ -97,5 +97,20 @@ namespace SkillMatrix.Web.Controllers
             var employees = _employeeService.GetEmployees(pg);
             return PartialView("_Table", employees);
         }
+
+        [HttpGet]
+        public IActionResult DownloadEmployeeTemplate()
+        {
+            string fileName = "Template_Employee.xlsx";
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path1 = Path.Combine(path, "Templates");
+            string fullFilePath = Path.Combine(path, fileName);
+            byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
+            return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                    );
+        }
     }
 }
