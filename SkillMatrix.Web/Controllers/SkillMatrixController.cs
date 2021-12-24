@@ -15,11 +15,11 @@ namespace SkillMatrix.Controllers
 {
     public class SkillMatrixController : Controller
     {
-        private IHostingEnvironment Environment;
+        private IWebHostEnvironment _environment;
         public ISkillMatrixService _skillMatrixService { get; set; }
-        public SkillMatrixController(IHostingEnvironment _environment, ISkillMatrixService skillMatrixService)
+        public SkillMatrixController(IWebHostEnvironment environment, ISkillMatrixService skillMatrixService)
         {
-            Environment = _environment;
+            _environment = environment;
             _skillMatrixService = skillMatrixService;
         }
 
@@ -35,7 +35,7 @@ namespace SkillMatrix.Controllers
             vwImportAndSave import = new vwImportAndSave();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -64,7 +64,7 @@ namespace SkillMatrix.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileName))
             { 
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _skillMatrixService.SaveSkillMatrix(fullFilePath, year, quarter);
                 response.Success = true;

@@ -13,12 +13,12 @@ namespace SkillMatrix.Web.Controllers
 {
     public class EmployeeController : Controller
     {
-        private IHostingEnvironment Environment;
+        private IWebHostEnvironment _environment;
         public IEmployeeService _employeeService { get; set; }
 
-        public EmployeeController(IHostingEnvironment _environment, IEmployeeService employeeService)
+        public EmployeeController(IWebHostEnvironment environment, IEmployeeService employeeService)
         {
-            Environment = _environment;
+            _environment = environment;
             _employeeService = employeeService;
         }
 
@@ -37,7 +37,7 @@ namespace SkillMatrix.Web.Controllers
             vwEmployee employeesView = new vwEmployee();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -70,7 +70,7 @@ namespace SkillMatrix.Web.Controllers
             List<vwEmployee> employees = new List<vwEmployee>();
             if (!string.IsNullOrEmpty(fileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _employeeService.SaveEmployees(fullFilePath, accountType);
                 response.Success = true;
@@ -102,7 +102,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadEmployeeTemplate()
         {
             string fileName = "Template_Employee.xlsx";
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);

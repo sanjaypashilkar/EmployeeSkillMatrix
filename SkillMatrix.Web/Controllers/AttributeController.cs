@@ -12,11 +12,11 @@ namespace SkillMatrix.Web.Controllers
 {
     public class AttributeController : Controller
     {
-        private IHostingEnvironment Environment;
+        private IWebHostEnvironment _environment;
         public IAttributeService _attributeService { get; set; }
-        public AttributeController(IHostingEnvironment _environment, IAttributeService attributeService)
+        public AttributeController(IWebHostEnvironment environment, IAttributeService attributeService)
         {
-            Environment = _environment;
+            _environment = environment;
             _attributeService = attributeService;
         }
 
@@ -37,7 +37,7 @@ namespace SkillMatrix.Web.Controllers
             vwImportAndSaveQualityRating qualityRating = new vwImportAndSaveQualityRating();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -67,7 +67,7 @@ namespace SkillMatrix.Web.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileInput.FileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileInput.FileName);
                 fileInput.FileName = fullFilePath;
                 _attributeService.SaveQualityRatings(fileInput);
@@ -98,7 +98,7 @@ namespace SkillMatrix.Web.Controllers
                     fileName = "Template_QualityForms.xlsx";
                 }
             }            
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
@@ -125,7 +125,7 @@ namespace SkillMatrix.Web.Controllers
             vwImportAndSaveTicketingTool ticketingTool = new vwImportAndSaveTicketingTool();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -154,7 +154,7 @@ namespace SkillMatrix.Web.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _attributeService.SaveTicketingRecords(fullFilePath, recordDate);
                 response.Success = true;
@@ -172,7 +172,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadTicketingTemplate()
         {
             string fileName = "Template_TicketingTool.xlsx";
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
@@ -199,7 +199,7 @@ namespace SkillMatrix.Web.Controllers
             vwImportAndSaveBusinessPartner businessPartner = new vwImportAndSaveBusinessPartner();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -228,7 +228,7 @@ namespace SkillMatrix.Web.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _attributeService.SaveBusinessPartnerRecords(fullFilePath, recordDate);
                 response.Success = true;
@@ -246,7 +246,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadBPTemplate()
         {
             string fileName = "Template_BusinessPartner.xlsx";
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
@@ -272,7 +272,7 @@ namespace SkillMatrix.Web.Controllers
             vwImportAndSaveCSAT csatRecords = new vwImportAndSaveCSAT();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -301,7 +301,7 @@ namespace SkillMatrix.Web.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _attributeService.SaveCSATRecords(fullFilePath, recordDate);
                 response.Success = true;
@@ -319,7 +319,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadCSATTemplate()
         {
             string fileName = "Template_CSAT.xlsx";
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
@@ -345,7 +345,7 @@ namespace SkillMatrix.Web.Controllers
             vwImportAndSaveCertification certifications = new vwImportAndSaveCertification();
             if (file != null)
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -374,7 +374,7 @@ namespace SkillMatrix.Web.Controllers
             Response response = new Response();
             if (!string.IsNullOrEmpty(fileName))
             {
-                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string path = Path.Combine(this._environment.WebRootPath, "Files");
                 string fullFilePath = Path.Combine(path, fileName);
                 _attributeService.SaveCertifications(fullFilePath, recordDate);
                 response.Success = true;
@@ -392,7 +392,7 @@ namespace SkillMatrix.Web.Controllers
         public IActionResult DownloadCertificationTemplate()
         {
             string fileName = "Template_Certification.xlsx";
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);
             byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
