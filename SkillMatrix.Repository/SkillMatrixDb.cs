@@ -19,6 +19,7 @@ namespace SkillMatrix.Repository
         public DbSet<TicketingTool> TicketingTool { get; set; }
         public DbSet<BusinessPartner> BusinessPartner { get; set; }
         public DbSet<CSAT> CSAT { get; set; }
+        public DbSet<Certification> Certification { get; set; }
         public SkillMatrixDb()
         { }
 

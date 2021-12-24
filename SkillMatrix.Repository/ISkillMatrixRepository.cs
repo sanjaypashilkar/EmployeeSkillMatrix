@@ -45,6 +45,10 @@ namespace SkillMatrix.Repository
         int SaveCSATRecords(IEnumerable<CSAT> csatRecords);
         #endregion
 
+        #region Certification
+        int SaveCertifications(IEnumerable<Certification> certificationRecords);
+        #endregion
+
         #region COMMON METHODS
 
         int AddEntry<TEntity>(TEntity entry) where TEntity : class;

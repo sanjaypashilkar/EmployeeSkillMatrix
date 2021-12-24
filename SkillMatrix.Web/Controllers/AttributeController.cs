@@ -330,5 +330,79 @@ namespace SkillMatrix.Web.Controllers
                     );
         }
         #endregion
+
+        #region CERTIFICATION
+        public IActionResult Certification()
+        {
+            vwImportAndSaveCertification certification = new vwImportAndSaveCertification();
+            certification.lstAccountTypes = _attributeService.mtdGetAccountTypes();
+            return View(certification);
+        }
+
+        [HttpPost]
+        public IActionResult Certification(IFormFile file)
+        {
+            vwImportAndSaveCertification certifications = new vwImportAndSaveCertification();
+            if (file != null)
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                string fileName = Path.GetFileName(file.FileName);
+                string fullFilePath = Path.Combine(path, fileName);
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
+                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                    stream.Flush();
+                    ViewBag.FileName += fileName;
+                }
+                certifications = _attributeService.GetUploadedCertificationRecords(fullFilePath);
+            }
+            return View(certifications);
+        }
+
+        [HttpPost]
+        public IActionResult SaveCertifications(string fileName, string recordDate)
+        {
+            Response response = new Response();
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string path = Path.Combine(this.Environment.WebRootPath, "Files");
+                string fullFilePath = Path.Combine(path, fileName);
+                _attributeService.SaveCertifications(fullFilePath, recordDate);
+                response.Success = true;
+                response.Message = $"Certification records saved successfully";
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = $"Please select file to import";
+            }
+            return Json(response);
+        }
+
+        [HttpGet]
+        public IActionResult DownloadCertificationTemplate()
+        {
+            string fileName = "Template_Certification.xlsx";
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\Templates");
+            string path1 = Path.Combine(path, "Templates");
+            string fullFilePath = Path.Combine(path, fileName);
+            byte[] content = System.IO.File.ReadAllBytes(fullFilePath);
+            return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                    );
+        }
+
+        #endregion
     }
 }

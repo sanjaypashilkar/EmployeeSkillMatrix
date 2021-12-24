@@ -154,6 +154,11 @@ namespace SkillMatrix.Repository
             csatRecords.ToList().ForEach(e => _context.CSAT.Add(e));
             return _context.SaveChanges();
         }
+        public int SaveCertifications(IEnumerable<Certification> certificationRecords)
+        {
+            certificationRecords.ToList().ForEach(e => _context.Certification.Add(e));
+            return _context.SaveChanges();
+        }
         public async Task<int> AddEntryAsync<TEntity>(TEntity entry) where TEntity : class
         {
             await _context.Set<TEntity>().AddAsync(entry);
