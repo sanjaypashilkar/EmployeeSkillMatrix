@@ -1779,8 +1779,8 @@ namespace SkillMatrix.Service
             var employees = _skillMatrixRepository.GetEmployees().Where(e=>e.AccountType == AccountType.Elsevier.ToString()).ToList();
             var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
             foreach (var certification in certificationRecords)
-            {
-                var employeeRecord = employees.Where(e => e.SPIEmployeeNo.ToLower() == certification.EmployeeId.ToLower()).FirstOrDefault();
+            {                
+                var employeeRecord = employees.Where(e => e.SPIEmployeeNo.Trim().ToLower() == certification.EmployeeId.Trim().ToLower()).FirstOrDefault();
                 if(employeeRecord!=null)
                 {
                     vwCertifcationLevelReport certificationLevel = new vwCertifcationLevelReport();

@@ -2262,6 +2262,144 @@ namespace SkillMatrix.Web.Controllers
             return PartialView("_CertificationTable", report);            
         }
 
+        [HttpGet]
+        public IActionResult CertificationExcel(DateTime minDate, DateTime maxDate)
+        {
+            var filter = new CertificationFilter
+            {
+                StartDate = minDate,
+                EndDate = maxDate
+            };
+
+            var certificationReport = _reportService.GetCertificationReport(filter);
+            using (var workbook = new XLWorkbook())
+            {
+                var tab = $"Certification Report";
+                var worksheet = workbook.Worksheets.Add(tab);
+                worksheet.Style.Font.SetFontName("Calibri");
+                var currentRow = 1;
+
+
+                //worksheet.Cell(currentRow, 1).Value = "Statuses Checked per Team";
+                //IXLRange range0_1_6 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 6).Address);
+                //range0_1_6.Merge();
+                //range0_1_6.Style.Font.Bold = true;
+                //range0_1_6.Style.Fill.SetBackgroundColor(XLColor.FromArgb(31, 78, 121));
+                //range0_1_6.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+                //range0_1_6.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                //currentRow++;
+
+
+                #region Body
+
+                worksheet.Cell(currentRow, 1).Value = "SR.NO.";
+                worksheet.Cell(currentRow, 2).Value = "AGENT NAME";
+                worksheet.Cell(currentRow, 3).Value = "EMPLOYEE ID";
+                worksheet.Cell(currentRow, 4).Value = "POSITION";
+                worksheet.Cell(currentRow, 5).Value = "DATE HIRED";
+                worksheet.Cell(currentRow, 6).Value = "TENURE";
+                worksheet.Cell(currentRow, 7).Value = "CERTIFICATION DATE";
+                worksheet.Cell(currentRow, 8).Value = "OSVC SCORE";
+                worksheet.Cell(currentRow, 9).Value = "OA SCORE";
+                worksheet.Cell(currentRow, 10).Value = "EM SCORE";
+                worksheet.Cell(currentRow, 11).Value = "PRODUCT/ SYSTEM AVERAGE";
+                worksheet.Cell(currentRow, 12).Value = "PRODUCT & SYSTEM CERTIFICATION LEVEL";
+
+                IXLRange range1_1_12 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 12).Address);
+                range1_1_12.Style.Font.Bold = true;
+                range1_1_12.Style.Fill.SetBackgroundColor(XLColor.FromArgb(46, 117, 182));
+                range1_1_12.Style.Font.SetFontColor(XLColor.FromArgb(255, 255, 255));
+
+                IXLBorder border1_1_12 = range1_1_12.Style.Border;
+                border1_1_12.BottomBorder = border1_1_12.TopBorder = border1_1_12.LeftBorder = border1_1_12.RightBorder = XLBorderStyleValues.Thin;
+
+                currentRow++;
+
+                foreach (var statusReport in certificationReport.CertificationLevelReport)
+                {
+                    worksheet.Cell(currentRow, 1).Value = currentRow - 1;
+
+                    worksheet.Cell(currentRow, 2).Value = statusReport.AgentName;
+                    worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 3).Value = statusReport.EmployeeId;
+                    worksheet.Cell(currentRow, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 4).Value = statusReport.Position;
+                    worksheet.Cell(currentRow, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 5).Value = statusReport.HiredDate;
+                    worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 6).Value = statusReport.Tenure;
+                    worksheet.Cell(currentRow, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 7).Value = statusReport.CertificationDate;
+                    worksheet.Cell(currentRow, 7).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    worksheet.Cell(currentRow, 8).Value = statusReport.OSVC_Score;
+                    worksheet.Cell(currentRow, 8).Style.NumberFormat.Format = "0.00%";                    
+                    worksheet.Cell(currentRow, 8).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    if(statusReport.OSVC_Score!="N/A")
+                    {
+                        worksheet.Cell(currentRow, 8).DataType = XLDataType.Number;
+                    }
+
+                    worksheet.Cell(currentRow, 9).Value = statusReport.OA_Score;
+                    worksheet.Cell(currentRow, 9).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 9).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    if (statusReport.OA_Score != "N/A")
+                    {
+                        worksheet.Cell(currentRow, 9).DataType = XLDataType.Number;
+                    }
+
+                    worksheet.Cell(currentRow, 10).Value = statusReport.EM_Score;
+                    worksheet.Cell(currentRow, 10).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 10).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    if (statusReport.EM_Score != "N/A")
+                    {
+                        worksheet.Cell(currentRow, 10).DataType = XLDataType.Number;
+                    }
+
+                    worksheet.Cell(currentRow, 11).Value = statusReport.Average;
+                    worksheet.Cell(currentRow, 11).Style.NumberFormat.Format = "0.00%";
+                    worksheet.Cell(currentRow, 11).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    if (statusReport.Average != "N/A")
+                    {
+                        worksheet.Cell(currentRow, 11).DataType = XLDataType.Number;
+                    }
+
+                    worksheet.Cell(currentRow, 12).Value = statusReport.Level;
+                    worksheet.Cell(currentRow, 12).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    
+                    IXLRange range_n_1_12 = worksheet.Range(worksheet.Cell(currentRow, 1).Address, worksheet.Cell(currentRow, 12).Address);
+                    range_n_1_12.Style.Font.FontSize = 9;
+                    IXLBorder border_n_1_12 = range_n_1_12.Style.Border;
+                    border_n_1_12.BottomBorder = border_n_1_12.TopBorder = border_n_1_12.LeftBorder = border_n_1_12.RightBorder = XLBorderStyleValues.Thin;
+
+                    currentRow++;
+                }                
+
+                worksheet.Columns().AdjustToContents();
+
+                #endregion
+
+                var fileName = $"Certification_report.xlsx";
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        fileName
+                        );
+                }
+            }  
+        }
+
         #endregion
     }
 }

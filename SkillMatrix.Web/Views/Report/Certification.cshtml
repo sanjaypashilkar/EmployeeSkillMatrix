@@ -78,12 +78,11 @@
         function Excel() {
             var filter = {
                 StartDate: $("#minDate").val(),
-                EndDate: $("#maxDate").val(),
-                ReportType : $("#ReportType").val(),
+                EndDate: $("#maxDate").val()
             }
-            window.location = '/Report/TicketingToolExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate + '&reportType=' + filter.ReportType;
+            window.location = '/Report/CertificationExcel?minDate=' + filter.StartDate + '&maxDate=' + filter.EndDate;
             setTimeout(function () {
-                toastr.success("Ticketing tool report downloaded successfully");
+                toastr.success("Certification report downloaded successfully");
             }, 200);
         }
 
