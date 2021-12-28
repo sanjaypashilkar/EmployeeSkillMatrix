@@ -83,6 +83,11 @@ namespace SkillMatrix.Repository
             return _context.BusinessPartner.Where(e => e.CreatedOn >= startDate && e.CreatedOn <= endDate).AsNoTracking();
         }
 
+        public IQueryable<Certification> GetCertificatiionRecordsByDate(DateTime startDate, DateTime endDate)
+        {
+            return _context.Certification.Where(e => e.CertificationDate >= startDate && e.CertificationDate <= endDate).AsNoTracking();
+        }
+
         public int AddEntry<TEntity>(TEntity entry) where TEntity:class
         {
             _context.Set<TEntity>().Add(entry);

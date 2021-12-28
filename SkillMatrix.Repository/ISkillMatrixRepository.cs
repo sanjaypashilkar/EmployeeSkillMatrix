@@ -46,6 +46,7 @@ namespace SkillMatrix.Repository
         #endregion
 
         #region Certification
+        IQueryable<Certification> GetCertificatiionRecordsByDate(DateTime startDate, DateTime endDate);
         int SaveCertifications(IEnumerable<Certification> certificationRecords);
         #endregion
 

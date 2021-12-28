@@ -2246,5 +2246,22 @@ namespace SkillMatrix.Web.Controllers
         }
 
         #endregion
+
+        #region Certification
+        public IActionResult Certification()
+        {
+            var report = _reportService.GetCertificationReport(null);
+            return View(report);
+        }
+
+        [HttpPost]
+        public IActionResult Certification(CertificationFilter filter)
+        {
+            vwCertificationReport report = new vwCertificationReport();
+            report = _reportService.GetCertificationReport(filter);
+            return PartialView("_CertificationTable", report);            
+        }
+
+        #endregion
     }
 }

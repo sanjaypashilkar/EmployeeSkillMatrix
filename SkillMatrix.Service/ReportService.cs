@@ -1728,8 +1728,106 @@ namespace SkillMatrix.Service
             }
 
             return statusReport;
-        }        
+        }
 
         #endregion
+
+        public vwCertificationReport GetCertificationReport(CertificationFilter filter = null)
+        {
+            if (filter == null)
+            {
+                filter = new CertificationFilter();
+                var today = DateTime.Today;
+                var month = new DateTime(today.Year, today.Month, 1);
+                var first = month.AddMonths(-1);
+                var last = month.AddDays(-1);
+                filter.StartDate = first;
+                filter.EndDate = last;
+                //filter.StartDate = new DateTime(2021, 07, 01).Date;
+                //filter.EndDate = new DateTime(2021, 07, 31).Date;
+                filter.PageNumber = 1;
+            }
+
+            vwCertificationReport report = new vwCertificationReport();
+            report.CertificationFilter = filter;
+            var certificationRecords = _skillMatrixRepository.GetCertificatiionRecordsByDate(filter.StartDate, filter.EndDate).ToList();
+            if (certificationRecords.Count > 0)
+            {
+                List<vwCertifcationLevelReport> levelReport = new List<vwCertifcationLevelReport>();
+                levelReport = GetCertificationLevelReport(certificationRecords);                
+                report.CertificationLevelReport = levelReport;                
+
+                var sortedList = levelReport.OrderBy(s => s.AgentName).ToList();
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = sortedList.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedLevelReport = paginatedData;
+                report.CertificationLevelReport = sortedList;
+            }
+            return report;
+        }
+
+        private List<vwCertifcationLevelReport> GetCertificationLevelReport(List<Certification> certificationRecords)
+        {
+            List<vwCertifcationLevelReport> levelReport = new List<vwCertifcationLevelReport>();
+            var employees = _skillMatrixRepository.GetEmployees().Where(e=>e.AccountType == AccountType.Elsevier.ToString()).ToList();
+            var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
+            foreach (var certification in certificationRecords)
+            {
+                var employeeRecord = employees.Where(e => e.SPIEmployeeNo.ToLower() == certification.EmployeeId.ToLower()).FirstOrDefault();
+                if(employeeRecord!=null)
+                {
+                    vwCertifcationLevelReport certificationLevel = new vwCertifcationLevelReport();
+                    certificationLevel.AccountType = certification.AccountType;
+                    certificationLevel.AgentName = certification.AgentName;
+                    certificationLevel.EmployeeId = certification.EmployeeId;
+                    certificationLevel.Position = employeeRecord.Engagement;
+                    certificationLevel.HiredDate = employeeRecord.DateHired;
+                    int tenureDays = Convert.ToInt32((DateTime.Today - Convert.ToDateTime(employeeRecord.DateHired)).TotalDays);
+                    int tenureYears = tenureDays / 365;
+                    int tenuremonths = (tenureDays % 365) / 30;
+                    certificationLevel.TenureYears = tenureYears;
+                    certificationLevel.TenureMonths = tenuremonths;
+                    certificationLevel.Tenure = $"{tenureYears} years {tenuremonths} months";
+                    certificationLevel.CertificationDate = certification.CertificationDate;
+                    certificationLevel.Status = "ACTIVE";
+                    certificationLevel.OSVC_Score = (certification.OSVC_Score > 0)? $"{certification.OSVC_Score}%":(certification.OSVC_Score == 0? "N/A":string.Empty);
+                    certificationLevel.OA_Score = (certification.OA_Score > 0) ? $"{certification.OA_Score}%" : (certification.OA_Score == 0 ? "N/A" : string.Empty);
+                    certificationLevel.EM_Score = (certification.EM_Score > 0) ? $"{certification.EM_Score}%" : (certification.EM_Score == 0 ? "N/A" : string.Empty);
+                    double average = 0;
+                    if (employeeRecord.Engagement == ElsevierEngagement.RSOA.ToString())
+                    {
+                        double osvc_score = certification.OSVC_Score != null ? Convert.ToDouble(certification.OSVC_Score) : 0;
+                        double oa_score = certification.OA_Score != null ? Convert.ToDouble(certification.OA_Score) : 0;
+                        average = Math.Round(((osvc_score + oa_score) / 2),2);
+                    }
+                    else if ((employeeRecord.Engagement == ElsevierEngagement.RS1LS.ToString()) || (employeeRecord.Engagement == ElsevierEngagement.ECS.ToString()))
+                    {
+                        double osvc_score = certification.OSVC_Score != null ? Convert.ToDouble(certification.OSVC_Score) : 0;
+                        double em_score = certification.EM_Score != null ? Convert.ToDouble(certification.EM_Score) : 0;
+                        average = Math.Round(((osvc_score + em_score) / 2), 2);
+                    }
+                    certificationLevel.Average = (average > 0) ? $"{average}%" : (average == 0 ? "N/A" : string.Empty); ;
+                    if(average>0)
+                    {
+                        var scoreLevel = categoryScoring.Where(c => average >= c.LowerScore && average < c.UpperScore).FirstOrDefault().Score;
+                        certificationLevel.Level = scoreLevel.ToString();
+                    }
+                    else
+                    {
+                        certificationLevel.Level = "N/A";
+                    }                                        
+                    levelReport.Add(certificationLevel);
+                }                                
+            }
+            return levelReport;
+        }
     }
 }
+

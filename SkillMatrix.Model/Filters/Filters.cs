@@ -81,4 +81,14 @@ namespace SkillMatrix.Model
         [Description("Monthly")]
         Monthly = 3
     }
+
+    public enum ElsevierEngagement
+    {
+        [Description("RSOA")]
+        RSOA = 1,
+        [Description("RS1LS")]
+        RS1LS = 2,
+        [Description("ECS")]
+        ECS = 3
+    }
 }
