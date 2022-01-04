@@ -1,0 +1,147 @@
+﻿@model SkillMatrix.Model.vwSkillReport
+@{
+    Layout = "_Layout";
+    <style>
+        th[colspan]:not([colspan="1"]) {
+            text-align: center;
+        }
+    </style>
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Report" asp-action="Index">
+    <div class="card text-center">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="ml-3">AccountType: @Html.DropDownListFor(x => x.SkillMatrixFilter.AccountType, new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @id = "AccountType", @name = "AccountType", @class = "form-select" })</div>
+                @*<div class="ml-3">Account: @Html.DropDownList("AccountType", new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @Id = "AccountType", @Name = "AccountType", @class = "form-select" })</div>*@
+                <div class="ml-3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "form-select" })</div>
+                <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "form-select" })</div>
+                <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="filterAndTable">
+    @{
+        await Html.RenderPartialAsync("_FilterAndTableSkillMatrix1", Model);
+    }
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function Show() {
+            var filter = {
+                AccountType: $("#AccountType").val(),
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                PageNumber: 1
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/SkillMatrix1',
+                data: filter,
+                success: function (response) {
+                    $("#filterAndTable").html('');
+                    $("#filterAndTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function Filter() {
+            var filter = {
+                AccountType: $("#AccountType").val(),
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                Team: $("#Team").val(),
+                CompetencyLevel: $("#Competency").val(),
+                TenureLevel: $("#Tenure").val(),
+                PageNumber: 1
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/SkillMatrix1Filter',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function Paginate(pageNo) {
+            var filter = {
+                AccountType: $("#AccountType").val(),
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                Team: $("#Team").val(),
+                CompetencyLevel: $("#Competency").val(),
+                TenureLevel: $("#Tenure").val(),
+                PageNumber: pageNo
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '/Report/SkillMatrix1Filter',
+                data: filter,
+                success: function (response) {
+                    $("#reportTable").html('');
+                    $("#reportTable").html(response);
+                },
+                error: function (response) {
+                    toastr.error("There is some problem to process your request");
+                }
+            });
+        }
+
+        function ClearFilter() {
+            Show();
+        }
+
+        function Excel() {
+            var filter = {
+                AccounType: $("#Account").val(),
+                Year: $("#Year").val(),
+                Quarter: $("#Quarter").val(),
+                Team: $("#Team").val(),
+                CompetencyLevel: $("#Competency").val(),
+                TenureLevel: $("#Tenure").val(),
+            }
+            window.location = '/Report/Excel?year=' + filter.Year + '&quarter=' + filter.Quarter + '&team=' + filter.Team + '&competency=' + filter.CompetencyLevel + '&tenure=' + filter.TenureLevel;
+            setTimeout(function () {
+                toastr.success("Skill matrix report downloaded successfully");
+            }, 1000);
+        }
+
+        function toastrOption() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        $(document).ready(function () {
+            toastrOption();
+        });
+    </script>
+}

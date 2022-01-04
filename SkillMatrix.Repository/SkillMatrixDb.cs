@@ -176,7 +176,7 @@ namespace SkillMatrix.Repository
                 new TenureLevel
                 {
                     Id = 1,
-                    LowerScore = 6,
+                    LowerScore = 0,
                     UpperScore = 9,
                     Level = "Novice",
                     CreatedDate = DateTime.Today,

@@ -7,10 +7,12 @@ namespace SkillMatrix.Model
 {
     public class SkillMatrixFilter
     {
+        [Required(ErrorMessage = "Account Type is required.")]
+        public string AccountType { get; set; }
         [Required(ErrorMessage = "Year is required.")]
         public int Year { get; set; }
         [Required(ErrorMessage = "Quarter is required.")]
-        public int Quarter { get; set; }
+        public int Quarter { get; set; }        
         public string Team { get; set; }
         public string CompetencyLevel { get; set; }
         public string TenureLevel { get; set; }

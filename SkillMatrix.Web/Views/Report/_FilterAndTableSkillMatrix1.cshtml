@@ -1,0 +1,13 @@
+﻿@model SkillMatrix.Model.vwSkillReport
+
+<div id="filter">
+    @{
+        await Html.RenderPartialAsync("_FilterSkillMatrix1", Model);
+    }
+</div>
+<hr />
+<div id="reportTable">
+    @{
+        await Html.RenderPartialAsync("_TableSkillMatrix1", Model);
+    }
+</div>

@@ -9,7 +9,10 @@ namespace SkillMatrix.Model
     {
         public virtual List<EmployeeSkillMatrix> SkillMatrix { get; set; }
         public virtual List<EmployeeSkillMatrix> PaginatedSkills { get; set; }
+        public virtual List<EmployeeCompetencyLevel> EmployeeCompetencyLevels { get; set; }
+        public virtual List<EmployeeCompetencyLevel> PaginatedCompetencyLevels { get; set; }
         public virtual SkillMatrixFilter SkillMatrixFilter { get; set; }
+        public virtual Dictionary<string, string> lstAccountTypes { get; set; }
         public virtual Dictionary<string, string> lstYears { get; set; }
         public virtual Dictionary<string, string> lstQuarters { get; set; }
         public virtual Dictionary<string, string> lstTeams { get; set; }
@@ -21,7 +24,10 @@ namespace SkillMatrix.Model
         {
             SkillMatrix = new List<EmployeeSkillMatrix>();
             PaginatedSkills = new List<EmployeeSkillMatrix>();
+            EmployeeCompetencyLevels = new List<EmployeeCompetencyLevel>();
+            PaginatedCompetencyLevels = new List<EmployeeCompetencyLevel>();
             SkillMatrixFilter = new SkillMatrixFilter();
+            lstAccountTypes = new Dictionary<string, string>();
             lstYears = new Dictionary<string,string>();
             lstQuarters = new Dictionary<string, string>();
             lstTeams = new Dictionary<string, string>();

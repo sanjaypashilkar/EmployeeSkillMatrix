@@ -1,0 +1,12 @@
+﻿@model SkillMatrix.Model.vwSkillReport
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <div class="ml-3">Team: @Html.DropDownListFor(x => x.SkillMatrixFilter.Team, new SelectList(Model.lstTeams, "Key", "Value"), "-Select Team-", new { @id = "Team", @class = "form-select" })</div>
+            <div class="ml-3">Competency: @Html.DropDownListFor(x => x.SkillMatrixFilter.CompetencyLevel, new SelectList(Model.lstCompetencyLevel, "Key", "Value"), "-Select Competency-", new { @id = "Competency", @class = "form-select" })</div>
+            <div class="ml-3">Tenure: @Html.DropDownListFor(x => x.SkillMatrixFilter.TenureLevel, new SelectList(Model.lstTenureLevel, "Key", "Value"), "-Select Tenure-", new { @id = "Tenure", @class = "form-select" })</div>
+            <div class="ml-5"><button class="btn btn-primary btn-sm" type="button" onclick="Filter()">Filter</button></div>
+            <div class="ml-3"><button class="btn btn-primary btn-sm" type="button" onclick="ClearFilter()">Clear</button></div>
+        </div>
+    </div>
+</div>

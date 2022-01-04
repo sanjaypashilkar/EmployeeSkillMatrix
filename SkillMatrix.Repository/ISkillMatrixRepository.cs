@@ -42,6 +42,7 @@ namespace SkillMatrix.Repository
         #endregion
 
         #region CSAT
+        IQueryable<CSAT> GetCSATRecordsByDate(DateTime startDate, DateTime endDate);
         int SaveCSATRecords(IEnumerable<CSAT> csatRecords);
         #endregion
 

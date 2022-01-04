@@ -91,6 +91,13 @@ namespace SkillMatrix.Service
             return selectList;
         }
 
+        public Dictionary<string, string> mtdGetSkillMatrix1Teams(List<EmployeeCompetencyLevel> skillMatrix)
+        {
+            var teams = skillMatrix.Select(i => i.Engagement).ToList().Distinct();
+            var selectList = teams.Select(i => new { key = i.ToString(), value = i.ToString() }).ToDictionary(x => x.key, x => x.value);
+            return selectList;
+        }
+
         public Dictionary<string, string> mtdGetCompetencyLevel()
         {
             var selectList = _skillMatrixRepository.GetCompetencyLevelScoring().Select(i => new { key = i.Level.ToString(), value = i.Level.ToString() }).ToDictionary(x => x.key, x => x.value);       
@@ -105,8 +112,8 @@ namespace SkillMatrix.Service
 
         public Dictionary<string, string> mtdGetAccountTypes()
         {
-            var departments = Helper.GetEnumValuesAndDescriptions<AccountType>();
-            var selectList = departments.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
+            var accounts = Helper.GetEnumValuesAndDescriptions<AccountType>();
+            var selectList = accounts.ToList().Select(i => new { key = i.Key.ToString(), value = i.Value.ToString() }).ToDictionary(x => x.key, x => x.value);
             return selectList;
         }
 
@@ -1732,6 +1739,7 @@ namespace SkillMatrix.Service
 
         #endregion
 
+        #region CERTIFICATION REPORTS
         public vwCertificationReport GetCertificationReport(CertificationFilter filter = null)
         {
             if (filter == null)
@@ -1813,7 +1821,7 @@ namespace SkillMatrix.Service
                         double em_score = certification.EM_Score != null ? Convert.ToDouble(certification.EM_Score) : 0;
                         average = Math.Round(((osvc_score + em_score) / 2), 2);
                     }
-                    certificationLevel.Average = (average > 0) ? $"{average}%" : (average == 0 ? "N/A" : string.Empty); ;
+                    certificationLevel.Average = (average > 0) ? $"{average}%" : (average == 0 ? "N/A" : string.Empty);
                     if(average>0)
                     {
                         var scoreLevel = categoryScoring.Where(c => average >= c.LowerScore && average < c.UpperScore).FirstOrDefault().Score;
@@ -1827,6 +1835,192 @@ namespace SkillMatrix.Service
                 }                                
             }
             return levelReport;
+        }
+
+        #endregion
+
+        public vwSkillReport GetSkillMatrixReport1(SkillMatrixFilter filter = null)
+        {
+            if (filter == null)
+            {
+                filter = new SkillMatrixFilter();
+                filter.AccountType = AccountType.Elsevier.ToString();
+                int currentQuarter = (DateTime.Today.Month - 1) / 3 + 1;
+                int selectedQuarter = currentQuarter != 1 ? currentQuarter - 1 : 4;
+                int currentYear = DateTime.Today.Year;
+                int selectedYear = currentQuarter != 1 ? currentYear : currentYear - 1;
+                filter.Year = selectedYear;
+                filter.Quarter = selectedQuarter;
+                filter.PageNumber = 1;
+            }
+
+            vwSkillReport report = new vwSkillReport();
+            report.SkillMatrixFilter = filter;
+            report.lstAccountTypes = mtdGetAccountTypes();
+            report.lstYears = mtdGetYears();
+            report.lstQuarters = mtdGetQuarters();            
+            report.lstCompetencyLevel = mtdGetCompetencyLevel();
+            report.lstTenureLevel = mtdGetTenureLevel();
+
+            var skillMatrices = GetEmployeeSkillMatrix(filter);
+            report.lstTeams = mtdGetSkillMatrix1Teams(skillMatrices);
+
+            if (!string.IsNullOrEmpty(filter.Team))
+            {
+                skillMatrices = skillMatrices.Where(s => s.Engagement.ToLower() == filter.Team.ToLower()).ToList();
+            }
+            if (!string.IsNullOrEmpty(filter.CompetencyLevel))
+            {
+                skillMatrices = skillMatrices.Where(s => s.CompetencyLevel.ToLower() == filter.CompetencyLevel.ToLower()).ToList();
+            }
+            if (!string.IsNullOrEmpty(filter.TenureLevel))
+            {
+                skillMatrices = skillMatrices.Where(s => s.TenureLevel.ToLower() == filter.TenureLevel.ToLower()).ToList();
+            }
+            if (skillMatrices.Count > 0)
+            {
+                var sortedList = skillMatrices.OrderBy(s => s.Engagement).ThenBy(s => s.AgentName).ToList();
+                if (filter.PageNumber < 1)
+                    filter.PageNumber = 1;
+
+                int rescCount = sortedList.Count();
+                int recSkip = (filter.PageNumber - 1) * pageSize;
+                var pager = new Pager(rescCount, recSkip, filter.PageNumber, pageSize);
+                report.Pager = pager;
+
+                var paginatedData = sortedList.Skip(recSkip).Take(pager.PageSize).ToList();
+                report.PaginatedCompetencyLevels = paginatedData;
+                report.EmployeeCompetencyLevels = sortedList;
+            }
+            return report;
+        }
+
+        private List<EmployeeCompetencyLevel> GetEmployeeSkillMatrix(SkillMatrixFilter filter)
+        {
+            DateTime dtFirstDay = new DateTime(filter.Year, 3 * filter.Quarter - 2, 1);
+            var lastDayOfMonth = DateTime.DaysInMonth(filter.Year, 3 * filter.Quarter);
+            DateTime dtLastDay = new DateTime(filter.Year, 3 * filter.Quarter, lastDayOfMonth);
+            var employees = _skillMatrixRepository.GetEmployees().Where(e => e.AccountType == filter.AccountType).ToList();
+            var certificationRecords = _skillMatrixRepository.GetCertificatiionRecordsByDate(dtFirstDay, dtLastDay).ToList(); 
+            var csatRecords = _skillMatrixRepository.GetCSATRecordsByDate(dtFirstDay, dtLastDay).ToList();
+            var qualityRatings = _skillMatrixRepository.GetQualityRatingByDate3(dtFirstDay, dtLastDay).ToList();
+            var agentSummaryELSV = new List<vwQualityReportAgentSummaryELSV>();
+            agentSummaryELSV = GetAgentSummaryReportELSV(qualityRatings, 92);
+
+            var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
+            var competencyLevelScoring = _skillMatrixRepository.GetCompetencyLevelScoring().ToList();
+            var tenureScoringLevel = _skillMatrixRepository.GetTenureLevel().ToList();
+            List<EmployeeCompetencyLevel> employeeSkillMatrix = new List<EmployeeCompetencyLevel>();
+            foreach (var employee in employees)
+            {
+                EmployeeCompetencyLevel employeeSkill = new EmployeeCompetencyLevel();
+                employeeSkill.AccountType = AccountType.Elsevier.ToString();
+                employeeSkill.AgentName = employee.Name;
+                employeeSkill.EmployeeId = employee.SPIEmployeeNo;
+                employeeSkill.Engagement = employee.Engagement;
+                employeeSkill.DateHired = employee.DateHired;
+                int tenureDays = Convert.ToInt32((DateTime.Today - Convert.ToDateTime(employee.DateHired)).TotalDays);
+                int tenureYears = tenureDays / 365;
+                int tenuremonths = (tenureDays % 365) / 30;
+                employeeSkill.TenureYears = tenureYears;
+                employeeSkill.TenureMonths = tenuremonths;
+                employeeSkill.Tenure = $"{tenureYears} years {tenuremonths} months";
+                employeeSkill.CertificationScore = "N/A";
+                employeeSkill.CertificationLevel = "N/A";
+                employeeSkill.CSATScore = "N/A";
+                employeeSkill.CSATLevel = "N/A";
+                employeeSkill.QCScore = "N/A";
+                employeeSkill.QCLevel = "N/A";
+
+                var certification = certificationRecords.Where(c => c.EmployeeId.Trim().ToLower() == employee.SPIEmployeeNo.Trim().ToLower()).FirstOrDefault();
+                if (certification != null)
+                {
+                    employeeSkill.CertificationDate = certification.CertificationDate;
+                    var OSVC_Score = (certification.OSVC_Score > 0) ? $"{certification.OSVC_Score}%" : (certification.OSVC_Score == 0 ? "N/A" : string.Empty);
+                    var OA_Score = (certification.OA_Score > 0) ? $"{certification.OA_Score}%" : (certification.OA_Score == 0 ? "N/A" : string.Empty);
+                    var EM_Score = (certification.EM_Score > 0) ? $"{certification.EM_Score}%" : (certification.EM_Score == 0 ? "N/A" : string.Empty);
+                    double average = 0;
+                    if (employeeSkill.Engagement == ElsevierEngagement.RSOA.ToString())
+                    {
+                        double osvc_score = certification.OSVC_Score != null ? Convert.ToDouble(certification.OSVC_Score) : 0;
+                        double oa_score = certification.OA_Score != null ? Convert.ToDouble(certification.OA_Score) : 0;
+                        average = Math.Round(((osvc_score + oa_score) / 2), 2);
+                    }
+                    else if ((employeeSkill.Engagement == ElsevierEngagement.RS1LS.ToString()) || (employeeSkill.Engagement == ElsevierEngagement.ECS.ToString()))
+                    {
+                        double osvc_score = certification.OSVC_Score != null ? Convert.ToDouble(certification.OSVC_Score) : 0;
+                        double em_score = certification.EM_Score != null ? Convert.ToDouble(certification.EM_Score) : 0;
+                        average = Math.Round(((osvc_score + em_score) / 2), 2);
+                    }
+                    employeeSkill.CertificationScore = (average > 0) ? $"{average}%" : (average == 0 ? "N/A" : string.Empty);
+                    if (average > 0)
+                    {
+                        var scoreLevel = categoryScoring.Where(c => average >= c.LowerScore && average < c.UpperScore).FirstOrDefault().Score;
+                        employeeSkill.CertificationLevel = scoreLevel.ToString();
+                    }                    
+                }               
+                
+                if (csatRecords?.Count > 0)
+                {
+                    var csatScore = csatRecords.Where(c => c.EmployeeId.Trim().ToLower() == employee.SPIEmployeeNo.Trim().ToLower()).FirstOrDefault();
+                    if (csatScore != null)
+                    {
+                        employeeSkill.CSATScore = (csatScore.CSATScore > 0) ? $"{csatScore.CSATScore}%" : "N/A";
+                        if (csatScore.CSATScore > 0)
+                        {
+                            var scoreLevel = categoryScoring.Where(c => csatScore.CSATScore >= c.LowerScore && csatScore.CSATScore < c.UpperScore).FirstOrDefault().Score;
+                            employeeSkill.CSATLevel = scoreLevel.ToString();
+                        }                        
+                    }
+                }
+                
+                if (agentSummaryELSV?.Count > 0)
+                {
+                    var qaRecord = agentSummaryELSV.Where(q => q.EmployeeId.Trim().ToLower() == employee.SPIEmployeeNo.Trim().ToLower()).FirstOrDefault();
+                    if(qaRecord!=null)
+                    {
+                        employeeSkill.QCScore = (qaRecord.Overall_QCScore> 0) ? $"{qaRecord.Overall_QCScore}%" : "N/A";
+                        if (qaRecord.Overall_QCScore > 0)
+                        {
+                            var scoreLevel = categoryScoring.Where(c => qaRecord.Overall_QCScore >= c.LowerScore && qaRecord.Overall_QCScore < c.UpperScore).FirstOrDefault().Score;
+                            employeeSkill.QCLevel = scoreLevel.ToString();
+                        }                        
+                    }
+                }
+
+                double certificationLevel = employeeSkill.CertificationLevel != "N/A" ? Convert.ToDouble(employeeSkill.CertificationLevel) : 0;
+                double csatLevel = employeeSkill.CSATLevel != "N/A" ? Convert.ToDouble(employeeSkill.CSATLevel) : 0;
+                double qcLevel = employeeSkill.QCLevel != "N/A" ? Convert.ToDouble(employeeSkill.QCLevel) : 0;
+                double[] score = { certificationLevel, csatLevel, qcLevel };
+                var scoreSum = score.Sum();
+                var scoreCount = score.Count();
+                var overallScore = Math.Round((scoreSum / scoreCount), 2);
+                employeeSkill.OverallScore = overallScore;
+                employeeSkill.CompetencyLevel = competencyLevelScoring.Where(cl => overallScore >= cl.LowerScore && overallScore <= cl.UpperScore).FirstOrDefault().Level;
+                var tenure = ((tenureYears * 12) + tenuremonths);
+                var tenuteLevels = tenureScoringLevel.Where(t => tenure >= t.LowerScore && tenure <= t.UpperScore).ToList();
+                if (tenuteLevels.Count > 1)
+                {
+                    bool isMatched = tenuteLevels.Any(t => t.Level.ToLower() == employeeSkill.CompetencyLevel.ToLower());
+                    if (isMatched)
+                    {
+                        employeeSkill.TenurePlusCompetency = "Matched";
+                        employeeSkill.TenureLevel = employeeSkill.CompetencyLevel;
+                    }
+                    else
+                    {
+                        employeeSkill.TenureLevel = tenuteLevels.FirstOrDefault().Level;
+                        employeeSkill.TenurePlusCompetency = "For evaluation";
+                    }
+                }
+                else
+                {
+                    employeeSkill.TenureLevel = tenuteLevels.FirstOrDefault().Level;
+                    employeeSkill.TenurePlusCompetency = (employeeSkill.CompetencyLevel.ToLower() == employeeSkill.TenureLevel.ToLower()) ? "Matched" : "For evaluation";
+                }
+                employeeSkillMatrix.Add(employeeSkill);
+            }
+            return employeeSkillMatrix;
         }
     }
 }
