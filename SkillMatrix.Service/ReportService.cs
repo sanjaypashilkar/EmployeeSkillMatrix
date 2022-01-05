@@ -2,6 +2,7 @@
 using SkillMatrix.Model;
 using SkillMatrix.Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1991,10 +1992,13 @@ namespace SkillMatrix.Service
                 double certificationLevel = employeeSkill.CertificationLevel != "N/A" ? Convert.ToDouble(employeeSkill.CertificationLevel) : 0;
                 double csatLevel = employeeSkill.CSATLevel != "N/A" ? Convert.ToDouble(employeeSkill.CSATLevel) : 0;
                 double qcLevel = employeeSkill.QCLevel != "N/A" ? Convert.ToDouble(employeeSkill.QCLevel) : 0;
+
+                List<double> scoreList = new List<double> { certificationLevel, csatLevel, qcLevel };
+                scoreList.RemoveAll(s => s == 0);
+                var scoreSum = scoreList.Sum();
+                var scoreCount = scoreList.Count();
                 double[] score = { certificationLevel, csatLevel, qcLevel };
-                var scoreSum = score.Sum();
-                var scoreCount = score.Count();
-                var overallScore = Math.Round((scoreSum / scoreCount), 2);
+                var overallScore = scoreCount>0 ? Math.Round((scoreSum / scoreCount), 2):0;
                 employeeSkill.OverallScore = overallScore;
                 employeeSkill.CompetencyLevel = competencyLevelScoring.Where(cl => overallScore >= cl.LowerScore && overallScore <= cl.UpperScore).FirstOrDefault().Level;
                 var tenure = ((tenureYears * 12) + tenuremonths);

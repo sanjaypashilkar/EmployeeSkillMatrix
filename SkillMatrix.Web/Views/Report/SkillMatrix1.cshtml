@@ -12,7 +12,6 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="ml-3">AccountType: @Html.DropDownListFor(x => x.SkillMatrixFilter.AccountType, new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @id = "AccountType", @name = "AccountType", @class = "form-select" })</div>
-                @*<div class="ml-3">Account: @Html.DropDownList("AccountType", new SelectList(Model.lstAccountTypes, "Key", "Value"), new { @Id = "AccountType", @Name = "AccountType", @class = "form-select" })</div>*@
                 <div class="ml-3">Year: @Html.DropDownListFor(x => x.SkillMatrixFilter.Year, new SelectList(Model.lstYears, "Key", "Value"), new { @id = "Year", @class = "form-select" })</div>
                 <div class="ml-3">Quarter: @Html.DropDownListFor(x => x.SkillMatrixFilter.Quarter, new SelectList(Model.lstQuarters, "Key", "Value"), new { @id = "Quarter", @class = "form-select" })</div>
                 <div class="ml-5"><button id="btnShow" class="btn btn-primary btn-sm" type="button" onclick="Show()">Show</button></div>

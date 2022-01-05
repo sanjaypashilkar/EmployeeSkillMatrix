@@ -38,10 +38,7 @@
                     <th rowspan="2">Name</th>
                     <th rowspan="2">Date Hired</th>
                     <th rowspan="2">Tenure</th>
-                    <th rowspan="2">Date Completed</th>
-                    @*<th colspan="2">Proficiency Report</th>
-                    <th colspan="3">Time Spent</th>
-                    <th colspan="3">Questions Statistics Report</th>*@
+                    <th rowspan="2">Certification Date</th>
                     <th colspan="2">Certification Score</th>
                     <th colspan="2">CSAT Score</th>
                     <th colspan="2">QC Score</th>
@@ -51,14 +48,6 @@
                     <th rowspan="2">Tenure + Competency</th>
                 </tr>
                 <tr>
-                    @*<th>Process Specific</th>
-                    <th>STAR & OSvC</th>
-                    <th>Process Specific</th>
-                    <th>STAR & OSvC</th>
-                    <th>Total Time Spent</th>
-                    <th>Process Specific</th>
-                    <th>STAR & OSvC</th>
-                    <th>Overall Average</th>*@
                     <th>Certification Score</th>
                     <th>Certification Level</th>
                     <th>CSAT Score</th>
@@ -76,15 +65,7 @@
                         <td> @item.AgentName</td>
                         <td> @Convert.ToDateTime(item.DateHired).Date.ToShortDateString()</td>
                         <td> @item.Tenure</td>
-                        <td> @Convert.ToDateTime(item.CertificationDate).Date.ToShortDateString()</td>
-                        @*<td> @string.Format("{0}%", item.ProcessSpecific_PR)</td>
-                        <td> @string.Format("{0}%", item.StarAndOSvC_PR)</td>
-                        <td> @item.ProcessSpecific_TS</td>
-                        <td> @item.StarAndOSvC_TS</td>
-                        <td> @item.TotalTimeSpent</td>
-                        <td> @string.Format("{0}%", item.ProcessSpecific_QSR)</td>
-                        <td> @string.Format("{0}%", item.StarAndOSvC_QSR)</td>
-                        <td> @string.Format("{0}%", item.AvgQuestionsStatisticsReport)</td>*@
+                        <td> @Convert.ToDateTime(item.CertificationDate).Date.ToShortDateString()</td>                        
                         <td> @item.CertificationScore</td>
                         <td> @item.CertificationLevel</td>
                         <td> @item.CSATScore</td>
