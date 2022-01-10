@@ -51,19 +51,24 @@
         });
 
         function SaveRecords() {
-            var recordDate = $('#recordDate').val();
             var fileName = $('#fileName').val();
-
             if (fileName == '') {
                 toastr.warning("Please select file to import");
             }
             else {
+                var account = $('#AccountType').val()
+                var recordDate = $('#recordDate').val()
+                var input = {
+                    AccountType: account,
+                    FileName: fileName,
+                    RecordDate: recordDate
+                }
                 $('#fileName').val('')
                 $.ajax({
                     type: 'POST',
                     dataType: 'JSON',
                     url: '/Attribute/SaveCertifications',
-                    data: { fileName: fileName, recordDate: recordDate },
+                    data: input,
                     success: function (response) {
                         if (response.success == true) {
                             toastr.success(response.message);
@@ -80,9 +85,10 @@
         }
 
         function DownloadCertificationTemplate() {
-            window.location = '/Attribute/DownloadCertificationTemplate';
+            var account = $('#AccountType').val()
+            window.location = '/Attribute/DownloadCertificationTemplate?accountType=' + account;
             setTimeout(function () {
-                toastr.success("Successfully downloaded template for CSAT");
+                toastr.success("Successfully downloaded template for Certification");
             }, 200);
         }
 

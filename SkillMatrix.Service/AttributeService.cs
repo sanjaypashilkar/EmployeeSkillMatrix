@@ -831,80 +831,125 @@ namespace SkillMatrix.Service
             }
         }
 
-        public vwImportAndSaveCertification GetUploadedCertificationRecords(string fileName)
+        public vwImportAndSaveCertification GetUploadedCertificationRecords(FileInput fileInput)
         {
             vwImportAndSaveCertification importAndSaveCertifications = new vwImportAndSaveCertification();
             importAndSaveCertifications.lstAccountTypes = mtdGetAccountTypes();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            if (fileInput.AccountType == AccountType.Elsevier.ToString())
             {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
                 {
-                    while (reader.Read())
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
-                        if (reader.Depth != 0 && reader.Depth != 1)
+                        while (reader.Read())
                         {
-                            var agent = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
-                            var employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
-                            if (string.IsNullOrEmpty(employeeId) && string.IsNullOrEmpty(agent))
-                                break;
-                            string completionDate = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
-                            var osvc_Score = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
-                            var oa_Score = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
-                            var em_Score = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;                            
+                            if (reader.Depth != 0 && reader.Depth != 1)
+                            {
+                                var agent = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                                var employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                if (string.IsNullOrEmpty(employeeId) && string.IsNullOrEmpty(agent))
+                                    break;
+                                string completionDate = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                var osvc_Score = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                var oa_Score = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+                                var em_Score = reader.GetValue(5) != null ? reader.GetValue(5).ToString().Trim() : string.Empty;
 
-                            double doubleValue = 0;
-                            string AgentName = agent;
-                            string EmployeeId = employeeId;
-                            DateTime certificationDate = Convert.ToDateTime(completionDate);
-                            double? OSVCScore = null;
-                            double? OAScore = null;
-                            double? EMScore = null;
-                            if (!string.IsNullOrEmpty(osvc_Score))
-                            {
-                                OSVCScore = Double.TryParse(osvc_Score, out doubleValue) ? Math.Round((Convert.ToDouble(osvc_Score)*100),2) : 0;
-                            }
-                            if (!string.IsNullOrEmpty(oa_Score))
-                            {
-                                OAScore = Double.TryParse(oa_Score, out doubleValue) ? Math.Round((Convert.ToDouble(oa_Score)*100), 2) : 0;
-                            }
-                            if (!string.IsNullOrEmpty(em_Score))
-                            {
-                                EMScore = Double.TryParse(em_Score, out doubleValue) ? Math.Round((Convert.ToDouble(em_Score)*100), 2) : 0;
-                            }
+                                double doubleValue = 0;
+                                string AgentName = agent;
+                                string EmployeeId = employeeId;
+                                DateTime certificationDate = Convert.ToDateTime(completionDate);
+                                double? OSVCScore = null;
+                                double? OAScore = null;
+                                double? EMScore = null;
+                                if (!string.IsNullOrEmpty(osvc_Score))
+                                {
+                                    OSVCScore = Double.TryParse(osvc_Score, out doubleValue) ? Math.Round((Convert.ToDouble(osvc_Score) * 100), 2) : 0;
+                                }
+                                if (!string.IsNullOrEmpty(oa_Score))
+                                {
+                                    OAScore = Double.TryParse(oa_Score, out doubleValue) ? Math.Round((Convert.ToDouble(oa_Score) * 100), 2) : 0;
+                                }
+                                if (!string.IsNullOrEmpty(em_Score))
+                                {
+                                    EMScore = Double.TryParse(em_Score, out doubleValue) ? Math.Round((Convert.ToDouble(em_Score) * 100), 2) : 0;
+                                }
 
-                            importAndSaveCertifications.CertificateScores.Add(new vwCertification
-                            {
-                                AgentName = AgentName,
-                                EmployeeId = EmployeeId,
-                                CertificationDate = certificationDate,
-                                OSVC_Score = OSVCScore,
-                                OA_Score = OAScore,
-                                EM_Score = EMScore                                
-                            });
+                                importAndSaveCertifications.CertificateScores.Add(new vwCertification
+                                {
+                                    AccountType = fileInput.AccountType,
+                                    AgentName = AgentName,
+                                    EmployeeId = EmployeeId,
+                                    CertificationDate = certificationDate,
+                                    OSVC_Score = OSVCScore,
+                                    OA_Score = OAScore,
+                                    EM_Score = EMScore
+                                });
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                using (FileStream stream = new FileStream(fileInput.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.Depth != 0)
+                            {
+                                var agent = reader.GetValue(0) != null ? reader.GetValue(0).ToString().Trim() : string.Empty;
+                                var employeeId = reader.GetValue(1) != null ? reader.GetValue(1).ToString().Trim() : string.Empty;
+                                if (string.IsNullOrEmpty(employeeId) && string.IsNullOrEmpty(agent))
+                                    break;
+                                string completionDate = reader.GetValue(2) != null ? reader.GetValue(2).ToString().Trim() : string.Empty;
+                                var scoreEarned = reader.GetValue(3) != null ? reader.GetValue(3).ToString().Trim() : string.Empty;
+                                var maxScore = reader.GetValue(4) != null ? reader.GetValue(4).ToString().Trim() : string.Empty;
+
+                                string AgentName = agent;
+                                string EmployeeId = employeeId;
+                                DateTime certificationDate = Convert.ToDateTime(completionDate);
+                                double score_Earned = Convert.ToDouble(scoreEarned);
+                                double max_Score = Convert.ToDouble(maxScore);                                
+
+                                importAndSaveCertifications.CertificateScores.Add(new vwCertification
+                                {
+                                    AccountType = fileInput.AccountType,
+                                    AgentName = AgentName,
+                                    EmployeeId = EmployeeId,
+                                    CertificationDate = certificationDate,
+                                    Earned_Score = score_Earned,
+                                    Max_Score = max_Score
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+                
             return importAndSaveCertifications;
         }
 
-        public void SaveCertifications(string fileName, string recordDate)
+        public void SaveCertifications(FileInput fileInput)
         {
-            var importAndSave = GetUploadedCertificationRecords(fileName);
+            var importAndSave = GetUploadedCertificationRecords(fileInput);
             List<Certification> certifications = new List<Certification>();
             foreach (var certification in importAndSave.CertificateScores)
             {
                 Certification record = new Certification();
-                record.AccountType = AccountType.Elsevier.ToString();
+                record.AccountType = certification.AccountType;
                 record.AgentName = certification.AgentName;
                 record.EmployeeId = certification.EmployeeId;
                 record.CertificationDate = certification.CertificationDate;
                 record.OSVC_Score = certification.OSVC_Score;
                 record.OA_Score = certification.OA_Score;
-                record.EM_Score = certification.EM_Score;                
+                record.EM_Score = certification.EM_Score;
+                record.EarnedScore = certification.Earned_Score;
+                record.TotalScore = certification.Max_Score;
 
-                record.RecordDate = Convert.ToDateTime(recordDate).Date;
+                record.RecordDate = Convert.ToDateTime(fileInput.RecordDate).Date;
                 record.CreatedDate = DateTime.Now;
                 certifications.Add(record);
             }

@@ -12,6 +12,8 @@ namespace SkillMatrix.Model
         public virtual double? OSVC_Score { get; set; }
         public virtual double? OA_Score { get; set; }
         public virtual double? EM_Score { get; set; }
+        public virtual double Earned_Score { get; set; }
+        public virtual double Max_Score { get; set; }
         public virtual DateTime CertificationDate { get; set; }
         public virtual DateTime RecordDate { get; set; }
         public virtual DateTime CreatedDate { get; set; }        

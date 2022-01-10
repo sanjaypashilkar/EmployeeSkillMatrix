@@ -1,4 +1,5 @@
 ﻿@model List<SkillMatrix.Model.vwCertification>
+@using SkillMatrix.Model
 @{
     var certifications = Model;
     var counter = 1;
@@ -6,70 +7,105 @@
 
 @if (certifications.Count > 0)
 {
-    <hr />
-    <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
-        <thead>
-            <tr>
-                <th rowspan="2">Sr.No</th>
-                <th rowspan="2">Agent</th>
-                <th rowspan="2">Employee ID</th>
-                <th rowspan="2">Certification Date</th>
-                <th colspan="3" style="text-align:center">Statistical Scores</th>
-            </tr>
-            <tr>                
-                <th>OSVC Score</th>
-                <th>OA Score</th>
-                <th>EM Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in certifications)
-            {
-            <tr>
-                <td> @counter</td>
-                <td> @item.AgentName</td>
-                <td> @item.EmployeeId</td>
-                <td> @item.CertificationDate.ToShortDateString()</td>
-                @if (item.OSVC_Score > 0)
+    @if (certifications[0].AccountType == AccountType.Elsevier.ToString())
+    {
+        <hr />
+        <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+            <thead>
+                <tr>
+                    <th rowspan="2">Sr.No</th>
+                    <th rowspan="2">Agent</th>
+                    <th rowspan="2">Employee ID</th>
+                    <th rowspan="2">Certification Date</th>
+                    <th colspan="3" style="text-align:center">Statistical Scores</th>
+                </tr>
+                <tr>
+                    <th>OSVC Score</th>
+                    <th>OA Score</th>
+                    <th>EM Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in certifications)
                 {
-                    <td>@string.Format("{0}%",item.OSVC_Score)</td>
+                    <tr>
+                        <td> @counter</td>
+                        <td> @item.AgentName</td>
+                        <td> @item.EmployeeId</td>
+                        <td> @item.CertificationDate.ToShortDateString()</td>
+                        @if (item.OSVC_Score > 0)
+                        {
+                            <td>@string.Format("{0}%", item.OSVC_Score)</td>
+                        }
+                        else if (item.OSVC_Score == 0)
+                        {
+                            <td>N/A</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.OA_Score > 0)
+                        {
+                            <td>@string.Format("{0}%", item.OA_Score)</td>
+                        }
+                        else if (item.OA_Score == 0)
+                        {
+                            <td>N/A</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.EM_Score > 0)
+                        {
+                            <td>@string.Format("{0}%", item.EM_Score)</td>
+                        }
+                        else if (item.EM_Score == 0)
+                        {
+                            <td>N/A</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                    counter++;
                 }
-                else if (item.OSVC_Score == 0)
+            </tbody>
+        </table>
+        <hr />
+    }
+    else
+    {
+        <hr />
+        <table cellspacing="0" cellpadding="0" border="1" class="table table-striped table-hover table-cards">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Agent</th>
+                    <th>Employee ID</th>
+                    <th>Certification Date</th>
+                    <th>Score Earned</th>
+                    <th>Max Score</th>
+                </tr>                
+            </thead>
+            <tbody>
+                @foreach (var item in certifications)
                 {
-                    <td>N/A</td>
+                    <tr>
+                        <td> @counter</td>
+                        <td> @item.AgentName</td>
+                        <td> @item.EmployeeId</td>
+                        <td> @item.CertificationDate.ToShortDateString()</td>
+                        <td> @item.Earned_Score</td>
+                        <td> @item.Max_Score</td>
+                    </tr>
+                    counter++;
                 }
-                else
-                {
-                    <td></td>
-                }
-                @if (item.OA_Score > 0)
-                {
-                    <td>@string.Format("{0}%",item.OA_Score)</td>
-                }
-                else if (item.OA_Score == 0)
-                {
-                    <td>N/A</td>
-                }
-                else
-                {
-                    <td></td>
-                }
-                @if (item.EM_Score > 0)
-                {
-                    <td>@string.Format("{0}%",item.EM_Score)</td>
-                }
-                else if (item.EM_Score == 0)
-                {
-                    <td>N/A</td>
-                }
-                else
-                {
-                    <td></td>
-                }
-            </tr>
-                counter++;
-            }
-        </tbody>
-    </table>
-    <hr />
+            </tbody>
+        </table>
+        <hr />
+    }
+
 }

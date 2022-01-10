@@ -1,4 +1,5 @@
 ﻿@model SkillMatrix.Model.vwCertificationReport
+@using SkillMatrix.Model
 @{
     var levelReport = Model.PaginatedLevelReport;
     var counter = 1;
@@ -42,11 +43,22 @@
                     @*<th>Status</th>*@
                     <th>Tenure</th>
                     <th>Certification Date</th>
-                    <th>OSVC</th>
-                    <th>OA</th>
-                    <th>EM</th>
-                    <th>Product/System Average</th>
-                    <th>Product & System Certification Level</th>
+                    @if (levelReport[0].AccountType == AccountType.Elsevier.ToString())
+                    {
+                        <th>OSVC</th>
+                        <th>OA</th>
+                        <th>EM</th>
+                        <th>Product/System Average</th>
+                        <th>Product & System Certification Level</th>
+                    }
+                    else
+                    {
+                        <th>Score Earned</th>
+                        <th>Max Score</th>
+                        <th>Percentage</th>
+                        <th>Certification Level</th>
+                    }
+
                 </tr>
             </thead>
             <tbody>
@@ -62,11 +74,21 @@
                         @*<td> @item.Status</td>*@
                         <td> @item.Tenure</td>
                         <td> @item.CertificationDate.ToShortDateString()</td>
-                        <td> @item.OSVC_Score</td>
-                        <td> @item.OA_Score</td>
-                        <td> @item.EM_Score</td>                        
-                        <td> @item.Average</td>
-                        <td> @item.Level</td>
+                        @if (levelReport[0].AccountType == AccountType.Elsevier.ToString())
+                        {
+                            <td> @item.OSVC_Score</td>
+                            <td> @item.OA_Score</td>
+                            <td> @item.EM_Score</td>
+                            <td> @item.Average</td>
+                            <td> @item.Level</td>
+                        }
+                        else
+                        {
+                            <td> @item.Score_Earned</td>
+                            <td> @item.Max_Score</td>
+                            <td> @item.Average</td>
+                            <td> @item.Level</td>
+                        }
                     </tr>
                     counter++;
                 }

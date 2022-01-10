@@ -23,6 +23,8 @@ namespace SkillMatrix.Repository.Migrations
                     OSVC_Score = table.Column<double>(type: "double", nullable: true),
                     OA_Score = table.Column<double>(type: "double", nullable: true),
                     EM_Score = table.Column<double>(type: "double", nullable: true),
+                    EarnedScore = table.Column<double>(type: "double", nullable: false),
+                    TotalScore = table.Column<double>(type: "double", nullable: false),
                     CertificationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     RecordDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -38,112 +40,112 @@ namespace SkillMatrix.Repository.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                columns: new[] { "CreatedDate", "LowerScore", "UpdatedDate" },
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), 0, new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Local) });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -156,112 +158,112 @@ namespace SkillMatrix.Repository.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CategoryScoring",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "CompetencyLevelScoring",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                columns: new[] { "CreatedDate", "LowerScore", "UpdatedDate" },
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), 6, new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
 
             migrationBuilder.UpdateData(
                 table: "TenureLevel",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedDate", "UpdatedDate" },
-                values: new object[] { new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 8, 0, 0, 0, 0, DateTimeKind.Local) });
+                values: new object[] { new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2021, 12, 24, 0, 0, 0, 0, DateTimeKind.Local) });
         }
     }
 }

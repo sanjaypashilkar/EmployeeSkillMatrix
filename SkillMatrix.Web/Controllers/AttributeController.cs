@@ -340,7 +340,7 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Certification(IFormFile file)
+        public IActionResult Certification(IFormFile file, FileInput input)
         {
             vwImportAndSaveCertification certifications = new vwImportAndSaveCertification();
             if (file != null)
@@ -353,6 +353,7 @@ namespace SkillMatrix.Web.Controllers
 
                 string fileName = Path.GetFileName(file.FileName);
                 string fullFilePath = Path.Combine(path, fileName);
+                input.FileName = fullFilePath;
                 if (System.IO.File.Exists(fullFilePath))
                 {
                     System.IO.File.Delete(fullFilePath);
@@ -363,20 +364,21 @@ namespace SkillMatrix.Web.Controllers
                     stream.Flush();
                     ViewBag.FileName += fileName;
                 }
-                certifications = _attributeService.GetUploadedCertificationRecords(fullFilePath);
+                certifications = _attributeService.GetUploadedCertificationRecords(input);
             }
             return View(certifications);
         }
 
         [HttpPost]
-        public IActionResult SaveCertifications(string fileName, string recordDate)
+        public IActionResult SaveCertifications(FileInput fileInput)
         {
             Response response = new Response();
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileInput.FileName))
             {
                 string path = Path.Combine(this._environment.WebRootPath, "Files");
-                string fullFilePath = Path.Combine(path, fileName);
-                _attributeService.SaveCertifications(fullFilePath, recordDate);
+                string fullFilePath = Path.Combine(path, fileInput.FileName);
+                fileInput.FileName = fullFilePath;
+                _attributeService.SaveCertifications(fileInput);
                 response.Success = true;
                 response.Message = $"Certification records saved successfully";
             }
@@ -389,9 +391,17 @@ namespace SkillMatrix.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadCertificationTemplate()
+        public IActionResult DownloadCertificationTemplate(string accountType)
         {
-            string fileName = "Template_Certification.xlsx";
+            string fileName = string.Empty;
+            if (accountType == AccountType.Elsevier.ToString())
+            {
+                fileName = "Template_Certification_Elsevier.xlsx";
+            }
+            else
+            {
+                fileName = "Template_Certification_SN.xlsx";
+            }
             string path = Path.Combine(this._environment.WebRootPath, "Files\\Templates");
             string path1 = Path.Combine(path, "Templates");
             string fullFilePath = Path.Combine(path, fileName);

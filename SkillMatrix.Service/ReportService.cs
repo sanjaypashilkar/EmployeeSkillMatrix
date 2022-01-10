@@ -1746,6 +1746,7 @@ namespace SkillMatrix.Service
             if (filter == null)
             {
                 filter = new CertificationFilter();
+                filter.AccountType = AccountType.SpringerNature.ToString();
                 var today = DateTime.Today;
                 var month = new DateTime(today.Year, today.Month, 1);
                 var first = month.AddMonths(-1);
@@ -1758,12 +1759,21 @@ namespace SkillMatrix.Service
             }
 
             vwCertificationReport report = new vwCertificationReport();
+            report.lstAccountTypes = mtdGetAccountTypes();
             report.CertificationFilter = filter;
-            var certificationRecords = _skillMatrixRepository.GetCertificatiionRecordsByDate(filter.StartDate, filter.EndDate).ToList();
+            var certificationRecords = _skillMatrixRepository.GetCertificatiionRecordsByDateAndAccount(filter.StartDate, filter.EndDate, filter.AccountType).ToList();
             if (certificationRecords.Count > 0)
             {
                 List<vwCertifcationLevelReport> levelReport = new List<vwCertifcationLevelReport>();
-                levelReport = GetCertificationLevelReport(certificationRecords);                
+                if(filter.AccountType == AccountType.Elsevier.ToString())
+                {
+                    levelReport = GetCertificationLevelReport(certificationRecords);
+                }
+                else
+                {
+                    levelReport = GetSNCertificationLevelReport(certificationRecords);
+                }
+                
                 report.CertificationLevelReport = levelReport;                
 
                 var sortedList = levelReport.OrderBy(s => s.AgentName).ToList();
@@ -1834,6 +1844,52 @@ namespace SkillMatrix.Service
                     }                                        
                     levelReport.Add(certificationLevel);
                 }                                
+            }
+            return levelReport;
+        }
+        private List<vwCertifcationLevelReport> GetSNCertificationLevelReport(List<Certification> certificationRecords)
+        {
+            List<vwCertifcationLevelReport> levelReport = new List<vwCertifcationLevelReport>();
+            var employees = _skillMatrixRepository.GetEmployees().Where(e => e.AccountType == AccountType.SpringerNature.ToString()).ToList();
+            var categoryScoring = _skillMatrixRepository.GetCategoryScoring().ToList();
+            foreach (var certification in certificationRecords)
+            {
+                var employeeRecord = employees.Where(e => e.SPIEmployeeNo.Trim().ToLower() == certification.EmployeeId.Trim().ToLower()).FirstOrDefault();
+                if (employeeRecord != null)
+                {
+                    vwCertifcationLevelReport certificationLevel = new vwCertifcationLevelReport();
+                    certificationLevel.AccountType = certification.AccountType;
+                    certificationLevel.AgentName = certification.AgentName;
+                    certificationLevel.EmployeeId = certification.EmployeeId;
+                    certificationLevel.Position = employeeRecord.Engagement;
+                    certificationLevel.HiredDate = employeeRecord.DateHired;
+                    int tenureDays = Convert.ToInt32((DateTime.Today - Convert.ToDateTime(employeeRecord.DateHired)).TotalDays);
+                    int tenureYears = tenureDays / 365;
+                    int tenuremonths = (tenureDays % 365) / 30;
+                    certificationLevel.TenureYears = tenureYears;
+                    certificationLevel.TenureMonths = tenuremonths;
+                    certificationLevel.Tenure = $"{tenureYears} years {tenuremonths} months";
+                    certificationLevel.CertificationDate = certification.CertificationDate;
+                    certificationLevel.Status = "ACTIVE";
+                    certificationLevel.Score_Earned = certification.EarnedScore.ToString();
+                    certificationLevel.Max_Score = certification.TotalScore.ToString();
+                    double average = Math.Round(((certification.EarnedScore / certification.TotalScore) * 100), 2);
+                    certificationLevel.Average = $"{average}%";                    
+                    if (average > 0)
+                    {
+                        var scoreLevel = categoryScoring.Where(c => average >= c.LowerScore && average < c.UpperScore).FirstOrDefault().Score;
+                        certificationLevel.Level = scoreLevel.ToString();
+                    }
+                    else
+                    {
+                        certificationLevel.Level = "N/A";
+                    }
+                    levelReport.Add(certificationLevel);
+                }
+                else
+                {
+                    int i = 1;
+                }
             }
             return levelReport;
         }

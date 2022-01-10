@@ -9,6 +9,7 @@ namespace SkillMatrix.Model
         public virtual List<vwCertifcationLevelReport> CertificationLevelReport { get; set; }
         public virtual List<vwCertifcationLevelReport> PaginatedLevelReport { get; set; }
         public virtual CertificationFilter CertificationFilter { get; set; }
+        public virtual Dictionary<string, string> lstAccountTypes { get; set; }
         public virtual Pager Pager { get; set; }
 
         public vwCertificationReport()
@@ -16,6 +17,7 @@ namespace SkillMatrix.Model
             CertificationLevelReport = new List<vwCertifcationLevelReport>();
             PaginatedLevelReport = new List<vwCertifcationLevelReport>();
             CertificationFilter = new CertificationFilter();
+            lstAccountTypes = new Dictionary<string, string>();
             Pager = new Pager();
         }
     }
@@ -35,6 +37,8 @@ namespace SkillMatrix.Model
         public virtual string OSVC_Score { get; set; }
         public virtual string OA_Score { get; set; }
         public virtual string EM_Score { get; set; }
+        public virtual string Score_Earned { get; set; }
+        public virtual string Max_Score { get; set; }
         public virtual string Average { get; set; }
         public virtual string Level { get; set; }
         

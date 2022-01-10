@@ -13,6 +13,8 @@ namespace SkillMatrix.Model
         public double? OSVC_Score { get; set; }
         public double? OA_Score { get; set; }
         public double? EM_Score { get; set; }
+        public double EarnedScore { get; set; }
+        public double TotalScore { get; set; }
         public DateTime CertificationDate { get; set; }        
         public DateTime RecordDate { get; set; }
         public DateTime CreatedDate { get; set; }
